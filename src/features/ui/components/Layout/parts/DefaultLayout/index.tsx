@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from 'react'
 
-import { Header } from '~/components/Header'
-import { Layout } from '~/components/Layout'
+import { Header } from '~/features/ui/components/Header'
+import { Layout } from '~/features/ui/components/Layout'
 
 interface IDefaultLayout {
   children: ReactNode | ReactNode[] | null

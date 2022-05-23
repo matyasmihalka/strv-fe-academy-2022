@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 
-import { DefaultLayout } from '~/components/Layout/parts/DefaultLayout'
+import { DefaultLayout } from '~/features/ui/components/Layout/parts/DefaultLayout'
 
 export const CreateEventPage: NextPage = () => (
   <DefaultLayout>
