@@ -1,10 +1,11 @@
-import Link from 'next/link'
 import type { FC } from 'react'
 
-import { Routes } from '~/features/core/constants/routes'
+import { Logo } from './parts/Logo'
+import { SignIn } from './parts/SignIn'
 
 export const Header: FC = () => (
   <header>
-    <Link href={Routes.DASHBOARD}>E.</Link>
+    <Logo />
+    <SignIn />
   </header>
 )
