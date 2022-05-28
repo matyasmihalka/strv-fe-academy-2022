@@ -1,9 +1,9 @@
 import type { NextPage } from 'next'
 
-import { DefaultLayout } from '~/features/ui/components/Layout/parts/DefaultLayout'
+import { Layout } from '~/features/ui/components/Layout'
 
 export const LoginPage: NextPage = () => (
-  <DefaultLayout>
+  <Layout>
     <h1>This is Login Page!</h1>
-  </DefaultLayout>
+  </Layout>
 )

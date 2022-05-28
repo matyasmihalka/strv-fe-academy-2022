@@ -1,19 +1,10 @@
-import type { FC, ReactNode } from 'react'
+import { Header } from '~/features/ui/components/Header'
+// FC - function components
 
-interface ILayout {
-  topElement: ReactNode | ReactNode[] | null
-  children: ReactNode | ReactNode[] | null
-  bottomElement: ReactNode | ReactNode[] | null
-}
-
-export const Layout: FC<ILayout> = ({
-  topElement,
-  children,
-  bottomElement,
-}) => (
+// @ts-ignore // TODO: Add types in TS lesson
+export const Layout = ({ children }) => (
   <>
-    {topElement}
-    {children}
-    {bottomElement}
+    <Header />
+    <main>{children}</main>
   </>
 )
