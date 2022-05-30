@@ -7,7 +7,6 @@ type Props = {
   children: NonNullable<ReactNode>
 }
 
-// @ts-ignore // TODO: Add types in TS lesson
 export const Layout: FC<Props> = ({ children }) => (
   <>
     <Header />
