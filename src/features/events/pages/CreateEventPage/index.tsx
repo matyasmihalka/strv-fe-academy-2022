@@ -13,7 +13,7 @@ export const CreateEventPage: NextPage = () => {
   }
   return (
     <Layout>
-      <Link href={Routes.CREATE_EVENT}>X Close</Link>
+      <Link href={Routes.DASHBOARD}>X Close</Link>
       <h1>Create new event</h1>
       <p>Enter details below</p>
       <form onSubmit={onSubmit}>

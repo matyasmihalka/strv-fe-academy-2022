@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
 export const EventItem: FC = () => (
-  <li>
+  <article>
     <time>April 4, 2017 - 2:17PM</time>
     <h3>How to get angry</h3>
     <p>Tom Watts</p>
@@ -10,5 +10,5 @@ export const EventItem: FC = () => (
       <span>Icon</span>9 of 31
     </p>
     <button type="button">EDIT</button>
-  </li>
+  </article>
 )
