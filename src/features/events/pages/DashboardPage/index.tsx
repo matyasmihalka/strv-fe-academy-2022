@@ -6,11 +6,11 @@ import { Layout } from '~/features/ui/components/Layout'
 
 export const DashboardPage: NextPage = () => (
   <Layout>
-    <h1>This is Dashboard Page!</h1>
     <h1>Dashboard</h1>
-    <h2>Events List</h2>
-    <EventsList />
-
-    <CreateFAB />
+    <section>
+      <h2>Events List</h2>
+      <EventsList />
+      <CreateFAB />
+    </section>
   </Layout>
 )
