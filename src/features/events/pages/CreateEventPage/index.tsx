@@ -4,7 +4,7 @@ import type { FormEvent } from 'react'
 
 import { Routes } from '~/features/core/constants/routes'
 import { Input } from '~/features/ui/components/Input'
-import { Layout } from '~/features/ui/components/Layout'
+import { LayoutInternal } from '~/features/ui/components/LayoutInternal'
 
 export const CreateEventPage: NextPage = () => {
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -12,7 +12,7 @@ export const CreateEventPage: NextPage = () => {
     alert('TODO - Creating new form')
   }
   return (
-    <Layout>
+    <LayoutInternal>
       <Link href={Routes.DASHBOARD}>X Close</Link>
       <h1>Create new event</h1>
       <p>Enter details below</p>
@@ -24,6 +24,6 @@ export const CreateEventPage: NextPage = () => {
         <Input label="Capacity" type="number" name="capacity" />
         <button type="submit">Create new Event</button>
       </form>
-    </Layout>
+    </LayoutInternal>
   )
 }
