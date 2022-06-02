@@ -1,9 +1,6 @@
 import type { FC } from 'react'
 
-enum ViewType {
-  GRID = 'GRID',
-  LIST = 'LIST',
-}
+import { ViewType } from '../../types'
 
 type Props = {
   onChange: (viewType: ViewType) => void
