@@ -1,13 +1,13 @@
 import type { FC } from 'react'
 
-import { Aside, Quote, FigCaption } from './styled'
+import { Aside, Quote, FigCaption, Figure, HR } from './styled'
 
 export const AsideCover: FC = () => (
   <Aside>
-    <figure>
-      <Quote>Great, kid. Dont get cocky</Quote>
-      <hr />
+    <Figure>
+      <Quote>Great, kid. Don&apos;t get cocky</Quote>
+      <HR />
       <FigCaption>Han Solo</FigCaption>
-    </figure>
+    </Figure>
   </Aside>
 )
