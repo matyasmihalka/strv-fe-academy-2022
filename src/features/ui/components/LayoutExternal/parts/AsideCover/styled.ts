@@ -10,6 +10,7 @@ export const Aside = styled.aside`
 
   ${mq.medium} {
     display: flex;
+    position: relative;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
@@ -40,6 +41,7 @@ export const Figure = styled.figure`
   margin-bottom: 5rem;
   text-align: center;
   width: 70%;
+  z-index: 100;
 `
 
 export const HR = styled.hr`

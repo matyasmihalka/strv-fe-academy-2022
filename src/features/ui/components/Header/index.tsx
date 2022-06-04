@@ -1,12 +1,19 @@
 import type { FC } from 'react'
 
-import { Logo } from './parts/Logo'
 import { SignIn } from './parts/SignIn'
-import { StyledHeader } from './styled'
+import { StyledHeader, StyledLogo } from './styled'
 
-export const Header: FC = () => (
-  <StyledHeader>
-    <Logo />
+type Props = {
+  isExternal?: boolean
+}
+
+export const Header: FC<Props> = ({ isExternal }) => (
+  <StyledHeader isAbsolute={isExternal}>
+    <StyledLogo />
     <SignIn />
   </StyledHeader>
 )
+
+Header.defaultProps = {
+  isExternal: false,
+}

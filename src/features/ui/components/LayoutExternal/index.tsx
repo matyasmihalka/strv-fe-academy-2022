@@ -11,7 +11,7 @@ type Props = {
 
 export const LayoutExternal: FC<Props> = ({ children }) => (
   <>
-    <Header />
+    <Header isExternal />
     <Container>
       <AsideCover />
       <Main>{children}</Main>

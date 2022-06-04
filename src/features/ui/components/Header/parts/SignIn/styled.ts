@@ -19,7 +19,6 @@ export const Span = styled.span`
 export const B = styled.b`
   ${typography.paragraph.small}
   color: ${colors.text.dimmed};
-  margin-right: 3rem;
 `
 
 export const SignInQuestionWrapper = styled.span<WrapperType>`
