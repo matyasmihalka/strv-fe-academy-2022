@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
-// import { colors } from './colors'
+import { colors } from './colors'
 // font import missing
 
 export const GlobalStyle = createGlobalStyle`
@@ -31,6 +31,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-smooth: always;
+    background-color: ${colors.background.dimmed};
 }
 
 a {

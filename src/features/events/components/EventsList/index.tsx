@@ -25,6 +25,15 @@ export const EventsList: FC = () => {
         <li>
           <EventItem />
         </li>
+        <li>
+          <EventItem />
+        </li>
+        <li>
+          <EventItem />
+        </li>
+        <li>
+          <EventItem />
+        </li>
       </List>
     </>
   )

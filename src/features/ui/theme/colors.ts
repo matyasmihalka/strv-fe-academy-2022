@@ -10,6 +10,7 @@ export const colors = {
     inverted: palette.white,
     inactive: palette.grey[600],
     silent: palette.grey[850],
+    author: palette.grey[200],
   },
   background: {
     light: palette.white,

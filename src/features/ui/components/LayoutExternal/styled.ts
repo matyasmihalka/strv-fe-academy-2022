@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
-import { font } from '../../theme/typography'
+import { colors } from '~/features/ui/theme/colors'
+import { font } from '~/features/ui/theme/typography'
 
 export const Main = styled.main`
   display: flex;
@@ -15,4 +16,5 @@ export const Main = styled.main`
 export const Container = styled.div`
   display: flex;
   height: 100%;
+  background-color: ${colors.background.light};
 `
