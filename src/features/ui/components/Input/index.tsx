@@ -19,12 +19,9 @@ export const Input: FC<Props> = ({ label, name, type, error, ...rest }) => {
   const [isPasswordShown, togglePassword] = useState(false)
   const inputType = isPasswordShown ? 'text' : type
 
-  console.log(error)
-  console.log(isPasswordShown)
-
   return (
     <InputWrapper>
-      <StyledLabel>
+      <StyledLabel key={error} hasError={Boolean(error)}>
         <StyledInput
           placeholder={label}
           name={name}
@@ -45,4 +42,8 @@ export const Input: FC<Props> = ({ label, name, type, error, ...rest }) => {
       {/* eslint-disable-next-line react/forbid-dom-props */}
     </InputWrapper>
   )
+}
+
+Input.defaultProps = {
+  error: 'false',
 }

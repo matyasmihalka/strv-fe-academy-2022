@@ -16,6 +16,13 @@ export const SubmitButton = styled(Button).attrs({
   }
 `
 
+export const TriggerErrorButton = styled(Button).attrs({
+  size: 'small',
+  accent: 'destructive',
+})`
+  margin-top: 2rem;
+`
+
 export const H1 = styled.h1`
   ${typography.heading.h3}
   color: ${colors.text.base};

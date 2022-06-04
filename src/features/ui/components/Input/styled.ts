@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 
 import { colors } from '~/features/ui/theme/colors'
 
@@ -43,10 +43,29 @@ export const StyledInput = styled.input`
   }
 `
 
-export const StyledLabel = styled.label`
+const shake = keyframes`
+  from { transform: none; }
+  20%  { transform: translateX(-1.5rem); }
+  40%  { transform: translateX(1.5rem); }
+  60%  { transform: translateX(-1.5rem); }
+  80%  { transform: translateX(1.5rem); }
+  to   { transform: none; }
+`
+
+export const StyledLabel = styled.label<{ hasError?: boolean }>`
   position: relative;
   display: block;
   padding-top: 2.5rem;
+
+  ${(props) =>
+    props.hasError &&
+    css`
+      animation: 0.5s ${shake};
+
+      ${StyledInput} {
+        border-bottom-color: ${colors.accent.destructive};
+      }
+    `}
 `
 
 export const InputWrapper = styled.div`

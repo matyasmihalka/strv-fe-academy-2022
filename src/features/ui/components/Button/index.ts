@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components'
 
 import { colors } from '../../theme/colors'
 import { typography } from '../../theme/typography'
+import { StyleReset } from '../StyleReset'
 
 type ButtonProps = {
   size?: 'small' | 'medium'
@@ -14,10 +15,10 @@ export const Button = styled.button<ButtonProps>`
   --background-color-hover: ${colors.background.dark};
 
   /* StyleReset missing */
+  ${StyleReset}
   ${typography.label.large}
   padding: 0.8em 5.4em;
   color: var(--text-color);
-  border: 0;
   border-radius: 4px;
   transition: background-color 0.3s;
   background-color: var(--background-color);
