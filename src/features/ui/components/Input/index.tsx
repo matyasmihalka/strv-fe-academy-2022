@@ -1,6 +1,7 @@
 import type { FC, InputHTMLAttributes } from 'react'
 import { useState } from 'react'
 
+import { TogglePasswordIcon } from './parts/TogglePasswordIcon'
 import {
   InputWrapper,
   LabelText,
@@ -19,6 +20,7 @@ export const Input: FC<Props> = ({ label, name, type, error, ...rest }) => {
   const inputType = isPasswordShown ? 'text' : type
 
   console.log(error)
+  console.log(isPasswordShown)
 
   return (
     <InputWrapper>
@@ -36,7 +38,7 @@ export const Input: FC<Props> = ({ label, name, type, error, ...rest }) => {
             aria-label="Display password text"
             onClick={() => togglePassword((prevState) => !prevState)}
           >
-            👁
+            <TogglePasswordIcon />
           </ToggleButton>
         )}
       </StyledLabel>
