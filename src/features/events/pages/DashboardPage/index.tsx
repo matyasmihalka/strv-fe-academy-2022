@@ -5,17 +5,17 @@ import { CreateButton } from '~/features/events/components/EventsList/parts/Crea
 import { Container } from '~/features/ui/components/Container'
 import { LayoutInternal } from '~/features/ui/components/LayoutInternal'
 
-import { Section } from './styled'
+import { H1, H2 } from './styled'
 
 export const DashboardPage: NextPage = () => (
   <LayoutInternal>
     <Container>
-      <h1>Dashboard</h1>
-      <Section>
-        <h2>Events List</h2>
+      <H1>Dashboard</H1>
+      <section>
+        <H2>Events List</H2>
         <EventsList />
         <CreateButton />
-      </Section>
+      </section>
     </Container>
   </LayoutInternal>
 )
