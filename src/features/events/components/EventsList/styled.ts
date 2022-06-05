@@ -26,3 +26,9 @@ export const List = styled.ul<{ view: ViewType }>`
       }
     `}
 `
+
+export const Nav = styled.nav`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+`

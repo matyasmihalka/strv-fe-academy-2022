@@ -1,5 +1,9 @@
 import type { FC } from 'react'
 
+import { NavButton } from '~/features/ui/components/NavButton'
+
+import { List } from './styled'
+
 enum FilterType {
   ALL = 'ALL',
   FUTURE = 'FUTURE',
@@ -12,22 +16,26 @@ type Props = {
 
 export const NavigationFilter: FC<Props> = ({ onChange }) => {
   return (
-    <ul>
+    <List>
       <li>
-        <button type="button" onClick={() => onChange(FilterType.ALL)}>
+        <NavButton
+          isActive
+          type="button"
+          onClick={() => onChange(FilterType.ALL)}
+        >
           All Events
-        </button>
+        </NavButton>
       </li>
       <li>
-        <button type="button" onClick={() => onChange(FilterType.FUTURE)}>
+        <NavButton type="button" onClick={() => onChange(FilterType.FUTURE)}>
           Future events
-        </button>
+        </NavButton>
       </li>
       <li>
-        <button type="button" onClick={() => onChange(FilterType.PAST)}>
+        <NavButton type="button" onClick={() => onChange(FilterType.PAST)}>
           Past Events
-        </button>
+        </NavButton>
       </li>
-    </ul>
+    </List>
   )
 }

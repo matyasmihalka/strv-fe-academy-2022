@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import { EventItem } from './parts/EventItem'
 import { NavigationFilter } from './parts/NavigationFilter'
 import { NavigationView } from './parts/NavigationView'
-import { List } from './styled'
+import { List, Nav } from './styled'
 import { ViewType } from './types'
 
 export const EventsList: FC = () => {
@@ -11,10 +11,10 @@ export const EventsList: FC = () => {
 
   return (
     <>
-      <nav>
+      <Nav>
         <NavigationFilter onChange={(filterType) => alert(filterType)} />
         <NavigationView onChange={(viewType) => alert(viewType)} />
-      </nav>
+      </Nav>
       <List view={view}>
         <li>
           <EventItem />

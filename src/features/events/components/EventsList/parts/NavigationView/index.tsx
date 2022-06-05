@@ -1,5 +1,11 @@
 import type { FC } from 'react'
 
+import { NavButton } from '~/features/ui/components/NavButton'
+
+import { GridIcon } from './parts/GridIcon'
+import { ListIcon } from './parts/ListIcon'
+import { List } from './styled'
+
 import { ViewType } from '../../types'
 
 type Props = {
@@ -7,24 +13,25 @@ type Props = {
 }
 
 export const NavigationView: FC<Props> = ({ onChange }) => (
-  <ul>
+  <List>
     <li>
-      <button
+      <NavButton
         type="button"
         aria-label="Show as grid"
         onClick={() => onChange(ViewType.GRID)}
+        isActive
       >
-        #
-      </button>
+        <GridIcon />
+      </NavButton>
     </li>
     <li>
-      <button
+      <NavButton
         type="button"
         aria-label="Show as list"
         onClick={() => onChange(ViewType.LIST)}
       >
-        =
-      </button>
+        <ListIcon />
+      </NavButton>
     </li>
-  </ul>
+  </List>
 )
