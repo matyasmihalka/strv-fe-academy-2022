@@ -1,11 +1,10 @@
 import type { NextPage } from 'next'
 
 import { EventsList } from '~/features/events/components/EventsList'
-import { CreateButton } from '~/features/events/components/EventsList/parts/CreateButton'
 import { Container } from '~/features/ui/components/Container'
 import { LayoutInternal } from '~/features/ui/components/LayoutInternal'
 
-import { H1, H2 } from './styled'
+import { H1, H2, StyledCreateButton } from './styled'
 
 export const DashboardPage: NextPage = () => (
   <LayoutInternal>
@@ -14,7 +13,7 @@ export const DashboardPage: NextPage = () => (
       <section>
         <H2>Events List</H2>
         <EventsList />
-        <CreateButton />
+        <StyledCreateButton />
       </section>
     </Container>
   </LayoutInternal>
