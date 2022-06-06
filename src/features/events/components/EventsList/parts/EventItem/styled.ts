@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components'
 
+import { Button } from '~/features/ui/components/Button'
 import { colors } from '~/features/ui/theme/colors'
 import { mq } from '~/features/ui/theme/mq'
 import { typography } from '~/features/ui/theme/typography'
@@ -30,14 +31,11 @@ export const StyledAttendeeIcon = styled(AttendeeIcon)`
   margin-bottom: -0.3rem;
 `
 
-export const AttendeeCount = styled.span``
+export const Container = styled.div``
 
-export const Container = styled.div`
-  ${mq.medium} {
-    display: flex;
-    justify-content: space-between;
-    min-width: 18rem;
-  }
+export const StyledButton = styled(Button)`
+  padding: 0.3em 0em 0.2em;
+  width: 10rem;
 `
 
 export const Article = styled.article<{ view: ViewType }>`
@@ -98,25 +96,50 @@ export const Article = styled.article<{ view: ViewType }>`
       /* Media query - MEDIUM */
       ${mq.medium} {
         padding: 3rem;
-        flex-wrap: nowrap;
+
+        /* flex-wrap: nowrap; */
+        display: grid;
+        grid-template-columns: 3fr 4fr 1fr 4fr 10rem;
+        grid-column-gap: 3rem;
 
         ${Author} {
           margin: 0;
           display: block;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
 
         h3 {
-          width: auto;
-          min-width: 20%;
-          margin-right: 1rem;
+          min-width: 10rem;
+          max-width: 15rem;
         }
 
         ${Description} {
-          width: auto;
           margin-top: 0;
           margin-bottom: 0;
-          width: auto;
-          max-width: 24rem;
+        }
+
+        ${Container} {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-column-gap: 3rem;
+
+          time {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+
+          span {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+
+        ${StyledButton} {
+          justify-self: end;
         }
       }
     `}
