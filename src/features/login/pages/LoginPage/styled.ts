@@ -33,10 +33,12 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 80%;
+  margin-top: -8.5rem;
 
   ${mq.medium} {
     width: 50%;
     align-items: flex-start;
+    margin-top: 0;
   }
 `
 
