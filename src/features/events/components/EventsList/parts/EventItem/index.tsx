@@ -42,7 +42,7 @@ export const EventItem: FC<Props> = ({ view }) => (
         <Author>Tom Watts</Author>
         <Container>
           <time>April 4, 2017 - 2:17PM</time>
-          <span>9 of 31</span>
+          <span>10 of 31</span>
         </Container>
         <Button type="button" size="small" accent="primary">
           EDIT
