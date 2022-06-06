@@ -10,16 +10,17 @@ import { ViewType } from '../../types'
 
 type Props = {
   onChange: (viewType: ViewType) => void
+  activeView: ViewType
 }
 
-export const NavigationView: FC<Props> = ({ onChange }) => (
+export const NavigationView: FC<Props> = ({ onChange, activeView }) => (
   <List>
     <li>
       <NavButton
         type="button"
         aria-label="Show as grid"
         onClick={() => onChange(ViewType.GRID)}
-        isActive
+        isActive={activeView === ViewType.GRID ? true : false}
       >
         <GridIcon />
       </NavButton>
@@ -29,6 +30,7 @@ export const NavigationView: FC<Props> = ({ onChange }) => (
         type="button"
         aria-label="Show as list"
         onClick={() => onChange(ViewType.LIST)}
+        isActive={activeView === ViewType.LIST ? true : false}
       >
         <ListIcon />
       </NavButton>
