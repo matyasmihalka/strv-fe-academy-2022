@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components'
 
 import { colors } from '~/features/ui/theme/colors'
+import { mq } from '~/features/ui/theme/mq'
 import { typography } from '~/features/ui/theme/typography'
 
 import { ViewType } from './types'
@@ -30,5 +31,9 @@ export const List = styled.ul<{ view: ViewType }>`
 export const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
+
+  ${mq.medium} {
+    margin-bottom: 4rem;
+  }
 `

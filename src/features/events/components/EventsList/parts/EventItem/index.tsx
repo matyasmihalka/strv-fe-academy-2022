@@ -36,6 +36,8 @@ export const EventItem: FC<Props> = ({ view, eventData }) => {
       type="button"
       size="small"
       accent={eventData.buttonType === 'LEAVE' ? 'destructive' : 'primary'}
+      onClick={() => alert('TODO')}
+      disabled={eventData.buttonType === 'EDIT' ? true : false}
     >
       {eventData.buttonType}
     </StyledButton>

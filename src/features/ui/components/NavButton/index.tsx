@@ -12,16 +12,17 @@ export const NavButton = styled.button<Props>`
   ${StyleReset}
   ${typography.label.small}
   font-weight: bold;
-  color: ${colors.text.dimmed};
+  color: ${colors.text.tabs};
+  cursor: pointer;
 
   &:hover,
   &:focus {
-    color: black;
+    color: ${colors.text.base};
   }
 
   ${(props) =>
     props.isActive &&
     css`
-      color: black;
+      color: ${colors.text.base};
     `}
 `

@@ -54,6 +54,13 @@ export const Article = styled.article<{ view: ViewType }>`
   h3 {
     ${typography.heading.h3}
     color: ${colors.text.base};
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  ${mq.medium} {
+    padding: 3.2rem;
   }
 
   ${(props) =>
@@ -72,9 +79,6 @@ export const Article = styled.article<{ view: ViewType }>`
       h3 {
         ${typography.heading.h4}
         width: 100%;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
       }
 
       ${Description} {
@@ -99,7 +103,7 @@ export const Article = styled.article<{ view: ViewType }>`
 
         /* flex-wrap: nowrap; */
         display: grid;
-        grid-template-columns: 3fr 4fr 1fr 4fr 10rem;
+        grid-template-columns: 4fr 4fr 2fr 5fr 10rem;
         grid-column-gap: 3rem;
 
         ${Author} {
@@ -110,11 +114,6 @@ export const Article = styled.article<{ view: ViewType }>`
           text-overflow: ellipsis;
         }
 
-        h3 {
-          min-width: 10rem;
-          max-width: 15rem;
-        }
-
         ${Description} {
           margin-top: 0;
           margin-bottom: 0;
@@ -122,7 +121,7 @@ export const Article = styled.article<{ view: ViewType }>`
 
         ${Container} {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: 50% 1fr;
           grid-column-gap: 3rem;
 
           time {
