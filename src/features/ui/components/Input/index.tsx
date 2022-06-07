@@ -45,5 +45,5 @@ export const Input: FC<Props> = ({ label, name, type, error, ...rest }) => {
 }
 
 Input.defaultProps = {
-  error: 'false',
+  error: '',
 }

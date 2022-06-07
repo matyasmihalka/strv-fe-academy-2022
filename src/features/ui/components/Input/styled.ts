@@ -2,6 +2,8 @@ import styled, { css, keyframes } from 'styled-components'
 
 import { colors } from '~/features/ui/theme/colors'
 
+import { typography } from '../../theme/typography'
+
 const padding = 'padding: 0.6rem 0;'
 
 export const LabelText = styled.span`
@@ -29,6 +31,9 @@ export const StyledInput = styled.input`
   outline: none;
   border-bottom: 1px solid ${colors.text.formLabel};
   transition: border-bottom-color 0.2s;
+  font-family: 'Hind';
+  ${typography.paragraph.large}
+  color: ${colors.text.base};
 
   &:focus {
     border-bottom-color: ${colors.accent.primary};
