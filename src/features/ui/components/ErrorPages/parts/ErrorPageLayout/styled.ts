@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
-import { colors } from '../../theme/colors'
-import { mq } from '../../theme/mq'
-import { typography } from '../../theme/typography'
+import { mq } from '~/features/ui//theme/mq'
+import { typography } from '~/features/ui//theme/typography'
+import { colors } from '~/features/ui/theme/colors'
 
 export const Container = styled.section`
   width: 90%;
