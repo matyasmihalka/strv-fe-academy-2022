@@ -17,7 +17,3 @@ export const Logo: FC<Props> = ({ className }) => (
     </a>
   </Link>
 )
-
-Logo.defaultProps = {
-  className: '',
-}

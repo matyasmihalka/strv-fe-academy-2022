@@ -16,7 +16,3 @@ export const LayoutInternal: FC<Props> = ({ children, headerComponent }) => (
     {children}
   </Main>
 )
-
-LayoutInternal.defaultProps = {
-  headerComponent: null,
-}

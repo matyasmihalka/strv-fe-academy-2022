@@ -19,8 +19,3 @@ export const Header: FC<Props> = ({
     </StyledHeader>
   )
 }
-
-Header.defaultProps = {
-  isExternal: false,
-  actionComponent: null,
-}

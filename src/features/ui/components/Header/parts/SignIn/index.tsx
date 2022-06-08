@@ -10,7 +10,7 @@ export type WrapperType = {
   position?: 'form' | null
 }
 
-export const SignIn: FC<WrapperType> = ({ position }) => (
+export const SignIn: FC<WrapperType> = ({ position = null }) => (
   <SignInQuestionWrapper position={position}>
     <Link href={Routes.LOGIN}>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -21,7 +21,3 @@ export const SignIn: FC<WrapperType> = ({ position }) => (
     </Link>
   </SignInQuestionWrapper>
 )
-
-SignIn.defaultProps = {
-  position: null,
-}

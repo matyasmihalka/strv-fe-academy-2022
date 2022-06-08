@@ -20,7 +20,3 @@ export const CreateButton: FC<Props> = ({ className }) => (
     </a>
   </Link>
 )
-
-CreateButton.defaultProps = {
-  className: '',
-}

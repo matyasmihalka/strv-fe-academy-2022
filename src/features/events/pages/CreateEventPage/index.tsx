@@ -28,8 +28,8 @@ export const CreateEventPage: NextPage = () => {
         <Link href={Routes.DASHBOARD}>
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <CloseLink>
-            <CloseIcon />
-            <span>Close</span>
+            <CloseIcon aria-hidden="true" />
+            Close
           </CloseLink>
         </Link>
       }
