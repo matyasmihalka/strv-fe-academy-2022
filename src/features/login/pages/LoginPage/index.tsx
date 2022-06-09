@@ -16,11 +16,32 @@ import {
   TriggerErrorButton,
 } from './styled'
 
+const initialLoginState = {
+  email: '',
+  password: '',
+}
+
 export const LoginPage: NextPage = () => {
   const [error, setError] = useState('')
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const [loginState, setLoginState] = useState(initialLoginState)
+
+  const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    console.log(loginState)
     alert('TODO')
+  }
+
+  const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const state = { ...loginState }
+    if (event.target.name === 'email') {
+      state.email = event.target.value
+    }
+
+    if (event.target.name === 'password') {
+      state.password = event.target.value
+    }
+
+    setLoginState(state)
   }
 
   return (
@@ -33,13 +54,22 @@ export const LoginPage: NextPage = () => {
           <StyledError>{error}</StyledError>
         )}
 
-        <StyledForm onSubmit={onSubmit}>
-          <Input label="Email" type="email" name="email" error={error} />
+        <StyledForm onSubmit={onSubmitHandler} noValidate>
+          <Input
+            label="Email"
+            type="email"
+            name="email"
+            error={error}
+            value={loginState.email}
+            onChange={inputChangeHandler}
+          />
           <Input
             label="Password"
             type="password"
             name="password"
             error={error}
+            value={loginState.password}
+            onChange={inputChangeHandler}
           />
           <SignIn position="form" /> {/* Renders only on small screens */}
           <SubmitButton>SIGN IN</SubmitButton>
