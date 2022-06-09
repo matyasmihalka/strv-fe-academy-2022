@@ -1,33 +1,39 @@
 import type { FC } from 'react'
 
-enum ViewType {
-  GRID = 'GRID',
-  LIST = 'LIST',
-}
+import { NavButton } from '~/features/ui/components/NavButton'
+
+import { GridIcon } from './parts/GridIcon'
+import { ListIcon } from './parts/ListIcon'
+import { List } from './styled'
+
+import { ViewType } from '../../types'
 
 type Props = {
   onChange: (viewType: ViewType) => void
+  activeView: ViewType
 }
 
-export const NavigationView: FC<Props> = ({ onChange }) => (
-  <ul>
+export const NavigationView: FC<Props> = ({ onChange, activeView }) => (
+  <List>
     <li>
-      <button
+      <NavButton
         type="button"
         aria-label="Show as grid"
         onClick={() => onChange(ViewType.GRID)}
+        isActive={activeView === ViewType.GRID ? true : false}
       >
-        #
-      </button>
+        <GridIcon />
+      </NavButton>
     </li>
     <li>
-      <button
+      <NavButton
         type="button"
         aria-label="Show as list"
         onClick={() => onChange(ViewType.LIST)}
+        isActive={activeView === ViewType.LIST ? true : false}
       >
-        =
-      </button>
+        <ListIcon />
+      </NavButton>
     </li>
-  </ul>
+  </List>
 )
