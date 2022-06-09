@@ -48,6 +48,7 @@ const passwordValidation = (password: string) => {
 export const LoginPage: NextPage = () => {
   const [errorState, setErrorState] = useState(initialErrorState)
   const [loginState, setLoginState] = useState(initialLoginState)
+  const [serverError, setServerError] = useState('')
 
   const validate = (target?: string) => {
     const localErrorState = { ...errorState }
@@ -64,7 +65,7 @@ export const LoginPage: NextPage = () => {
     if (target === 'password' || !target) {
       if (!passwordValidation(loginState.password)) {
         localErrorState.password =
-          'Provided password is too short. Please check it once again'
+          'Provided password is too short (min 9 characters). Please check it once again'
       } else {
         localErrorState.password = ''
       }
@@ -137,11 +138,8 @@ export const LoginPage: NextPage = () => {
     <LayoutExternal>
       <Container>
         <H1>Sign in to Eventio!</H1>
-        {errorState.hasError() ? (
-          <StyledError>
-            <span>{errorState.email}</span>
-            <span>{errorState.password}</span>
-          </StyledError>
+        {serverError ? (
+          <StyledError>{serverError}</StyledError>
         ) : (
           <P>Enter your details below</P>
         )}
@@ -156,6 +154,7 @@ export const LoginPage: NextPage = () => {
             onChange={inputChangeHandler}
             onBlur={onBlurHandler}
             onFocus={onFocusHandler}
+            serverError={serverError}
           />
           <Input
             label="Password"
@@ -166,16 +165,20 @@ export const LoginPage: NextPage = () => {
             onChange={inputChangeHandler}
             onBlur={onBlurHandler}
             onFocus={onFocusHandler}
+            serverError={serverError}
           />
           <SignIn position="form" /> {/* Renders only on small screens */}
           <SubmitButton>SIGN IN</SubmitButton>
         </StyledForm>
         <TriggerErrorButton
           onClick={() =>
-            setErrorState({ ...errorState, email: Date.now().toString() })
+            setServerError(
+              'Oops! That email and password combination is not valid.' +
+                Date.now().toString()
+            )
           }
         >
-          Trigger ERROR
+          Trigger server ERROR
         </TriggerErrorButton>
       </Container>
     </LayoutExternal>
