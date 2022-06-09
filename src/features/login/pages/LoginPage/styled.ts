@@ -63,4 +63,8 @@ export const StyledError = styled.p`
   ${typography.paragraph.small}
   color: ${colors.accent.destructive};
   margin: 1rem 0 4rem 0;
+
+  span {
+    display: block;
+  }
 `

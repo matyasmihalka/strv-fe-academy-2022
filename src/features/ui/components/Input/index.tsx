@@ -21,7 +21,7 @@ export const Input: FC<Props> = ({ label, name, type, error, ...rest }) => {
 
   return (
     <InputWrapper>
-      <StyledLabel key={error} hasError={Boolean(error)}>
+      <StyledLabel key={name} hasError={Boolean(error)}>
         <StyledInput
           placeholder={label}
           name={name}
