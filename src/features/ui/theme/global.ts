@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
 import { colors } from './colors'
+import { font } from './typography'
 // font import missing
 
 export const GlobalStyle = createGlobalStyle`
@@ -20,12 +21,7 @@ html {
 
 body {
     font-weight: 400;
-    /* font family needs to be added */
-    
-    font-family: 'Hind', sans-serif;
-    
-    /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
+    font-family: ${font.base};
     font-size: 1.6rem;  // Change back the fot size to 16px from the default 10px which we have set on the html element
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;

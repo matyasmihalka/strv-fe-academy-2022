@@ -2,7 +2,8 @@ import styled, { css, keyframes } from 'styled-components'
 
 import { colors } from '~/features/ui/theme/colors'
 
-import { typography } from '../../theme/typography'
+import { font, typography } from '../../theme/typography'
+import { StyleReset } from '../StyleReset'
 
 const padding = 'padding: 0.6rem 0;'
 
@@ -26,12 +27,13 @@ export const StyledInput = styled.input`
   ${padding}
   margin-bottom: 1rem;
   /* reset styles */
+  ${StyleReset}
   display: block;
   width: 100%;
   outline: none;
   border-bottom: 1px solid ${colors.text.formLabel};
   transition: border-bottom-color 0.2s;
-  font-family: 'Hind';
+  font-family: ${font.base};
   ${typography.paragraph.large}
   color: ${colors.text.base};
 
@@ -81,7 +83,7 @@ export const InputWrapper = styled.div`
 
 export const ToggleButton = styled.button`
   position: absolute;
-  top: 2rem;
+  top: 3rem;
   right: 0;
   border: none;
   background-color: transparent;

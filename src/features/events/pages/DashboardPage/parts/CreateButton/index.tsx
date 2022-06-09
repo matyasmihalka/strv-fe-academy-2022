@@ -11,7 +11,9 @@ type Props = {
 }
 
 export const CreateButton: FC<Props> = ({ className }) => (
-  <Link href={Routes.CREATE_EVENT}>
+  // Unlike with a plain <a> element, we need to pass passHref prop
+  // to make sure Next.js adds the href attribute to our styled component
+  <Link href={Routes.CREATE_EVENT} passHref>
     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
     <a aria-label="Create event" className={className}>
       <CircleButton>

@@ -10,6 +10,7 @@ import {
   Container,
   H1,
   P,
+  StyledError,
   StyledForm,
   SubmitButton,
   TriggerErrorButton,
@@ -26,8 +27,12 @@ export const LoginPage: NextPage = () => {
     <LayoutExternal>
       <Container>
         <H1>Sign in to Eventio!</H1>
-        <P>Enter your details below</P>
-        <p>{error}</p>
+        {!error ? (
+          <P>Enter your details below</P>
+        ) : (
+          <StyledError>{error}</StyledError>
+        )}
+
         <StyledForm onSubmit={onSubmit}>
           <Input label="Email" type="email" name="email" error={error} />
           <Input
