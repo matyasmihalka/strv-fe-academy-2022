@@ -20,13 +20,45 @@ type Props = {
   loggedInUser: string
 }
 
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]
+
+const formatDate = (ISODate: string) => {
+  const startDate = new Date(ISODate)
+  const day = startDate.getUTCDate()
+  const month = startDate.getMonth()
+  const year = startDate.getFullYear()
+  let hour = startDate.getUTCHours()
+  const minute = startDate.getMinutes()
+  let pmAm = 'AM'
+
+  if (hour > 12) {
+    pmAm = 'PM'
+    hour -= 12
+  }
+
+  return `${months[month]} ${day}, ${year} - ${hour}:${minute} ${pmAm}`
+}
+
 export const EventItem: FC<Props> = ({
   view,
   eventData,
   owner,
   loggedInUser,
 }) => {
-  const Time = () => <time>{eventData.startsAt}</time>
+  const Time = () => <time>{formatDate(eventData.startsAt)}</time>
   const H3 = () => <h3>{eventData.title}</h3>
 
   const AuthorData = () => (
