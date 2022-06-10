@@ -1,46 +1,36 @@
+import { normalize, schema } from 'normalizr'
 import type { FC } from 'react'
 import { useState } from 'react'
+
+// eslint-disable-next-line import/extensions
+import eventData from '~/events.json'
 
 import { EventItem } from './parts/EventItem'
 import { NavigationFilter } from './parts/NavigationFilter'
 import { NavigationView } from './parts/NavigationView'
 import { List, Nav } from './styled'
+import type { UserType, ArticleType, NormalizedEventDataType } from './types'
 import { ViewType } from './types'
 
-const dummyEvents = [
+const userSchema: schema.Entity<UserType> = new schema.Entity('users')
+
+const articleSchema: schema.Entity<ArticleType> = new schema.Entity(
+  'articles',
   {
-    date: 'April 4, 2017 - 2:17PM',
-    title: 'How to get angry',
-    author: 'Tom Watts',
-    description: 'I will show you how to get angry in a second',
-    attendance: '9 of 31',
-    buttonType: 'EDIT',
-  },
-  {
-    date: 'April 4, 2017 - 2:17PM',
-    title: 'Mexican party vol. 2',
-    author: 'Matilda Daniels',
-    description: 'Party in Scrollbar',
-    attendance: '5 of 50',
-    buttonType: 'JOIN',
-  },
-  {
-    date: 'April 4, 2017 - 2:17PM',
-    title: 'How to became Darker Solder',
-    author: 'Bill Soto',
-    description: 'I will tell you insights how I become Dark Soldier',
-    attendance: '5 of 50',
-    buttonType: 'JOIN',
-  },
-  {
-    date: 'April 4, 2017 - 2:17PM',
-    title: 'Party in Asgrad',
-    author: 'Ivan Wong',
-    description: 'You can bring your +1',
-    attendance: '657 of 1000',
-    buttonType: 'LEAVE',
-  },
-]
+    owner: userSchema,
+    attendees: [userSchema],
+  }
+)
+
+const articleListSchema = [articleSchema]
+
+const normalizedEventData: NormalizedEventDataType = normalize(
+  eventData,
+  articleListSchema
+)
+
+// Temporary logged in user until we have authentication
+const loggedInUser = '628a2c5ce02f11001bec0970'
 
 export const EventsList: FC = () => {
   // const view = ViewType.GRID as ViewType
@@ -58,16 +48,18 @@ export const EventsList: FC = () => {
         <NavigationView onChange={setViewHandler} activeView={view} />
       </Nav>
       <List view={view}>
-        {dummyEvents.map((data, i) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <li key={i}>
-            <EventItem view={view} eventData={data} />
-          </li>
-        ))}
-        {dummyEvents.map((data, i) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <li key={i}>
-            <EventItem view={view} eventData={data} />
+        {normalizedEventData.result.map((id) => (
+          <li key={id}>
+            <EventItem
+              view={view}
+              eventData={normalizedEventData.entities.articles[id]}
+              owner={
+                normalizedEventData.entities.users[
+                  normalizedEventData.entities.articles[id].owner
+                ]
+              }
+              loggedInUser={loggedInUser}
+            />
           </li>
         ))}
       </List>

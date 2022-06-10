@@ -10,36 +10,44 @@ import {
   StyledButton,
 } from './styled'
 
+import type { ArticleType, UserType } from '../../types'
 import { ViewType } from '../../types'
 
 type Props = {
   view: ViewType
-  eventData: {
-    date: string
-    title: string
-    author: string
-    description: string
-    attendance: string
-    buttonType: string
-  }
+  eventData: ArticleType
+  owner: UserType
+  loggedInUser: string
 }
 
-export const EventItem: FC<Props> = ({ view, eventData }) => {
-  const Time = () => <time>{eventData.date}</time>
+export const EventItem: FC<Props> = ({
+  view,
+  eventData,
+  owner,
+  loggedInUser,
+}) => {
+  const Time = () => <time>{eventData.startsAt}</time>
   const H3 = () => <h3>{eventData.title}</h3>
-  const AuthorData = () => <Author>{eventData.author}</Author>
+
+  const AuthorData = () => (
+    <Author>{`${owner.firstName} ${owner.lastName}`}</Author>
+  )
+
   const DescriptionData = () => (
     <Description>{eventData.description}</Description>
   )
+
   const ButtonData = () => (
     <StyledButton
       type="button"
       size="small"
-      accent={eventData.buttonType === 'LEAVE' ? 'destructive' : 'primary'}
+      accent={
+        eventData.attendees.includes(loggedInUser) ? 'destructive' : 'primary'
+      }
       onClick={() => alert('TODO')}
-      disabled={eventData.buttonType === 'EDIT' ? true : false}
+      // disabled={eventData.buttonType === 'EDIT' ? true : false}
     >
-      {eventData.buttonType}
+      {eventData.attendees.includes(loggedInUser) ? 'LEAVE' : 'JOIN'}
     </StyledButton>
   )
 
@@ -53,7 +61,8 @@ export const EventItem: FC<Props> = ({ view, eventData }) => {
           <DescriptionData />
           <StyledActions>
             <span>
-              <StyledAttendeeIcon /> {eventData.attendance}
+              <StyledAttendeeIcon />{' '}
+              {`${eventData.attendees.length} of ${eventData.capacity}`}
             </span>
             <ButtonData />
           </StyledActions>
@@ -65,7 +74,7 @@ export const EventItem: FC<Props> = ({ view, eventData }) => {
           <AuthorData />
           <Container>
             <Time />
-            <span>{eventData.attendance}</span>
+            <span>{`${eventData.attendees.length} of ${eventData.capacity}`}</span>
           </Container>
           <ButtonData />
         </>
