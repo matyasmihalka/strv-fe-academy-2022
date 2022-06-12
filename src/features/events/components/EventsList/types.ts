@@ -3,6 +3,12 @@ export enum ViewType {
   LIST = 'LIST',
 }
 
+export enum FilterType {
+  ALL = 'ALL',
+  FUTURE = 'FUTURE',
+  PAST = 'PAST',
+}
+
 export type UserType = {
   _id: string
   firstName: string
@@ -32,7 +38,7 @@ export type NormalizedData<T> = {
 }
 
 export type NormalizedEventDataType = {
-  result: [string]
+  result: string[]
   entities: {
     articles: NormalizedData<ArticleType>
     users: NormalizedData<UserType>

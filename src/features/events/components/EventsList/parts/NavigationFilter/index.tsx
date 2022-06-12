@@ -4,11 +4,7 @@ import { NavButton } from '~/features/ui/components/NavButton'
 
 import { List, MobileToggleLabel } from './styled'
 
-enum FilterType {
-  ALL = 'ALL',
-  FUTURE = 'FUTURE',
-  PAST = 'PAST',
-}
+import { FilterType } from '../../types'
 
 type Props = {
   onChange: (filterType: FilterType) => void
