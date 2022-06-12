@@ -83,7 +83,6 @@ export const LoginPage: NextPage = () => {
       return
     }
 
-    console.log(loginState)
     alert('TODO - Form submitted')
   }
 
@@ -134,6 +133,21 @@ export const LoginPage: NextPage = () => {
     setLoginState(state)
   }
 
+  const triggerServerErrorHandler = () => {
+    setErrorState({
+      ...errorState,
+      validateEmailOnBlur: true,
+      validatePasswordOnBlur: true,
+    })
+
+    setTimeout(() => {
+      setServerError(
+        'Oops! That email and password combination is not valid.' +
+          Date.now().toString()
+      )
+    }, 500)
+  }
+
   return (
     <LayoutExternal>
       <Container>
@@ -170,14 +184,7 @@ export const LoginPage: NextPage = () => {
           <SignIn position="form" /> {/* Renders only on small screens */}
           <SubmitButton>SIGN IN</SubmitButton>
         </StyledForm>
-        <TriggerErrorButton
-          onClick={() =>
-            setServerError(
-              'Oops! That email and password combination is not valid.' +
-                Date.now().toString()
-            )
-          }
-        >
+        <TriggerErrorButton onClick={triggerServerErrorHandler}>
           Trigger server ERROR
         </TriggerErrorButton>
       </Container>
