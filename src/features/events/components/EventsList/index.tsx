@@ -51,61 +51,55 @@ const sortArticles = (
   })
 }
 
-const actualDateRoundedToHour = () => {
+const currentDateRoundedToHour = () => {
   const date = new Date(Date.now()).toISOString()
   return date.slice(0, 14) + '00:00.000Z'
   // console.log(result)
 }
 
-actualDateRoundedToHour()
-
 export const EventsList: FC = () => {
   // const view = ViewType.GRID as ViewType
 
-  // default filtering
-  const filteredArticlesALL = useMemo(
-    () => sortArticles(normalizedEventData.entities.articles),
-    []
-  )
-
-  console.log('Memoized array')
-  console.log(filteredArticlesALL)
-
   const [view, setView] = useState(ViewType.GRID)
   const [activeFilter, setActiveFilter] = useState(FilterType.ALL)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [articles, _] = useState(normalizedEventData.entities.articles)
+  // default filtering
+  const sortedArticlesALL = useMemo(() => sortArticles(articles), [articles])
   const [articleIDsToRender, setArticleIDsToRender] =
-    useState(filteredArticlesALL)
+    useState(sortedArticlesALL)
 
   const setViewHandler = (passedView: ViewType) => {
     setView(passedView)
   }
 
+  const sortedArticlesFUTURE = useMemo(() => {
+    console.log('filtering')
+    return sortedArticlesALL.filter(
+      (id) => articles[id].startsAt > currentDateRoundedToHour()
+    )
+  }, [articles, sortedArticlesALL])
+
+  const sortedArticlesPAST = useMemo(() => {
+    console.log('PAST')
+    return sortArticles(articles, 'latestFirst').filter(
+      (id) => articles[id].startsAt < currentDateRoundedToHour()
+    )
+  }, [articles])
+
   const filteringHandler = (filterType: FilterType) => {
     setActiveFilter(filterType)
 
-    let results = filteredArticlesALL
+    let results = sortedArticlesALL
 
     switch (filterType) {
       case FilterType.ALL:
-        results = filteredArticlesALL
         break
       case FilterType.FUTURE:
-        results = results.filter(
-          (id) =>
-            normalizedEventData.entities.articles[id].startsAt >
-            actualDateRoundedToHour()
-        )
+        results = sortedArticlesFUTURE
         break
       case FilterType.PAST:
-        results = sortArticles(
-          normalizedEventData.entities.articles,
-          'latestFirst'
-        )
-        results = results.filter(
-          (id) =>
-            normalizedEventData.entities.articles[id].startsAt <
-            actualDateRoundedToHour()
-        )
+        results = sortedArticlesPAST
         break
       default:
         break
@@ -128,12 +122,8 @@ export const EventsList: FC = () => {
           <li key={id}>
             <EventItem
               view={view}
-              eventData={normalizedEventData.entities.articles[id]}
-              owner={
-                normalizedEventData.entities.users[
-                  normalizedEventData.entities.articles[id].owner
-                ]
-              }
+              eventData={articles[id]}
+              owner={normalizedEventData.entities.users[articles[id].owner]}
               loggedInUser={loggedInUser}
             />
           </li>
