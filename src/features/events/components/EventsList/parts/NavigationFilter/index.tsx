@@ -8,15 +8,16 @@ import { FilterType } from '../../types'
 
 type Props = {
   onChange: (filterType: FilterType) => void
+  activeFilter: FilterType
 }
 
-export const NavigationFilter: FC<Props> = ({ onChange }) => {
+export const NavigationFilter: FC<Props> = ({ onChange, activeFilter }) => {
   return (
     <>
       <List>
         <li>
           <NavButton
-            isActive
+            isActive={activeFilter === FilterType.ALL}
             type="button"
             onClick={() => onChange(FilterType.ALL)}
           >
@@ -24,12 +25,20 @@ export const NavigationFilter: FC<Props> = ({ onChange }) => {
           </NavButton>
         </li>
         <li>
-          <NavButton type="button" onClick={() => onChange(FilterType.FUTURE)}>
+          <NavButton
+            isActive={activeFilter === FilterType.FUTURE}
+            type="button"
+            onClick={() => onChange(FilterType.FUTURE)}
+          >
             Future events
           </NavButton>
         </li>
         <li>
-          <NavButton type="button" onClick={() => onChange(FilterType.PAST)}>
+          <NavButton
+            isActive={activeFilter === FilterType.PAST}
+            type="button"
+            onClick={() => onChange(FilterType.PAST)}
+          >
             Past Events
           </NavButton>
         </li>

@@ -416,5 +416,34 @@
       }
     ],
     "id": "10"
+  },
+  {
+    "_id": "11",
+    "updatedAt": "2022-03-22T12:28:12.499Z",
+    "createdAt": "2022-03-22T12:28:12.499Z",
+    "title": "Surf course",
+    "description": "We are going to catch the waves",
+    "startsAt": "2022-05-11T14:31:21.289Z",
+    "capacity": 23,
+    "owner": {
+      "_id": "628a2c5ce02f11001bec0970",
+      "firstName": "Steven",
+      "lastName": "Rogers",
+      "email": "steverogers@strv.com",
+      "__v": 0,
+      "id": "628a2c5ce02f11001bec0970"
+    },
+    "__v": 0,
+    "attendees": [
+      {
+        "_id": "628a2c5ce02f11001bec096d",
+        "firstName": "Natasha",
+        "lastName": "Romanova",
+        "email": "blackwidow@strv.com",
+        "__v": 0,
+        "id": "628a2c5ce02f11001bec096d"
+      }
+    ],
+    "id": "11"
   }
 ]

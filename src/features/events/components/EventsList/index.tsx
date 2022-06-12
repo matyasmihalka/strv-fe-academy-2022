@@ -1,5 +1,6 @@
 import { normalize, schema } from 'normalizr'
 import type { FC } from 'react'
+import { useMemo } from 'react'
 import { useState } from 'react'
 
 // eslint-disable-next-line import/extensions
@@ -32,17 +33,14 @@ const normalizedEventData: NormalizedEventDataType = normalize(
   articleListSchema
 )
 
-console.log(normalizedEventData)
-
 // Temporary logged in user until we have authentication
 const loggedInUser = '628a2c5ce02f11001bec0970'
-
-console.log(normalizedEventData.result)
 
 const sortArticles = (
   articles: NormalizedData<ArticleType>,
   order: 'oldestFirst' | 'latestFirst' = 'oldestFirst'
 ) => {
+  console.log('sorting')
   const returnValue = order === 'oldestFirst' ? -1 : 1
   return Object.keys(articles).sort((a, b) => {
     if (articles[a].startsAt < articles[b].startsAt) {
@@ -53,34 +51,49 @@ const sortArticles = (
   })
 }
 
+const actualDateRoundedToHour = () => {
+  const date = new Date(Date.now()).toISOString()
+  return date.slice(0, 14) + '00:00.000Z'
+  // console.log(result)
+}
+
+actualDateRoundedToHour()
+
 export const EventsList: FC = () => {
   // const view = ViewType.GRID as ViewType
 
-  const [view, setView] = useState(ViewType.GRID)
-  const [articleIDsToRender, setArticleIDsToRender] = useState(
-    sortArticles(normalizedEventData.entities.articles)
+  // default filtering
+  const filteredArticlesALL = useMemo(
+    () => sortArticles(normalizedEventData.entities.articles),
+    []
   )
+
+  console.log('Memoized array')
+  console.log(filteredArticlesALL)
+
+  const [view, setView] = useState(ViewType.GRID)
+  const [activeFilter, setActiveFilter] = useState(FilterType.ALL)
+  const [articleIDsToRender, setArticleIDsToRender] =
+    useState(filteredArticlesALL)
 
   const setViewHandler = (passedView: ViewType) => {
     setView(passedView)
   }
 
   const filteringHandler = (filterType: FilterType) => {
-    // alert(filterType)
-    console.log(filterType)
-    let results = sortArticles(normalizedEventData.entities.articles)
+    setActiveFilter(filterType)
+
+    let results = filteredArticlesALL
 
     switch (filterType) {
       case FilterType.ALL:
-        console.log('ALL filter applied')
-        results = sortArticles(normalizedEventData.entities.articles)
+        results = filteredArticlesALL
         break
       case FilterType.FUTURE:
-        console.log('FUTURE filter applied')
         results = results.filter(
           (id) =>
             normalizedEventData.entities.articles[id].startsAt >
-            new Date(Date.now()).toISOString()
+            actualDateRoundedToHour()
         )
         break
       case FilterType.PAST:
@@ -91,7 +104,7 @@ export const EventsList: FC = () => {
         results = results.filter(
           (id) =>
             normalizedEventData.entities.articles[id].startsAt <
-            new Date(Date.now()).toISOString()
+            actualDateRoundedToHour()
         )
         break
       default:
@@ -99,14 +112,15 @@ export const EventsList: FC = () => {
     }
 
     setArticleIDsToRender(results)
-    // console.log(results)
-    // console.log(normalizedEventData.result)
   }
 
   return (
     <>
       <Nav>
-        <NavigationFilter onChange={filteringHandler} />
+        <NavigationFilter
+          onChange={filteringHandler}
+          activeFilter={activeFilter}
+        />
         <NavigationView onChange={setViewHandler} activeView={view} />
       </Nav>
       <List view={view}>
