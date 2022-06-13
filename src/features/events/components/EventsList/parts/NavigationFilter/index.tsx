@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+import type { ChangeEvent, FC } from 'react'
 
 import { NavButton } from '~/features/ui/components/NavButton'
 
@@ -12,6 +12,19 @@ type Props = {
 }
 
 export const NavigationFilter: FC<Props> = ({ onChange, activeFilter }) => {
+  const selectHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+    let selectedFilterType = FilterType.ALL
+    if (event.target.value === 'ALL') {
+      selectedFilterType = FilterType.ALL
+    }
+    if (event.target.value === 'FUTURE') {
+      selectedFilterType = FilterType.FUTURE
+    }
+    if (event.target.value === 'PAST') {
+      selectedFilterType = FilterType.PAST
+    }
+    onChange(selectedFilterType)
+  }
   return (
     <>
       <List>
@@ -46,7 +59,7 @@ export const NavigationFilter: FC<Props> = ({ onChange, activeFilter }) => {
 
       <MobileToggleLabel>
         <span>SHOW:</span>
-        <select>
+        <select onChange={selectHandler}>
           <option value={FilterType.ALL}>All Events</option>
           <option value={FilterType.FUTURE}>Future Events</option>
           <option value={FilterType.PAST}>Past Events</option>
