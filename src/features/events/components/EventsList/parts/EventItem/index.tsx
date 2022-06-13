@@ -18,6 +18,7 @@ type Props = {
   eventData: ArticleType
   owner: UserType
   loggedInUser: string
+  onAttendanceChange: () => void
 }
 
 const months = [
@@ -57,6 +58,7 @@ export const EventItem: FC<Props> = ({
   eventData,
   owner,
   loggedInUser,
+  onAttendanceChange,
 }) => {
   const Time = () => <time>{formatDate(eventData.startsAt)}</time>
   const H3 = () => <h3>{eventData.title}</h3>
@@ -76,7 +78,7 @@ export const EventItem: FC<Props> = ({
       accent={
         eventData.attendees.includes(loggedInUser) ? 'destructive' : 'primary'
       }
-      onClick={() => alert('TODO')}
+      onClick={() => onAttendanceChange()}
       // disabled={eventData.buttonType === 'EDIT' ? true : false}
     >
       {eventData.attendees.includes(loggedInUser) ? 'LEAVE' : 'JOIN'}

@@ -40,7 +40,7 @@ const sortArticles = (
   articles: NormalizedData<ArticleType>,
   order: 'oldestFirst' | 'latestFirst' = 'oldestFirst'
 ) => {
-  console.log('sorting')
+  // console.log('sorting')
   const returnValue = order === 'oldestFirst' ? -1 : 1
   return Object.keys(articles).sort((a, b) => {
     if (articles[a].startsAt < articles[b].startsAt) {
@@ -62,9 +62,10 @@ export const EventsList: FC = () => {
 
   const [view, setView] = useState(ViewType.GRID)
   const [activeFilter, setActiveFilter] = useState(FilterType.ALL)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [articles, _] = useState(normalizedEventData.entities.articles)
-  // default filtering
+  const [articles, setArticles] = useState(
+    normalizedEventData.entities.articles
+  )
+  // default sorting
   const sortedArticlesALL = useMemo(() => sortArticles(articles), [articles])
   const [articleIDsToRender, setArticleIDsToRender] =
     useState(sortedArticlesALL)
@@ -74,14 +75,14 @@ export const EventsList: FC = () => {
   }
 
   const sortedArticlesFUTURE = useMemo(() => {
-    console.log('filtering')
+    // console.log('filtering')
     return sortedArticlesALL.filter(
       (id) => articles[id].startsAt > currentDateRoundedToHour()
     )
   }, [articles, sortedArticlesALL])
 
   const sortedArticlesPAST = useMemo(() => {
-    console.log('PAST')
+    // console.log('PAST')
     return sortArticles(articles, 'latestFirst').filter(
       (id) => articles[id].startsAt < currentDateRoundedToHour()
     )
@@ -108,6 +109,25 @@ export const EventsList: FC = () => {
     setArticleIDsToRender(results)
   }
 
+  const attendanceHandler = (id: string) => () => {
+    const article = { ...articles[id] }
+    let newAttendeesList
+    if (article.attendees.includes(loggedInUser)) {
+      newAttendeesList = article.attendees.filter(
+        (user) => user !== loggedInUser
+      )
+    } else {
+      newAttendeesList = [...article.attendees, loggedInUser]
+    }
+
+    const newArticle = {
+      ...articles[id],
+      attendees: newAttendeesList,
+    }
+
+    setArticles({ ...articles, [id]: newArticle })
+  }
+
   return (
     <>
       <Nav>
@@ -125,6 +145,7 @@ export const EventsList: FC = () => {
               eventData={articles[id]}
               owner={normalizedEventData.entities.users[articles[id].owner]}
               loggedInUser={loggedInUser}
+              onAttendanceChange={attendanceHandler(id)}
             />
           </li>
         ))}

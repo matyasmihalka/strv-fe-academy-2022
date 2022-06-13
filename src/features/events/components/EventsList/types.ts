@@ -28,7 +28,7 @@ export type ArticleType = {
   capacity: string
   owner: string
   __v: number
-  attendees: [string]
+  attendees: string[]
   id: string
 }
 
