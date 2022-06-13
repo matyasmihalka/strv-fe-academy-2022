@@ -88,7 +88,6 @@ export const Article = styled.article<{ view: ViewType }>`
         box-sizing: border-box;
         text-overflow: ellipsis;
         overflow: hidden;
-        white-space: nowrap;
         margin-top: -0.3rem;
         margin-bottom: 0.8rem;
       }
@@ -117,6 +116,7 @@ export const Article = styled.article<{ view: ViewType }>`
         ${Description} {
           margin-top: 0;
           margin-bottom: 0;
+          white-space: nowrap;
         }
 
         ${Container} {
