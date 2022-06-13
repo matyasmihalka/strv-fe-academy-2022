@@ -3,7 +3,7 @@
 /* eslint-disable prefer-named-capture-group */
 import type { NextPage } from 'next'
 import type { FormEvent } from 'react'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 import { SignIn } from '~/features/ui/components/Header/parts/SignIn'
 import { Input } from '~/features/ui/components/Input'
@@ -16,177 +16,108 @@ import {
   StyledError,
   StyledForm,
   SubmitButton,
-  TriggerErrorButton,
 } from './styled'
 
-const initialLoginState = {
-  email: '',
-  password: '',
-}
-
-const initialErrorState = {
-  email: '',
-  validateEmailOnBlur: false,
-  password: '',
-  validatePasswordOnBlur: false,
-  hasError: function () {
-    return !!this.email || !!this.password
+const validators = {
+  email: (value: string) => {
+    if (typeof value !== 'string') return 'Invalid e-mail value type'
+    if (!value) return 'E-mail is required'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(value)) return 'Invalid e-mail'
+  },
+  password: (value: string) => {
+    if (typeof value !== 'string') return 'Invalid password value type'
+    if (!value) return 'Password is required'
   },
 }
 
-const emailValidationRegex =
-  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
-const passwordValidation = (password: string) => {
-  if (password.length <= 9) {
-    return false
-  }
-
-  return true
-}
-
 export const LoginPage: NextPage = () => {
-  const [errorState, setErrorState] = useState(initialErrorState)
-  const [loginState, setLoginState] = useState(initialLoginState)
-  const [serverError, setServerError] = useState('')
+  // const [loginState, setLoginState] = useState(initialLoginState)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const validate = (target?: string) => {
-    const localErrorState = { ...errorState }
+  const [emailError, setEmailError] = useState<string | null>(null)
+  const [passwordError, setPasswordError] = useState<string | null>(null)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
-    if (target === 'email' || !target) {
-      if (!emailValidationRegex.test(loginState.email)) {
-        localErrorState.email =
-          'Invalid e-mail address. Please check it once again'
-      } else {
-        localErrorState.email = ''
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  /**
+   * Login handler.
+   */
+  const login = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+
+      const errors = {
+        email: validators.email(email),
+        password: validators.password(password),
       }
-    }
 
-    if (target === 'password' || !target) {
-      if (!passwordValidation(loginState.password)) {
-        localErrorState.password =
-          'Provided password is too short (min 9 characters). Please check it once again'
-      } else {
-        localErrorState.password = ''
+      if (errors.email) {
+        setEmailError(errors.email)
       }
-    }
 
-    setErrorState(localErrorState)
-
-    return localErrorState.hasError()
-  }
-
-  const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    if (validate()) {
-      return
-    }
-
-    alert('TODO - Form submitted')
-  }
-
-  const onBlurHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // once the input fields were touched, validate after loosing focus
-    if (event.target.name === 'email') {
-      if (errorState.validateEmailOnBlur) {
-        validate('email')
+      if (errors.password) {
+        setPasswordError(errors.password)
       }
-    }
 
-    if (event.target.name === 'password') {
-      if (errorState.validatePasswordOnBlur) {
-        validate('password')
+      // Only submit in case of no errors.
+      if (!errors.email && !errors.password) {
+        setIsSubmitting(true)
+        setTimeout(() => {
+          // Mocking to represent login submit outcome.
+          const shouldFail = Math.random() < 0.5
+          if (shouldFail) {
+            setSubmitError('Something went terribly wrong!')
+          } else {
+            alert('Success!')
+          }
+
+          setIsSubmitting(false)
+        }, 1000)
       }
-    }
-  }
-
-  const onFocusHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // if input has error, clear error message and set set validation once focus is lost
-    if (event.target.name === 'email' && errorState.email) {
-      setErrorState((prevState) => ({
-        ...prevState,
-        email: '',
-        validateEmailOnBlur: true,
-      }))
-    }
-
-    if (event.target.name === 'password' && errorState.password) {
-      setErrorState((prevState) => ({
-        ...prevState,
-        password: '',
-        validatePasswordOnBlur: true,
-      }))
-    }
-  }
-
-  const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const state = { ...loginState }
-    if (event.target.name === 'email') {
-      state.email = event.target.value
-    }
-
-    if (event.target.name === 'password') {
-      state.password = event.target.value
-    }
-
-    setLoginState(state)
-  }
-
-  const triggerServerErrorHandler = () => {
-    setErrorState({
-      ...errorState,
-      validateEmailOnBlur: true,
-      validatePasswordOnBlur: true,
-    })
-
-    setTimeout(() => {
-      setServerError(
-        'Oops! That email and password combination is not valid.' +
-          Date.now().toString()
-      )
-    }, 500)
-  }
+    },
+    [email, password]
+  )
 
   return (
     <LayoutExternal>
       <Container>
         <H1>Sign in to Eventio!</H1>
-        {serverError ? (
-          <StyledError>{serverError}</StyledError>
+        {submitError ? (
+          <StyledError>{submitError}</StyledError>
         ) : (
           <P>Enter your details below</P>
         )}
 
-        <StyledForm onSubmit={onSubmitHandler} noValidate>
+        <StyledForm onSubmit={login} noValidate>
           <Input
             label="Email"
             type="email"
             name="email"
-            error={errorState.email}
-            value={loginState.email}
-            onChange={inputChangeHandler}
-            onBlur={onBlurHandler}
-            onFocus={onFocusHandler}
-            serverError={serverError}
+            error={emailError}
+            value={email}
+            onChange={(e) => {
+              setEmailError(null)
+              setEmail(e.target.value)
+            }}
           />
           <Input
             label="Password"
             type="password"
             name="password"
-            error={errorState.password}
-            value={loginState.password}
-            onChange={inputChangeHandler}
-            onBlur={onBlurHandler}
-            onFocus={onFocusHandler}
-            serverError={serverError}
+            error={passwordError}
+            value={password}
+            onChange={(e) => {
+              setPasswordError(null)
+              setPassword(e.target.value)
+            }}
           />
           <SignIn position="form" /> {/* Renders only on small screens */}
-          <SubmitButton>SIGN IN</SubmitButton>
+          <SubmitButton disabled={isSubmitting}>
+            {isSubmitting ? 'Submitting' : 'Sign In'}
+          </SubmitButton>
         </StyledForm>
-        <TriggerErrorButton onClick={triggerServerErrorHandler}>
-          Trigger server ERROR
-        </TriggerErrorButton>
       </Container>
     </LayoutExternal>
   )

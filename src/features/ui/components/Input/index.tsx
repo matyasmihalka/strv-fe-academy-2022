@@ -13,27 +13,16 @@ import {
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
   label: string
-  error?: string
-  serverError?: string
+  error?: string | null
 }
 
-export const Input: FC<Props> = ({
-  label,
-  name,
-  type,
-  error,
-  serverError,
-  ...rest
-}) => {
+export const Input: FC<Props> = ({ label, name, type, error, ...rest }) => {
   const [isPasswordShown, togglePassword] = useState(false)
   const inputType = isPasswordShown ? 'text' : type
 
   return (
     <InputWrapper>
-      <StyledLabel
-        key={serverError}
-        hasError={Boolean(error) || Boolean(serverError)}
-      >
+      <StyledLabel hasError={Boolean(error)}>
         <StyledInput
           placeholder={label}
           name={name}
