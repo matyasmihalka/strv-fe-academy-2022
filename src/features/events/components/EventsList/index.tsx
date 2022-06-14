@@ -1,9 +1,7 @@
-import { normalize, schema } from 'normalizr'
 import type { FC } from 'react'
+import { useEffect } from 'react'
 import { useMemo } from 'react'
 import { useState } from 'react'
-
-import eventData from '~/events.json'
 
 import { EventItem } from './parts/EventItem'
 import { NavigationFilter } from './parts/NavigationFilter'
@@ -12,26 +10,12 @@ import { List, Nav } from './styled'
 import { FilterType } from './types'
 import { ViewType } from './types'
 
-import type {
-  UserType,
-  ArticleType,
-  NormalizedEventDataType,
-  NormalizedData,
-} from '../../types'
+import { useEvents } from '../../hooks/useEvents'
+import type { ArticleType, NormalizedData } from '../../types'
 
-const userSchema: schema.Entity<UserType> = new schema.Entity('users')
-const articleSchema: schema.Entity<ArticleType> = new schema.Entity(
-  'articles',
-  {
-    owner: userSchema,
-    attendees: [userSchema],
-  }
-)
-const articleListSchema = [articleSchema]
-const normalizedEventData: NormalizedEventDataType = normalize(
-  eventData,
-  articleListSchema
-)
+/**
+ * Renders a list of events, with filtering/sorting/view type options.
+ */
 
 // Temporary logged in user until we have authentication
 const loggedInUser = '628a2c5ce02f11001bec0970'
@@ -62,17 +46,12 @@ export const EventsList: FC = () => {
 
   const [view, setView] = useState(ViewType.GRID)
   const [activeFilter, setActiveFilter] = useState(FilterType.ALL)
-  const [articles, setArticles] = useState(
-    normalizedEventData.entities.articles
-  )
-  // default sorting
-  const sortedArticlesALL = useMemo(() => sortArticles(articles), [articles])
-  const [articleIDsToRender, setArticleIDsToRender] =
-    useState(sortedArticlesALL)
+  const [articles, setArticles] = useState<NormalizedData<ArticleType>>({})
+  const [articleIDsToRender, setArticleIDsToRender] = useState<string[]>([])
 
-  const setViewHandler = (passedView: ViewType) => {
-    setView(passedView)
-  }
+  const { articles: initArticles, users, isLoading } = useEvents()
+
+  const sortedArticlesALL = useMemo(() => sortArticles(articles), [articles])
 
   const sortedArticlesFUTURE = useMemo(() => {
     // console.log('filtering')
@@ -87,6 +66,20 @@ export const EventsList: FC = () => {
       (id) => articles[id].startsAt < currentDateRoundedToHour()
     )
   }, [articles])
+
+  // Temp solution: put articles and ids to sate to be able to modify the articles state
+  useEffect(() => {
+    setArticles(initArticles)
+  }, [initArticles])
+
+  useEffect(() => {
+    setArticleIDsToRender(sortedArticlesALL)
+  }, [sortedArticlesALL])
+
+  // Handle views and filter
+  const setViewHandler = (passedView: ViewType) => {
+    setView(passedView)
+  }
 
   const filteringHandler = (filterType: FilterType) => {
     setActiveFilter(filterType)
@@ -137,19 +130,23 @@ export const EventsList: FC = () => {
         />
         <NavigationView onChange={setViewHandler} activeView={view} />
       </Nav>
-      <List view={view}>
-        {articleIDsToRender.map((id) => (
-          <li key={id}>
-            <EventItem
-              view={view}
-              eventData={articles[id]}
-              owner={normalizedEventData.entities.users[articles[id].owner]}
-              loggedInUser={loggedInUser}
-              onAttendanceChange={attendanceHandler(id)}
-            />
-          </li>
-        ))}
-      </List>
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <List view={view}>
+          {articleIDsToRender.map((id) => (
+            <li key={id}>
+              <EventItem
+                view={view}
+                eventData={articles[id]}
+                owner={users[articles[id].owner]}
+                loggedInUser={loggedInUser}
+                onAttendanceChange={attendanceHandler(id)}
+              />
+            </li>
+          ))}
+        </List>
+      )}
     </>
   )
 }

@@ -24,9 +24,11 @@ const normalizedEventData: NormalizedEventDataType = normalize(
   articleListSchema
 )
 
+// console.log(normalizedEventData.entities.articles)
+
 const useEvents = () => {
-  const [articles, setArticles] = useState<NormalizedData<ArticleType>>()
-  const [users, setUsers] = useState<NormalizedData<UserType>>()
+  const [articles, setArticles] = useState<NormalizedData<ArticleType>>({})
+  const [users, setUsers] = useState<NormalizedData<UserType>>({})
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -38,6 +40,8 @@ const useEvents = () => {
       setUsers(normalizedEventData.entities.users)
     }, 500)
   }, [])
+
+  //   console.log(articles)
 
   return { articles, users, isLoading }
 }

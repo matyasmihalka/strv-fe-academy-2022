@@ -50,7 +50,6 @@ export const EventItem: FC<Props> = ({
         eventData.attendees.includes(loggedInUser) ? 'destructive' : 'primary'
       }
       onClick={() => onAttendanceChange()}
-      // disabled={eventData.buttonType === 'EDIT' ? true : false}
     >
       {eventData.attendees.includes(loggedInUser) ? 'LEAVE' : 'JOIN'}
     </StyledButton>
