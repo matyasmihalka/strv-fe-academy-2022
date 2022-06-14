@@ -3,21 +3,21 @@ import type { FC } from 'react'
 import { useMemo } from 'react'
 import { useState } from 'react'
 
-// eslint-disable-next-line import/extensions
 import eventData from '~/events.json'
 
 import { EventItem } from './parts/EventItem'
 import { NavigationFilter } from './parts/NavigationFilter'
 import { NavigationView } from './parts/NavigationView'
 import { List, Nav } from './styled'
+import { FilterType } from './types'
+import { ViewType } from './types'
+
 import type {
   UserType,
   ArticleType,
   NormalizedEventDataType,
   NormalizedData,
-} from './types'
-import { FilterType } from './types'
-import { ViewType } from './types'
+} from '../../types'
 
 const userSchema: schema.Entity<UserType> = new schema.Entity('users')
 const articleSchema: schema.Entity<ArticleType> = new schema.Entity(

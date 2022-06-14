@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import type { FC } from 'react'
 
 import {
@@ -10,7 +11,7 @@ import {
   StyledButton,
 } from './styled'
 
-import type { ArticleType, UserType } from '../../types'
+import type { ArticleType, UserType } from '../../../../types'
 import { ViewType } from '../../types'
 
 type Props = {
@@ -21,38 +22,6 @@ type Props = {
   onAttendanceChange: () => void
 }
 
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-]
-
-const formatDate = (ISODate: string) => {
-  const startDate = new Date(ISODate)
-  const day = startDate.getUTCDate()
-  const month = startDate.getMonth()
-  const year = startDate.getFullYear()
-  let hour = startDate.getUTCHours()
-  const minute = startDate.getMinutes()
-  let pmAm = 'AM'
-
-  if (hour > 12) {
-    pmAm = 'PM'
-    hour -= 12
-  }
-
-  return `${months[month]} ${day}, ${year} - ${hour}:${minute} ${pmAm}`
-}
-
 export const EventItem: FC<Props> = ({
   view,
   eventData,
@@ -60,7 +29,9 @@ export const EventItem: FC<Props> = ({
   loggedInUser,
   onAttendanceChange,
 }) => {
-  const Time = () => <time>{formatDate(eventData.startsAt)}</time>
+  const Time = () => (
+    <time>{format(new Date(eventData.startsAt), 'LLLL d, y – p')}</time>
+  )
   const H3 = () => <h3>{eventData.title}</h3>
 
   const AuthorData = () => (
