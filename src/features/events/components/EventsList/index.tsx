@@ -20,6 +20,11 @@ import type { ArticleType, NormalizedData } from '../../types'
 // Temporary logged in user until we have authentication
 const loggedInUser = '628a2c5ce02f11001bec0970'
 
+// const sorts = {
+//   asc: (a: ArticleType, b: ArticleType) => (a.startsAt < b.startsAt ? -1 : 1),
+//   desc: (a: ArticleType, b: ArticleType) => (a.startsAt > b.startsAt ? -1 : 1),
+// }
+
 const sortArticles = (
   articles: NormalizedData<ArticleType>,
   order: 'oldestFirst' | 'latestFirst' = 'oldestFirst'
