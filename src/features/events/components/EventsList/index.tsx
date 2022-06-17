@@ -10,7 +10,6 @@ import { FilterType } from './types'
 import { ViewType } from './types'
 
 import { useEvents } from '../../hooks/useEvents'
-// import type { ArticleType, NormalizedData } from '../../types'
 
 /**
  * Renders a list of events, with filtering/sorting/view type options.
@@ -24,20 +23,9 @@ export const EventsList: FC = () => {
 
   const [view, setView] = useState(ViewType.GRID)
   const [activeFilter, setActiveFilter] = useState(FilterType.ALL)
-  // const [articles, setArticles] = useState<NormalizedData<ArticleType>>({})
-  // const [articleIDsToRender, setArticleIDsToRender] = useState<string[]>([])
 
   const { articles, articleIDsToRender, users, isLoading } =
     useEvents(activeFilter)
-
-  // Temp solution: put articles and ids to sate to be able to modify the articles state
-  // useEffect(() => {
-  //   setArticles(initArticles)
-  // }, [initArticles])
-
-  // useEffect(() => {
-  //   setArticleIDsToRender(sortedArticlesALL)
-  // }, [sortedArticlesALL])
 
   // Handle views and filter
   const setViewHandler = (passedView: ViewType) => {
@@ -46,25 +34,9 @@ export const EventsList: FC = () => {
 
   const filteringHandler = (filterType: FilterType) => {
     setActiveFilter(filterType)
-
-    // let results = sortedArticlesALL
-
-    // switch (filterType) {
-    //   case FilterType.ALL:
-    //     break
-    //   case FilterType.FUTURE:
-    //     results = sortedArticlesFUTURE
-    //     break
-    //   case FilterType.PAST:
-    //     results = sortedArticlesPAST
-    //     break
-    //   default:
-    //     break
-    // }
-
-    // setArticleIDsToRender(results)
   }
 
+  // Not in use, needs to be reactivated when Context API will be set
   const attendanceHandler = (id: string) => () => {
     const article = { ...articles[id] }
     let newAttendeesList
@@ -83,7 +55,7 @@ export const EventsList: FC = () => {
 
     console.log(newArticle)
 
-    // setArticles({ ...articles, [id]: newArticle })
+    // setUpdatedArticles({ ...articles, [id]: newArticle })
   }
 
   return (

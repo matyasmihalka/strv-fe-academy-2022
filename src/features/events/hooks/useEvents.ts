@@ -40,42 +40,31 @@ const filters = {
     isBefore(new Date(articles[id].startsAt), new Date()),
 }
 
+const { ALL, FUTURE, PAST } = FilterType
+
+const listBuilders = {
+  [ALL]: (articles: NormalizedData<ArticleType>) =>
+    Object.keys(articles).sort(sorts.asc(articles)),
+  [FUTURE]: (articles: NormalizedData<ArticleType>) =>
+    Object.keys(articles)
+      .sort(sorts.asc(articles))
+      .filter(filters.future(articles)),
+  [PAST]: (articles: NormalizedData<ArticleType>) =>
+    Object.keys(articles)
+      .sort(sorts.desc(articles))
+      .filter(filters.past(articles)),
+}
+
 const useEvents = (filter: FilterType) => {
   const [articles, setArticles] = useState<NormalizedData<ArticleType>>({})
   const [users, setUsers] = useState<NormalizedData<UserType>>({})
   const [isLoading, setIsLoading] = useState(true)
 
-  const sortedArticlesALL = useMemo(
-    () => Object.keys(articles).sort(sorts.asc(articles)),
-    [articles]
+  const listBuilder = listBuilders[filter]
+  const articleIDsToRender = useMemo(
+    () => listBuilder(articles),
+    [articles, listBuilder]
   )
-
-  const sortedArticlesFUTURE = useMemo(() => {
-    return sortedArticlesALL.filter(filters.future(articles))
-  }, [articles, sortedArticlesALL])
-
-  const sortedArticlesPAST = useMemo(() => {
-    // console.log('PAST')
-    return Object.keys(articles)
-      .sort(sorts.desc(articles))
-      .filter(filters.past(articles))
-  }, [articles])
-
-  let articleIDsToRender: string[] = []
-
-  switch (filter) {
-    case FilterType.ALL:
-      articleIDsToRender = sortedArticlesALL
-      break
-    case FilterType.FUTURE:
-      articleIDsToRender = sortedArticlesFUTURE
-      break
-    case FilterType.PAST:
-      articleIDsToRender = sortedArticlesPAST
-      break
-    default:
-      break
-  }
 
   useEffect(() => {
     setIsLoading(true)
@@ -86,8 +75,6 @@ const useEvents = (filter: FilterType) => {
       setUsers(normalizedEventData.entities.users)
     }, 500)
   }, [])
-
-  //   console.log(articles)
 
   return { articles, articleIDsToRender, users, isLoading }
 }
