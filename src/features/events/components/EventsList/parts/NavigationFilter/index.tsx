@@ -4,23 +4,20 @@ import { NavButton } from '~/features/ui/components/NavButton'
 
 import { List, MobileToggleLabel } from './styled'
 
-enum FilterType {
-  ALL = 'ALL',
-  FUTURE = 'FUTURE',
-  PAST = 'PAST',
-}
+import { FilterType } from '../../types'
 
 type Props = {
   onChange: (filterType: FilterType) => void
+  activeFilter: FilterType
 }
 
-export const NavigationFilter: FC<Props> = ({ onChange }) => {
+export const NavigationFilter: FC<Props> = ({ onChange, activeFilter }) => {
   return (
     <>
       <List>
         <li>
           <NavButton
-            isActive
+            isActive={activeFilter === FilterType.ALL}
             type="button"
             onClick={() => onChange(FilterType.ALL)}
           >
@@ -28,12 +25,20 @@ export const NavigationFilter: FC<Props> = ({ onChange }) => {
           </NavButton>
         </li>
         <li>
-          <NavButton type="button" onClick={() => onChange(FilterType.FUTURE)}>
+          <NavButton
+            isActive={activeFilter === FilterType.FUTURE}
+            type="button"
+            onClick={() => onChange(FilterType.FUTURE)}
+          >
             Future events
           </NavButton>
         </li>
         <li>
-          <NavButton type="button" onClick={() => onChange(FilterType.PAST)}>
+          <NavButton
+            isActive={activeFilter === FilterType.PAST}
+            type="button"
+            onClick={() => onChange(FilterType.PAST)}
+          >
             Past Events
           </NavButton>
         </li>
@@ -41,7 +46,7 @@ export const NavigationFilter: FC<Props> = ({ onChange }) => {
 
       <MobileToggleLabel>
         <span>SHOW:</span>
-        <select>
+        <select onChange={(e) => onChange(e.target.value as FilterType)}>
           <option value={FilterType.ALL}>All Events</option>
           <option value={FilterType.FUTURE}>Future Events</option>
           <option value={FilterType.PAST}>Past Events</option>

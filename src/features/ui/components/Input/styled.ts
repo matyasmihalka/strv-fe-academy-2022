@@ -88,3 +88,9 @@ export const ToggleButton = styled.button`
   border: none;
   background-color: transparent;
 `
+
+export const ErrorMessage = styled.p`
+  ${typography.paragraph.small}
+  color: ${colors.accent.destructive};
+  margin-top: -1rem;
+`

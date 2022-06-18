@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 import { TogglePasswordIcon } from './parts/TogglePasswordIcon'
 import {
+  ErrorMessage,
   InputWrapper,
   LabelText,
   StyledInput,
@@ -12,7 +13,7 @@ import {
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
   label: string
-  error?: string
+  error?: string | null
 }
 
 export const Input: FC<Props> = ({ label, name, type, error, ...rest }) => {
@@ -21,7 +22,7 @@ export const Input: FC<Props> = ({ label, name, type, error, ...rest }) => {
 
   return (
     <InputWrapper>
-      <StyledLabel key={error} hasError={Boolean(error)}>
+      <StyledLabel hasError={Boolean(error)}>
         <StyledInput
           placeholder={label}
           name={name}
@@ -29,6 +30,7 @@ export const Input: FC<Props> = ({ label, name, type, error, ...rest }) => {
           {...rest}
         />
         <LabelText>{label}</LabelText>
+        {!!error && <ErrorMessage>{error}</ErrorMessage>}
         {type === 'password' && (
           <ToggleButton
             type="button"
