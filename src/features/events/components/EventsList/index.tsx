@@ -24,7 +24,7 @@ export const EventsList: FC = () => {
   const [view, setView] = useState(ViewType.GRID)
   const [activeFilter, setActiveFilter] = useState(FilterType.ALL)
 
-  const { articles, articleIDsToRender, users, isLoading } =
+  const { articles, articleIDsToRender, users, isLoading, error } =
     useEvents(activeFilter)
 
   // Handle views and filter
@@ -54,8 +54,10 @@ export const EventsList: FC = () => {
     }
 
     console.log(newArticle)
+  }
 
-    // setUpdatedArticles({ ...articles, [id]: newArticle })
+  if (error) {
+    throw error
   }
 
   return (
@@ -70,6 +72,8 @@ export const EventsList: FC = () => {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
+        // eslint-disable-next-line react/jsx-no-useless-fragment
+
         <List view={view}>
           {articleIDsToRender.map((id) => (
             <li key={id}>
