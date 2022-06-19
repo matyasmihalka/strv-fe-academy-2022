@@ -2,7 +2,9 @@ import { isAfter, isBefore } from 'date-fns'
 import { normalize, schema } from 'normalizr'
 import { useEffect, useState, useMemo } from 'react'
 
-import events from '~/events.json'
+import { api } from '~/features/api'
+
+// import events from '~/events.json'
 
 import { FilterType } from '../components/EventsList/types'
 import type {
@@ -21,10 +23,6 @@ const articleSchema: schema.Entity<ArticleType> = new schema.Entity(
   }
 )
 const articleListSchema = [articleSchema]
-const normalizedEventData: NormalizedEventDataType = normalize(
-  events,
-  articleListSchema
-)
 
 const sorts = {
   asc: (articles: NormalizedData<ArticleType>) => (a: string, b: string) =>
@@ -59,6 +57,7 @@ const useEvents = (filter: FilterType) => {
   const [articles, setArticles] = useState<NormalizedData<ArticleType>>({})
   const [users, setUsers] = useState<NormalizedData<UserType>>({})
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
 
   const listBuilder = listBuilders[filter]
   const articleIDsToRender = useMemo(
@@ -67,16 +66,35 @@ const useEvents = (filter: FilterType) => {
   )
 
   useEffect(() => {
-    setIsLoading(true)
+    const loadEvents = async () => {
+      setIsLoading(true)
+      try {
+        const response = await api.get('/events')
 
-    setTimeout(() => {
-      setIsLoading(false)
-      setArticles(normalizedEventData.entities.articles)
-      setUsers(normalizedEventData.entities.users)
-    }, 500)
+        // Fetch is throwing on itself just if the request fails on the client side, so we need to throw manually
+        // Note that this may not be the best way to handle this, because 1xx, 2xx and 3xx are not really errors, but we are treating them as errors.
+        if (!response.ok) {
+          throw new Error(`Failed to load events`)
+        }
+
+        const responseData = (await response.json()) as ArticleType[]
+        const normalizedEventData: NormalizedEventDataType = normalize(
+          responseData,
+          articleListSchema
+        )
+        setArticles(normalizedEventData.entities.articles)
+        setUsers(normalizedEventData.entities.users)
+      } catch (error) {
+        setError(error as Error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    void loadEvents()
   }, [])
 
-  return { articles, articleIDsToRender, users, isLoading }
+  return { articles, articleIDsToRender, users, isLoading, error }
 }
 
 export { useEvents }
