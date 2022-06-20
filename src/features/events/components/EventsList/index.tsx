@@ -1,15 +1,15 @@
 import type { FC } from 'react'
 // import { useEffect } from 'react'
-import { useState } from 'react'
 
 import { EventItem } from './parts/EventItem'
 import { NavigationFilter } from './parts/NavigationFilter'
 import { NavigationView } from './parts/NavigationView'
 import { List, Nav } from './styled'
-import { FilterType } from './types'
-import { ViewType } from './types'
+import type { FilterType } from './types'
+import type { ViewType } from './types'
 
-import { useEvents } from '../../hooks/useEvents'
+import { useDashboardContext } from '../../contexts/dashboard'
+import { useEventsContext } from '../../contexts/events'
 
 /**
  * Renders a list of events, with filtering/sorting/view type options.
@@ -21,11 +21,18 @@ const loggedInUser = '628a2c5ce02f11001bec0970'
 export const EventsList: FC = () => {
   // const view = ViewType.GRID as ViewType
 
-  const [view, setView] = useState(ViewType.GRID)
-  const [activeFilter, setActiveFilter] = useState(FilterType.ALL)
+  // const [view, setView] = useState(ViewType.GRID)
+  // const [activeFilter, setActiveFilter] = useState(FilterType.ALL)
+
+  const {
+    view,
+    setView,
+    filter: activeFilter,
+    setFilter: setActiveFilter,
+  } = useDashboardContext()
 
   const { articles, articleIDsToRender, users, isLoading, error } =
-    useEvents(activeFilter)
+    useEventsContext()
 
   // Handle views and filter
   const setViewHandler = (passedView: ViewType) => {
@@ -72,8 +79,6 @@ export const EventsList: FC = () => {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        // eslint-disable-next-line react/jsx-no-useless-fragment
-
         <List view={view}>
           {articleIDsToRender.map((id) => (
             <li key={id}>
