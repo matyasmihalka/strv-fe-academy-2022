@@ -1,17 +1,16 @@
 import { isAfter, isBefore } from 'date-fns'
 import { normalize, schema } from 'normalizr'
-import { useEffect, useState, useMemo } from 'react'
+import { useMemo } from 'react'
+import { useQuery } from 'react-query'
 
 import { api } from '~/features/api'
-
-// import events from '~/events.json'
 
 import { FilterType } from '../components/EventsList/types'
 import type {
   ArticleType,
   UserType,
-  NormalizedEventDataType,
   NormalizedData,
+  NormalizedEventDataType,
 } from '../types'
 
 const userSchema: schema.Entity<UserType> = new schema.Entity('users')
@@ -53,48 +52,39 @@ const listBuilders = {
       .filter(filters.past(articles)),
 }
 
+const initialData: ArticleType[] = []
+
+/**
+ * Loads and filters/sorts the event list.
+ */
 const useEvents = (filter: FilterType) => {
-  const [articles, setArticles] = useState<NormalizedData<ArticleType>>({})
-  const [users, setUsers] = useState<NormalizedData<UserType>>({})
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
+  const result = useQuery<ArticleType[], Error>('events', async () => {
+    const response = await api.get('/events')
+
+    if (!response.ok) {
+      throw new Error(`Failed to load events`)
+    }
+
+    return (await response.json()) as ArticleType[]
+  })
+
+  const { data = initialData } = result
+  const normalizedData: NormalizedEventDataType = normalize(
+    data,
+    articleListSchema
+  )
+
+  const articles = normalizedData.entities.articles
+  const users = normalizedData.entities.users
 
   const listBuilder = listBuilders[filter]
+
   const articleIDsToRender = useMemo(
-    () => listBuilder(articles),
+    () => (articles ? listBuilder(articles) : []),
     [articles, listBuilder]
   )
 
-  useEffect(() => {
-    const loadEvents = async () => {
-      setIsLoading(true)
-      try {
-        const response = await api.get('/events')
-
-        // Fetch is throwing on itself just if the request fails on the client side, so we need to throw manually
-        // Note that this may not be the best way to handle this, because 1xx, 2xx and 3xx are not really errors, but we are treating them as errors.
-        if (!response.ok) {
-          throw new Error(`Failed to load events`)
-        }
-
-        const responseData = (await response.json()) as ArticleType[]
-        const normalizedEventData: NormalizedEventDataType = normalize(
-          responseData,
-          articleListSchema
-        )
-        setArticles(normalizedEventData.entities.articles)
-        setUsers(normalizedEventData.entities.users)
-      } catch (error) {
-        setError(error as Error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    void loadEvents()
-  }, [])
-
-  return { articles, articleIDsToRender, users, isLoading, error }
+  return { ...result, articles, articleIDsToRender, users }
 }
 
 export { useEvents }

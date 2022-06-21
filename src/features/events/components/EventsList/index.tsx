@@ -9,7 +9,7 @@ import type { FilterType } from './types'
 import type { ViewType } from './types'
 
 import { useDashboardContext } from '../../contexts/dashboard'
-import { useEventsContext } from '../../contexts/events'
+import { useEvents } from '../../hooks/useEvents'
 
 /**
  * Renders a list of events, with filtering/sorting/view type options.
@@ -21,9 +21,6 @@ const loggedInUser = '628a2c5ce02f11001bec0970'
 export const EventsList: FC = () => {
   // const view = ViewType.GRID as ViewType
 
-  // const [view, setView] = useState(ViewType.GRID)
-  // const [activeFilter, setActiveFilter] = useState(FilterType.ALL)
-
   const {
     view,
     setView,
@@ -32,7 +29,7 @@ export const EventsList: FC = () => {
   } = useDashboardContext()
 
   const { articles, articleIDsToRender, users, isLoading, error } =
-    useEventsContext()
+    useEvents(activeFilter)
 
   // Handle views and filter
   const setViewHandler = (passedView: ViewType) => {
