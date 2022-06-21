@@ -8,7 +8,8 @@ import { List, Nav } from './styled'
 import type { FilterType } from './types'
 import type { ViewType } from './types'
 
-import { useDashboardContext } from '../../contexts/dashboard'
+import { useEventFilterContext } from '../../contexts/event-filter'
+import { useEventViewContext } from '../../contexts/event-view'
 import { useEvents } from '../../hooks/useEvents'
 
 /**
@@ -21,12 +22,9 @@ const loggedInUser = '628a2c5ce02f11001bec0970'
 export const EventsList: FC = () => {
   // const view = ViewType.GRID as ViewType
 
-  const {
-    view,
-    setView,
-    filter: activeFilter,
-    setFilter: setActiveFilter,
-  } = useDashboardContext()
+  const { view, setView } = useEventViewContext()
+  const { filter: activeFilter, setFilter: setActiveFilter } =
+    useEventFilterContext()
 
   const { articles, articleIDsToRender, users, isLoading, error } =
     useEvents(activeFilter)
