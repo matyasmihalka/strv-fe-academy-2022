@@ -1,12 +1,18 @@
+type NetworkProviderContext = {
+  client: NetworkProvider
+}
+
 type BeforeRequestInterceptor = (
   request: Request,
-  options: NetworkProviderOptions
+  options: NetworkProviderOptions,
+  context: NetworkProviderContext
 ) => Request
 
 type AfterRequestInterceptor = (
   request: Request,
   options: NetworkProviderOptions,
-  response: Response
+  response: Response,
+  context: NetworkProviderContext
 ) => Response
 
 type NetworkProviderInterceptors = {
@@ -119,30 +125,50 @@ class NetworkProvider {
 
   async get(url: string, options?: NetworkProviderOptions) {
     return await this.makeRequest(url, {
-      ...options,
+      ...NetworkProvider.mergeOptions(this.options, options),
       method: 'GET',
     })
   }
 
   async post(url: string, options?: NetworkProviderOptions) {
     return await this.makeRequest(url, {
-      ...options,
+      ...NetworkProvider.mergeOptions(this.options, options),
       method: 'POST',
     })
   }
 
-  private async makeRequest(url: string, options: NetworkProviderOptions) {
-    const mergedOptions = NetworkProvider.mergeOptions(this.options, options)
-    const {
-      baseUrl,
-      json: requestJson,
-      interceptors,
-      ...requestOptions
-    } = NetworkProvider.normalizeOptions(mergedOptions)
+  async put(url: string, options?: NetworkProviderOptions) {
+    return await this.makeRequest(url, {
+      ...NetworkProvider.mergeOptions(this.options, options),
+      method: 'PUT',
+    })
+  }
+
+  async patch(url: string, options?: NetworkProviderOptions) {
+    return await this.makeRequest(url, {
+      ...NetworkProvider.mergeOptions(this.options, options),
+      method: 'PATCH',
+    })
+  }
+
+  async delete(url: string, options?: NetworkProviderOptions) {
+    return await this.makeRequest(url, {
+      ...NetworkProvider.mergeOptions(this.options, options),
+      method: 'DELETE',
+    })
+  }
+
+  /**
+   * Send arbitrary request
+   * Use this only for requests with unknown method
+   */
+  async makeRequest(url: string, options: NetworkProviderOptions) {
+    const { baseUrl, interceptors, ...requestOptions } =
+      NetworkProvider.normalizeOptions(options)
 
     // Set content-type header to application/json if not already set
-    if (requestJson !== undefined) {
-      requestOptions.body = JSON.stringify(requestJson)
+    if (requestOptions.json !== undefined) {
+      requestOptions.body = JSON.stringify(requestOptions.json)
       requestOptions?.headers?.set(
         'content-type',
         requestOptions?.headers.get('content-type') ?? 'application/json'
@@ -158,7 +184,8 @@ class NetworkProvider {
     // Run before request middleware
     if (interceptors?.beforeRequest?.length) {
       request = interceptors.beforeRequest.reduce(
-        (request, interceptor) => interceptor(request, options),
+        (request, interceptor) =>
+          interceptor(request, options, { client: this }),
         request
       )
     }
@@ -169,7 +196,8 @@ class NetworkProvider {
     // Run after request middleware
     if (interceptors?.afterRequest?.length) {
       response = interceptors.afterRequest.reduce(
-        (response, interceptor) => interceptor(request, options, response),
+        (response, interceptor) =>
+          interceptor(request, options, response, { client: this }),
         response
       )
     }

@@ -1,14 +1,15 @@
 import type { FC } from 'react'
 // import { useEffect } from 'react'
-import { useState } from 'react'
 
 import { EventItem } from './parts/EventItem'
 import { NavigationFilter } from './parts/NavigationFilter'
 import { NavigationView } from './parts/NavigationView'
 import { List, Nav } from './styled'
-import { FilterType } from './types'
-import { ViewType } from './types'
+import type { FilterType } from './types'
+import type { ViewType } from './types'
 
+import { useEventFilterContext } from '../../contexts/event-filter'
+import { useEventViewContext } from '../../contexts/event-view'
 import { useEvents } from '../../hooks/useEvents'
 
 /**
@@ -21,8 +22,9 @@ const loggedInUser = '628a2c5ce02f11001bec0970'
 export const EventsList: FC = () => {
   // const view = ViewType.GRID as ViewType
 
-  const [view, setView] = useState(ViewType.GRID)
-  const [activeFilter, setActiveFilter] = useState(FilterType.ALL)
+  const { view, setView } = useEventViewContext()
+  const { filter: activeFilter, setFilter: setActiveFilter } =
+    useEventFilterContext()
 
   const { articles, articleIDsToRender, users, isLoading, error } =
     useEvents(activeFilter)
@@ -72,8 +74,6 @@ export const EventsList: FC = () => {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        // eslint-disable-next-line react/jsx-no-useless-fragment
-
         <List view={view}>
           {articleIDsToRender.map((id) => (
             <li key={id}>
