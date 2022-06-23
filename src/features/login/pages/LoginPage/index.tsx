@@ -1,9 +1,8 @@
-/* eslint-disable no-useless-escape */
-/* eslint-disable require-unicode-regexp */
-/* eslint-disable prefer-named-capture-group */
+import { yupResolver } from '@hookform/resolvers/yup'
 import type { NextPage } from 'next'
-import type { FormEvent } from 'react'
 import { useState, useCallback } from 'react'
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
 
 import { SignIn } from '~/features/ui/components/Header/parts/SignIn'
 import { Input } from '~/features/ui/components/Input'
@@ -18,49 +17,32 @@ import {
   SubmitButton,
 } from './styled'
 
-const validators = {
-  email: (value: string) => {
-    if (typeof value !== 'string') return 'Invalid e-mail value type'
-    if (!value) return 'E-mail is required'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(value)) return 'Invalid e-mail'
-  },
-  password: (value: string) => {
-    if (typeof value !== 'string') return 'Invalid password value type'
-    if (!value) return 'Password is required'
-  },
-}
+const LogInSchema = yup
+  .object({
+    email: yup.string().email().required(),
+    password: yup.string().min(8).required(),
+  })
+  .required()
+
+type LoginInputs = yup.InferType<typeof LogInSchema>
 
 export const LoginPage: NextPage = () => {
-  // const [loginState, setLoginState] = useState(initialLoginState)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const [emailError, setEmailError] = useState<string | null>(null)
-  const [passwordError, setPasswordError] = useState<string | null>(null)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginInputs>({
+    resolver: yupResolver(LogInSchema),
+  })
   const [submitError, setSubmitError] = useState<string | null>(null)
-
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   /**
    * Login handler.
    */
   const login = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-
-      const errors = {
-        email: validators.email(email),
-        password: validators.password(password),
-      }
-
-      if (errors.email) {
-        setEmailError(errors.email)
-      }
-
-      if (errors.password) {
-        setPasswordError(errors.password)
-      }
-
+    (data: LoginInputs) => {
+      console.log(data)
       // Only submit in case of no errors.
       if (!errors.email && !errors.password) {
         setIsSubmitting(true)
@@ -77,7 +59,7 @@ export const LoginPage: NextPage = () => {
         }, 1000)
       }
     },
-    [email, password]
+    [errors.email, errors.password]
   )
 
   return (
@@ -90,28 +72,21 @@ export const LoginPage: NextPage = () => {
           <P>Enter your details below</P>
         )}
 
-        <StyledForm onSubmit={login} noValidate>
+        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+        <StyledForm onSubmit={handleSubmit(login)} noValidate>
           <Input
+            {...register('email')}
             label="Email"
             type="email"
+            error={errors?.email?.message}
             name="email"
-            error={emailError}
-            value={email}
-            onChange={(e) => {
-              setEmailError(null)
-              setEmail(e.target.value)
-            }}
           />
           <Input
+            {...register('password')}
             label="Password"
             type="password"
+            error={errors?.password?.message}
             name="password"
-            error={passwordError}
-            value={password}
-            onChange={(e) => {
-              setPasswordError(null)
-              setPassword(e.target.value)
-            }}
           />
           <SignIn position="form" /> {/* Renders only on small screens */}
           <SubmitButton disabled={isSubmitting}>
