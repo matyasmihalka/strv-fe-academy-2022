@@ -1,6 +1,9 @@
+import { yupResolver } from '@hookform/resolvers/yup'
+import { format } from 'date-fns'
 import type { NextPage } from 'next'
 import Link from 'next/link'
-import type { FormEvent } from 'react'
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
 
 import { Routes } from '~/features/core/constants/routes'
 import { Input } from '~/features/ui/components/Input'
@@ -17,10 +20,37 @@ import {
   StyledForm,
 } from './styled'
 
+const minDate = new Date().toISOString().split('T')[0]
+const minDateFormatted = format(new Date(minDate), 'dd/MM/yyyy')
+
+const EventFormSchema = yup.object({
+  title: yup.string().min(3).max(50).required(),
+  description: yup.string().min(10).max(200).required(),
+  date: yup
+    .date()
+    .typeError('date is a required field')
+    .min(minDate, `value must be ${minDateFormatted} or later`)
+    .required(),
+  time: yup
+    .string()
+    .matches(/\d+:\d+/u, 'time must be in a format HH:MM ')
+    .required(),
+  capacity: yup.number().integer().positive().lessThan(1000).required(),
+})
+
+type EventFormTypes = yup.InferType<typeof EventFormSchema>
+
 export const CreateEventPage: NextPage = () => {
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    alert('TODO - Creating new form')
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<EventFormTypes>({
+    resolver: yupResolver(EventFormSchema),
+  })
+
+  const onSubmit = (data: EventFormTypes) => {
+    console.log(data)
   }
   return (
     <LayoutInternal
@@ -38,12 +68,45 @@ export const CreateEventPage: NextPage = () => {
         <InputFormContainer>
           <H1>Create new event</H1>
           <P>Enter details below</P>
-          <StyledForm onSubmit={onSubmit}>
-            <Input label="Title" type="text" name="title" />
-            <Input label="Description" type="text" name="description" />
-            <Input label="Date" type="date" name="date" />
-            <Input label="Time" type="time" name="time" />
-            <Input label="Capacity" type="number" name="capacity" />
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <StyledForm onSubmit={handleSubmit(onSubmit)} noValidate>
+            <Input
+              {...register('title')}
+              label="Title"
+              type="text"
+              name="title"
+              error={errors?.title?.message}
+            />
+            <Input
+              {...register('description')}
+              label="Description"
+              type="text"
+              name="description"
+              error={errors?.description?.message}
+            />
+            <Input
+              {...register('date')}
+              label="Date"
+              type="date"
+              name="date"
+              min={minDate}
+              error={errors?.date?.message}
+            />
+            <Input
+              {...register('time')}
+              label="Time"
+              type="time"
+              name="time"
+              error={errors?.time?.message}
+            />
+            <Input
+              {...register('capacity')}
+              label="Capacity"
+              type="number"
+              name="capacity"
+              min={1}
+              error={errors?.capacity?.message}
+            />
             <StyledButton type="submit" accent="primary">
               Create new Event
             </StyledButton>
