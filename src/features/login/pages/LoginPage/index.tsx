@@ -1,9 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import type { NextPage } from 'next'
-import { useState, useCallback } from 'react'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
+import { useLogin } from '~/features/auth/hooks/useLogin'
 import { SignIn } from '~/features/ui/components/Header/parts/SignIn'
 import { Input } from '~/features/ui/components/Input'
 import { LayoutExternal } from '~/features/ui/components/LayoutExternal'
@@ -30,37 +32,32 @@ export const LoginPage: NextPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginInputs>({
     resolver: yupResolver(LogInSchema),
   })
   const [submitError, setSubmitError] = useState<string | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { mutate } = useLogin()
+  const router = useRouter()
 
   /**
    * Login handler.
    */
-  const login = useCallback(
-    (data: LoginInputs) => {
-      console.log(data)
-      // Only submit in case of no errors.
-      if (!errors.email && !errors.password) {
-        setIsSubmitting(true)
-        setTimeout(() => {
-          // Mocking to represent login submit outcome.
-          const shouldFail = Math.random() < 0.5
-          if (shouldFail) {
-            setSubmitError('Something went terribly wrong!')
-          } else {
-            alert('Success!')
-          }
-
-          setIsSubmitting(false)
-        }, 1000)
-      }
-    },
-    [errors.email, errors.password]
-  )
+  const login = (data: LoginInputs) => {
+    console.log(data)
+    // Only submit in case of no errors.
+    if (!errors.email && !errors.password) {
+      // setIsSubmitting(true)
+      mutate(data, {
+        onSuccess: () => {
+          void router.push('/')
+        },
+        onError: (error) => {
+          setSubmitError(error.message)
+        },
+      })
+    }
+  }
 
   return (
     <LayoutExternal>
