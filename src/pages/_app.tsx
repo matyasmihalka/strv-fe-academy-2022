@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
+import { UserContextProvider } from '~/features/auth/contexts/userContext'
 import { HeadDefault } from '~/features/core/components/HeadDefault'
 import { EventFilterContextProvider } from '~/features/events/contexts/event-filter'
 import { EventViewContextProvider } from '~/features/events/contexts/event-view'
@@ -16,11 +17,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       <GlobalStyle />
       <HeadDefault />
       <QueryClientProvider client={queryClient}>
-        <EventViewContextProvider>
-          <EventFilterContextProvider>
-            <Component {...pageProps} />
-          </EventFilterContextProvider>
-        </EventViewContextProvider>
+        <UserContextProvider>
+          <EventViewContextProvider>
+            <EventFilterContextProvider>
+              <Component {...pageProps} />
+            </EventFilterContextProvider>
+          </EventViewContextProvider>
+        </UserContextProvider>
         <ReactQueryDevtools />
       </QueryClientProvider>
     </>
