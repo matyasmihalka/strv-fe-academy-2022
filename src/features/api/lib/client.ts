@@ -1,4 +1,9 @@
-import type { BeforeRequestInterceptor } from './network-provider'
+import { setAccessToken, setRefreshToken } from '~/features/auth/storage'
+
+import type {
+  AfterRequestInterceptor,
+  BeforeRequestInterceptor,
+} from './network-provider'
 import { NetworkProvider } from './network-provider'
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
@@ -23,6 +28,18 @@ const appendAPIKey: BeforeRequestInterceptor = (request) => {
   return request
 }
 
+const persistToken: AfterRequestInterceptor = (
+  _request,
+  _options,
+  response
+) => {
+  const accessToken = response.headers.get('Authorization')
+  const refreshToken = response.headers.get('Refresh-Token')
+  if (accessToken) setAccessToken(accessToken)
+  if (refreshToken) setRefreshToken(refreshToken)
+  return response
+}
+
 /**
  * Before request hook to retrieve auth token from local storage and append it to the request.
  */
@@ -36,6 +53,7 @@ const api = new NetworkProvider({
   baseUrl: apiUrl,
   interceptors: {
     beforeRequest: [appendAPIKey],
+    afterRequest: [persistToken],
   },
 })
 

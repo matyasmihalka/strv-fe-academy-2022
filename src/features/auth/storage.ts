@@ -12,3 +12,27 @@ export const getPersistedUser = (): UserType | null => {
 export const removePersistedUser = () => {
   window.localStorage.removeItem('user')
 }
+
+export const setAccessToken = (accessToken: string) => {
+  window.localStorage.setItem('accessToken', accessToken)
+}
+
+export const getAccessToken = () => {
+  return window.localStorage.getItem('accessToken')
+}
+
+export const removeAccessToken = () => {
+  window.localStorage.removeItem('accessToken')
+}
+
+export const setRefreshToken = (refreshToken: string) => {
+  window.localStorage.setItem('refreshToken', refreshToken)
+}
+
+export const getRefreshToken = () => {
+  return window.localStorage.getItem('refreshToken')
+}
+
+export const removeRefreshToken = () => {
+  window.localStorage.removeItem('refreshToken')
+}

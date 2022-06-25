@@ -6,7 +6,11 @@ import { useCallback } from 'react'
 import { useState } from 'react'
 import { createContext } from 'react'
 
-import { getPersistedUser, removePersistedUser } from '../storage'
+import {
+  getPersistedUser,
+  removeAccessToken,
+  removePersistedUser,
+} from '../storage'
 
 export type UserType = {
   id: string
@@ -39,6 +43,8 @@ export const UserContextProvider: FC<{ children: ReactNode }> = ({
   const handleLogout = useCallback(() => {
     setUser(null)
     removePersistedUser()
+    removeAccessToken()
+    removeAccessToken()
   }, [])
 
   const value = useMemo(
