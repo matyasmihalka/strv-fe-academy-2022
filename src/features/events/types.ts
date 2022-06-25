@@ -1,4 +1,4 @@
-export type UserType = {
+export type UserTypeFromEvents = {
   _id: string
   firstName: string
   lastName: string
@@ -30,6 +30,6 @@ export type NormalizedEventDataType = {
   result: string[]
   entities: {
     articles: NormalizedData<ArticleType>
-    users: NormalizedData<UserType>
+    users: NormalizedData<UserTypeFromEvents>
   }
 }

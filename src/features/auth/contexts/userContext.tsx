@@ -1,9 +1,12 @@
 import type { FC, ReactNode } from 'react'
+import { useEffect } from 'react'
 import { useContext } from 'react'
 import { useMemo } from 'react'
 import { useCallback } from 'react'
 import { useState } from 'react'
 import { createContext } from 'react'
+
+import { getPersistedUser, removePersistedUser } from '../storage'
 
 export type UserType = {
   id: string
@@ -30,8 +33,12 @@ export const UserContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<UserType | null>(null)
+
+  useEffect(() => setUser(getPersistedUser()), [])
+
   const handleLogout = useCallback(() => {
     setUser(null)
+    removePersistedUser()
   }, [])
 
   const value = useMemo(
