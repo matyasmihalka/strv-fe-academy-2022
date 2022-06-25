@@ -1,10 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
+import { useUserContext } from '~/features/auth/contexts/userContext'
 import { useLogin } from '~/features/auth/hooks/useLogin'
 import { SignIn } from '~/features/ui/components/Header/parts/SignIn'
 import { Input } from '~/features/ui/components/Input'
@@ -39,6 +40,13 @@ export const LoginPage: NextPage = () => {
   const [submitError, setSubmitError] = useState<string | null>(null)
   const { mutate, isLoading } = useLogin()
   const router = useRouter()
+  const { handleLogout } = useUserContext()
+
+  useEffect(() => {
+    if (router.query?.from === 'unauthorized') {
+      handleLogout()
+    }
+  }, [handleLogout, router.query?.from])
 
   /**
    * Login handler.

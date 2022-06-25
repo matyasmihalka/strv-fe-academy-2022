@@ -1,4 +1,7 @@
+import router from 'next/router'
+
 import { getAccessToken, getRefreshToken } from '~/features/auth/storage'
+import { Routes } from '~/features/core/constants/routes'
 
 import { api } from './client'
 import type {
@@ -18,14 +21,25 @@ const handleUnauthorized: AfterRequestInterceptor = async (
   response,
   context
 ) => {
-  if (response.status === 403) {
+  if (response.status === 403 || response.status === 401) {
     const refreshToken = getRefreshToken()
     if (!refreshToken) {
       return response
     }
 
     // persistTokens interceptor will store the tokens if refresh succeeds
-    await api.post('/auth/native', { json: { refreshToken } })
+    const refreshResponse = await api.post('/auth/native', {
+      json: { refreshToken },
+    })
+
+    if (refreshResponse.status >= 400) {
+      void router.replace({
+        pathname: Routes.LOGIN,
+        // we need to clear persisted stuff and context
+        query: { from: 'unauthorized' },
+      })
+      return response
+    }
 
     // repeat request with fresh accessToken
     return await context.client.makeRequest(request.url, { ...options })
