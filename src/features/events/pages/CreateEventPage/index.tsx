@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
+import { withPrivateRoute } from '~/features/auth/hocs/withPrivateRoute'
 import { useCreateEvent } from '~/features/auth/hooks/useCreateEvent'
 import { Routes } from '~/features/core/constants/routes'
 import { Input } from '~/features/ui/components/Input'
@@ -42,7 +43,7 @@ const EventFormSchema = yup.object({
 
 type EventFormTypes = yup.InferType<typeof EventFormSchema>
 
-export const CreateEventPage: NextPage = () => {
+const Page: NextPage = () => {
   const {
     register,
     handleSubmit,
@@ -133,3 +134,5 @@ export const CreateEventPage: NextPage = () => {
     </LayoutInternal>
   )
 }
+
+export const CreateEventPage = withPrivateRoute(Page)
