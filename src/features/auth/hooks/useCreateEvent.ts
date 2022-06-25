@@ -25,8 +25,8 @@ const useCreateEvent = () => {
       return { success: response.ok }
     },
     {
-      onSuccess: () => {
-        void router.push('/')
+      onSuccess: async () => {
+        await router.push('/')
       },
     }
   )

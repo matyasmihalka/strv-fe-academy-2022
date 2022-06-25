@@ -57,8 +57,8 @@ export const LoginPage: NextPage = () => {
     if (!errors.email && !errors.password) {
       // setIsSubmitting(true)
       mutate(data, {
-        onSuccess: () => {
-          void router.push('/')
+        onSuccess: async () => {
+          await router.push('/')
         },
         onError: (error) => {
           setSubmitError(error.message)
