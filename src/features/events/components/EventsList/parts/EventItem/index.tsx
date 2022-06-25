@@ -1,6 +1,8 @@
 import { format } from 'date-fns'
 import type { FC } from 'react'
 
+import type { UserType } from '~/features/auth/contexts/userContext'
+
 import {
   Article,
   Author,
@@ -11,7 +13,7 @@ import {
   StyledButton,
 } from './styled'
 
-import type { ArticleType, UserType } from '../../../../types'
+import type { ArticleType } from '../../../../types'
 import { ViewType } from '../../types'
 
 type Props = {
