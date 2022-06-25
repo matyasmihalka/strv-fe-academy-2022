@@ -43,11 +43,6 @@ const persistToken: AfterRequestInterceptor = (
 /**
  * Before request hook to retrieve auth token from local storage and append it to the request.
  */
-const authenticateRequest: BeforeRequestInterceptor = (request) => {
-  const token = localStorage.getItem('token')
-  request.headers.append('Authorization', `Bearer ${token}`)
-  return request
-}
 
 const api = new NetworkProvider({
   baseUrl: apiUrl,
@@ -57,8 +52,4 @@ const api = new NetworkProvider({
   },
 })
 
-const privateApi = api.extend({
-  interceptors: { beforeRequest: [authenticateRequest] },
-})
-
-export { api, privateApi }
+export { api }
