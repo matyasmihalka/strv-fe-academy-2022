@@ -17,8 +17,8 @@ export const Wrapper = styled.div`
 
   /* Rounded border */
   border-radius: 50%;
-  height: 4rem;
-  width: 4rem;
+  height: 40px;
+  width: 40px;
 
   margin-right: 0.8rem;
 `

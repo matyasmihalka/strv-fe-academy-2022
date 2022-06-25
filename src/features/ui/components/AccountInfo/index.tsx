@@ -66,7 +66,7 @@ export const AccountInfo: FC<Props> = ({ user }) => {
           <ActionButton type="button" onClick={() => alert('ADD PROFILE LINK')}>
             Profile
           </ActionButton>
-          <ActionButton type="button" onClick={() => handleLogout()}>
+          <ActionButton type="button" onClick={handleLogout}>
             Logout
           </ActionButton>
         </Dropdown>
