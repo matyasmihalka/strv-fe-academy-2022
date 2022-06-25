@@ -4,11 +4,11 @@ import { useMemo } from 'react'
 import { useQuery } from 'react-query'
 
 import { api } from '~/features/api'
+import type { UserType } from '~/features/auth/contexts/userContext'
 
 import { FilterType } from '../components/EventsList/types'
 import type {
   ArticleType,
-  UserType,
   NormalizedData,
   NormalizedEventDataType,
 } from '../types'
