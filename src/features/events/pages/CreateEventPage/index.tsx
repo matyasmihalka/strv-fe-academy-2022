@@ -1,10 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { format } from 'date-fns'
+import { set as setDate } from 'date-fns'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
+import { useCreateEvent } from '~/features/auth/hooks/useCreateEvent'
 import { Routes } from '~/features/core/constants/routes'
 import { Input } from '~/features/ui/components/Input'
 import { LayoutInternal } from '~/features/ui/components/LayoutInternal'
@@ -49,8 +51,23 @@ export const CreateEventPage: NextPage = () => {
     resolver: yupResolver(EventFormSchema),
   })
 
+  // console.log(isSubmitting)
+
+  const { mutate, isLoading } = useCreateEvent()
+
   const onSubmit = (data: EventFormTypes) => {
     console.log(data)
+    const [hours, minutes] = data.time.split(':').map(Number)
+    const startsAt = setDate(new Date(data.date), {
+      hours: hours,
+      minutes: minutes,
+    }).toISOString()
+    mutate({
+      startsAt,
+      title: data.title,
+      description: data.description,
+      capacity: data.capacity,
+    })
   }
   return (
     <LayoutInternal
@@ -107,7 +124,7 @@ export const CreateEventPage: NextPage = () => {
               min={1}
               error={errors?.capacity?.message}
             />
-            <StyledButton type="submit" accent="primary">
+            <StyledButton type="submit" accent="primary" disabled={isLoading}>
               Create new Event
             </StyledButton>
           </StyledForm>

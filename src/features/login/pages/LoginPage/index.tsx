@@ -32,12 +32,12 @@ export const LoginPage: NextPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginInputs>({
     resolver: yupResolver(LogInSchema),
   })
   const [submitError, setSubmitError] = useState<string | null>(null)
-  const { mutate } = useLogin()
+  const { mutate, isLoading } = useLogin()
   const router = useRouter()
 
   /**
@@ -86,8 +86,8 @@ export const LoginPage: NextPage = () => {
             name="password"
           />
           <SignIn position="form" /> {/* Renders only on small screens */}
-          <SubmitButton disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting' : 'Sign In'}
+          <SubmitButton disabled={isLoading}>
+            {isLoading ? 'Submitting' : 'Sign In'}
           </SubmitButton>
         </StyledForm>
       </Container>
