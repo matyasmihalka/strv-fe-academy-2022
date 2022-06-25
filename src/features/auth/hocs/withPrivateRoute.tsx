@@ -11,9 +11,19 @@ export const withPrivateRoute = (WrappedComponent: NextPage): NextPage => {
     const router = useRouter()
     const { user } = useUserContext()
     useEffect(() => {
-      if (!user) void router.replace(Routes.LOGIN)
+      const checkUser = async () => {
+        if (!user) await router.replace(Routes.LOGIN)
+      }
+      checkUser().catch(console.error)
     }, [router, user])
-    return <WrappedComponent {...props} />
+
+    // flickering is mainly happening because router.replace returns a promise
+    // For authenticated users we immediately return the requested page
+    // for not auth we return an empty page until the re-routing resolves
+    if (user) {
+      return <WrappedComponent {...props} />
+    }
+    return null
   }
   return HOCComponent
 }
