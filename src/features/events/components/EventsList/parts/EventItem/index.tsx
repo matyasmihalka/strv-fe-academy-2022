@@ -1,11 +1,10 @@
 import { format } from 'date-fns'
 import type { FC } from 'react'
-import { useMutation, useQueryClient } from 'react-query'
 
-import { privateApi } from '~/features/api'
 import type { UserType } from '~/features/auth/contexts/userContext'
 import { useUserContext } from '~/features/auth/contexts/userContext'
-// import { getAccessToken } from '~/features/auth/storage'
+import { useAttendance } from '~/features/events/hooks/useAttendance'
+import type { ArticleType } from '~/features/events/types'
 
 import {
   Article,
@@ -17,72 +16,20 @@ import {
   StyledButton,
 } from './styled'
 
-import type { ArticleType } from '../../../../types'
 import { ViewType } from '../../types'
 
 type Props = {
   view: ViewType
   eventData: ArticleType
   owner: UserType
-  // onAttendanceChange: () => void
 }
 
-export const EventItem: FC<Props> = ({
-  view,
-  eventData,
-  owner,
-  // onAttendanceChange,
-}) => {
+export const EventItem: FC<Props> = ({ view, eventData, owner }) => {
   const { user } = useUserContext()
   const isUserAttending =
     user && eventData.attendees.includes(user.id) ? true : false
 
-  const queryClient = useQueryClient()
-
-  const attendEvent = useMutation<ArticleType, Error>(
-    'attendEvent',
-    async () => {
-      const response = await privateApi.post(
-        `/events/${eventData.id}/attendees/me`
-      )
-
-      if (!response.ok) {
-        throw Error('Attending the event has failed')
-      }
-
-      return (await response.json()) as ArticleType
-    },
-    {
-      onSuccess: (updatedEvent) => {
-        queryClient.setQueriesData<ArticleType[]>(['events'], (previous) => {
-          if (previous) {
-            return previous.map((event) =>
-              event.id === updatedEvent.id ? updatedEvent : event
-            )
-          }
-          return []
-        })
-      },
-    }
-  )
-
-  const leaveEvent = useMutation(
-    'leaveEvent',
-    async () => {
-      const response = await privateApi.delete(
-        `/events/${eventData.id}/attendees/me`
-      )
-
-      if (!response.ok) {
-        throw Error('Attending the event has failed')
-      }
-
-      return { success: response.ok }
-    },
-    {
-      onSuccess: async () => await queryClient.invalidateQueries('events'),
-    }
-  )
+  const { attendEvent, leaveEvent } = useAttendance(eventData.id)
 
   const handleAttendance = () => {
     if (isUserAttending) {
@@ -90,8 +37,6 @@ export const EventItem: FC<Props> = ({
     } else {
       attendEvent.mutate()
     }
-
-    console.log('mutation done')
   }
 
   const Time = () => (
