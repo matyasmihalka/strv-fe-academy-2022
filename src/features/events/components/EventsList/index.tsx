@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-// import { useEffect } from 'react'
 
 import { EventItem } from './parts/EventItem'
 import { NavigationFilter } from './parts/NavigationFilter'
@@ -17,15 +16,11 @@ import { useEvents } from '../../hooks/useEvents'
  */
 
 // Temporary logged in user until we have authentication
-const loggedInUser = '628a2c5ce02f11001bec0970'
 
 export const EventsList: FC = () => {
-  // const view = ViewType.GRID as ViewType
-
   const { view, setView } = useEventViewContext()
   const { filter: activeFilter, setFilter: setActiveFilter } =
     useEventFilterContext()
-
   const { articles, articleIDsToRender, users, isLoading, error } =
     useEvents(activeFilter)
 
@@ -39,24 +34,24 @@ export const EventsList: FC = () => {
   }
 
   // Not in use, needs to be reactivated when Context API will be set
-  const attendanceHandler = (id: string) => () => {
-    const article = { ...articles[id] }
-    let newAttendeesList
-    if (article.attendees.includes(loggedInUser)) {
-      newAttendeesList = article.attendees.filter(
-        (user) => user !== loggedInUser
-      )
-    } else {
-      newAttendeesList = [...article.attendees, loggedInUser]
-    }
+  // const attendanceHandler = (id: string) => () => {
+  //   const article = { ...articles[id] }
+  //   let newAttendeesList
+  //   if (article.attendees.includes(loggedInUser)) {
+  //     newAttendeesList = article.attendees.filter(
+  //       (user) => user !== loggedInUser
+  //     )
+  //   } else {
+  //     newAttendeesList = [...article.attendees, loggedInUser]
+  //   }
 
-    const newArticle = {
-      ...articles[id],
-      attendees: newAttendeesList,
-    }
+  //   const newArticle = {
+  //     ...articles[id],
+  //     attendees: newAttendeesList,
+  //   }
 
-    console.log(newArticle)
-  }
+  //   console.log(newArticle)
+  // }
 
   if (error) {
     throw error
@@ -81,8 +76,8 @@ export const EventsList: FC = () => {
                 view={view}
                 eventData={articles[id]}
                 owner={users[articles[id].owner]}
-                loggedInUser={loggedInUser}
-                onAttendanceChange={attendanceHandler(id)}
+                // loggedInUser={loggedInUser}
+                // onAttendanceChange={attendanceHandler(id)}
               />
             </li>
           ))}

@@ -5,17 +5,21 @@ import { useEffect } from 'react'
 import { Routes } from '~/features/core/constants/routes'
 
 import { useUserContext } from '../contexts/userContext'
+import { getPersistedUser } from '../storage'
 
 export const withPrivateRoute = (WrappedComponent: NextPage): NextPage => {
   const HOCComponent: NextPage = ({ ...props }) => {
     const router = useRouter()
+
     const { user } = useUserContext()
+
     useEffect(() => {
       const checkUser = async () => {
-        if (!user) await router.replace(Routes.LOGIN)
+        // we have to check the localStorage directly to ensure on page reload the user is directly checked
+        if (!getPersistedUser()) await router.replace(Routes.LOGIN)
       }
       checkUser().catch(console.error)
-    }, [router, user])
+    }, [router])
 
     // flickering is mainly happening because router.replace returns a promise
     // For authenticated users we immediately return the requested page
