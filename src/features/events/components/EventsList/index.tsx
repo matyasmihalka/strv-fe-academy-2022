@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { EventItem } from './parts/EventItem'
+import { EventItemContainer } from './parts/EventItemContainer'
 import { NavigationFilter } from './parts/NavigationFilter'
 import { NavigationView } from './parts/NavigationView'
 import { List, Nav } from './styled'
@@ -49,7 +49,7 @@ export const EventsList: FC = () => {
         <List view={view}>
           {events.map((event) => (
             <li key={event.id}>
-              <EventItem
+              <EventItemContainer
                 view={view}
                 event={event}
                 // owner={users[articles[id].owner]}

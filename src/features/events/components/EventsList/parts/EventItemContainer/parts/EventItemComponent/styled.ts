@@ -1,13 +1,12 @@
 import styled, { css } from 'styled-components'
 
+import { ViewType } from '~/features/events/components/EventsList/types'
 import { Button } from '~/features/ui/components/Button'
 import { colors } from '~/features/ui/theme/colors'
 import { mq } from '~/features/ui/theme/mq'
 import { typography } from '~/features/ui/theme/typography'
 
 import { AttendeeIcon } from './parts/AttendeeIcon'
-
-import { ViewType } from '../../types'
 
 export const Description = styled.p`
   ${typography.paragraph.normal}
