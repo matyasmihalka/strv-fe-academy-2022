@@ -1,7 +1,10 @@
 import { format } from 'date-fns'
 import type { FC } from 'react'
 
-import type { UserType } from '~/features/auth/contexts/userContext'
+// import type { UserType } from '~/features/auth/contexts/userContext'
+import { useUserContext } from '~/features/auth/contexts/userContext'
+import { useAttendance } from '~/features/events/hooks/useAttendance'
+import type { ArticleType } from '~/features/events/types'
 
 import {
   Article,
@@ -13,47 +16,50 @@ import {
   StyledButton,
 } from './styled'
 
-import type { ArticleType } from '../../../../types'
 import { ViewType } from '../../types'
 
 type Props = {
   view: ViewType
-  eventData: ArticleType
-  owner: UserType
-  loggedInUser: string
-  onAttendanceChange: () => void
+  event: ArticleType
+  // owner: UserType
 }
 
-export const EventItem: FC<Props> = ({
-  view,
-  eventData,
-  owner,
-  loggedInUser,
-  onAttendanceChange,
-}) => {
+export const EventItem: FC<Props> = ({ view, event }) => {
+  const { user } = useUserContext()
+  const isUserAttending =
+    user && event.attendees.some((attendee) => attendee.id === user.id)
+      ? true
+      : false
+
+  const { attendEvent, leaveEvent } = useAttendance(event.id)
+
+  const handleAttendance = () => {
+    if (isUserAttending) {
+      leaveEvent.mutate()
+    } else {
+      attendEvent.mutate()
+    }
+  }
+
   const Time = () => (
-    <time>{format(new Date(eventData.startsAt), 'LLLL d, y – p')}</time>
+    <time>{format(new Date(event.startsAt), 'LLLL d, y – p')}</time>
   )
-  const H3 = () => <h3>{eventData.title}</h3>
+  const H3 = () => <h3>{event.title}</h3>
 
   const AuthorData = () => (
-    <Author>{`${owner.firstName} ${owner.lastName}`}</Author>
+    <Author>{`${event.owner.firstName} ${event.owner.lastName}`}</Author>
   )
 
-  const DescriptionData = () => (
-    <Description>{eventData.description}</Description>
-  )
+  const DescriptionData = () => <Description>{event.description}</Description>
 
   const ButtonData = () => (
     <StyledButton
       type="button"
       size="small"
-      accent={
-        eventData.attendees.includes(loggedInUser) ? 'destructive' : 'primary'
-      }
-      onClick={() => onAttendanceChange()}
+      accent={isUserAttending ? 'destructive' : 'primary'}
+      onClick={handleAttendance}
     >
-      {eventData.attendees.includes(loggedInUser) ? 'LEAVE' : 'JOIN'}
+      {isUserAttending ? 'LEAVE' : 'JOIN'}
     </StyledButton>
   )
 
@@ -68,7 +74,7 @@ export const EventItem: FC<Props> = ({
           <StyledActions>
             <span>
               <StyledAttendeeIcon />{' '}
-              {`${eventData.attendees.length} of ${eventData.capacity}`}
+              {`${event.attendees.length} of ${event.capacity}`}
             </span>
             <ButtonData />
           </StyledActions>
@@ -80,7 +86,7 @@ export const EventItem: FC<Props> = ({
           <AuthorData />
           <Container>
             <Time />
-            <span>{`${eventData.attendees.length} of ${eventData.capacity}`}</span>
+            <span>{`${event.attendees.length} of ${event.capacity}`}</span>
           </Container>
           <ButtonData />
         </>

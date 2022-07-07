@@ -1,3 +1,5 @@
+import type { UserType } from '../auth/contexts/userContext'
+
 export type UserTypeFromEvents = {
   _id: string
   firstName: string
@@ -15,9 +17,9 @@ export type ArticleType = {
   description: string
   startsAt: string
   capacity: number
-  owner: string
+  owner: UserType
   __v: number
-  attendees: string[]
+  attendees: UserType[]
   id: string
 }
 
