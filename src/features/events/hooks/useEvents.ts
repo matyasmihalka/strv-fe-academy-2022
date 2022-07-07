@@ -1,55 +1,48 @@
 import { isAfter, isBefore } from 'date-fns'
-import { normalize, schema } from 'normalizr'
+// import { normalize, schema } from 'normalizr'
 import { useMemo } from 'react'
 import { useQuery } from 'react-query'
 
 import { api } from '~/features/api'
-import type { UserType } from '~/features/auth/contexts/userContext'
+// import type { UserType } from '~/features/auth/contexts/userContext'
 
 import { FilterType } from '../components/EventsList/types'
 import type {
   ArticleType,
-  NormalizedData,
-  NormalizedEventDataType,
+  // NormalizedData,
+  // NormalizedEventDataType,
 } from '../types'
 
-const userSchema: schema.Entity<UserType> = new schema.Entity('users')
-const articleSchema: schema.Entity<ArticleType> = new schema.Entity(
-  'articles',
-  {
-    owner: userSchema,
-    attendees: [userSchema],
-  }
-)
-const articleListSchema = [articleSchema]
+// const userSchema: schema.Entity<UserType> = new schema.Entity('users')
+// const articleSchema: schema.Entity<ArticleType> = new schema.Entity(
+//   'articles',
+//   {
+//     owner: userSchema,
+//     attendees: [userSchema],
+//   }
+// )
+// const articleListSchema = [articleSchema]
 
 const sorts = {
-  asc: (articles: NormalizedData<ArticleType>) => (a: string, b: string) =>
-    articles[a].startsAt < articles[b].startsAt ? -1 : 1,
-  desc: (articles: NormalizedData<ArticleType>) => (a: string, b: string) =>
-    articles[a].startsAt < articles[b].startsAt ? 1 : -1,
+  asc: () => (a: ArticleType, b: ArticleType) =>
+    a.startsAt < b.startsAt ? -1 : 1,
+  desc: () => (a: ArticleType, b: ArticleType) =>
+    a.startsAt < b.startsAt ? 1 : -1,
 }
 
 const filters = {
-  future: (articles: NormalizedData<ArticleType>) => (id: string) =>
-    isAfter(new Date(articles[id].startsAt), new Date()),
-  past: (articles: NormalizedData<ArticleType>) => (id: string) =>
-    isBefore(new Date(articles[id].startsAt), new Date()),
+  future: (event: ArticleType) => isAfter(new Date(event.startsAt), new Date()),
+  past: (event: ArticleType) => isBefore(new Date(event.startsAt), new Date()),
 }
 
 const { ALL, FUTURE, PAST } = FilterType
 
 const listBuilders = {
-  [ALL]: (articles: NormalizedData<ArticleType>) =>
-    Object.keys(articles).sort(sorts.asc(articles)),
-  [FUTURE]: (articles: NormalizedData<ArticleType>) =>
-    Object.keys(articles)
-      .sort(sorts.asc(articles))
-      .filter(filters.future(articles)),
-  [PAST]: (articles: NormalizedData<ArticleType>) =>
-    Object.keys(articles)
-      .sort(sorts.desc(articles))
-      .filter(filters.past(articles)),
+  [ALL]: (articles: ArticleType[]) => articles.sort(sorts.asc()),
+  [FUTURE]: (articles: ArticleType[]) =>
+    articles.sort(sorts.asc()).filter(filters.future),
+  [PAST]: (articles: ArticleType[]) =>
+    articles.sort(sorts.desc()).filter(filters.past),
 }
 
 const initialData: ArticleType[] = []
@@ -69,22 +62,20 @@ const useEvents = (filter: FilterType) => {
   })
 
   const { data = initialData } = result
-  const normalizedData: NormalizedEventDataType = normalize(
-    data,
-    articleListSchema
-  )
+  // const normalizedData: NormalizedEventDataType = normalize(
+  //   data,
+  //   articleListSchema
+  // )
 
-  const articles = normalizedData.entities.articles
-  const users = normalizedData.entities.users
+  // const articles = normalizedData.entities.articles
+  // const users = normalizedData.entities.users
 
   const listBuilder = listBuilders[filter]
 
-  const articleIDsToRender = useMemo(
-    () => (articles ? listBuilder(articles) : []),
-    [articles, listBuilder]
-  )
+  const events = useMemo(() => listBuilder(data), [data, listBuilder])
 
-  return { ...result, articles, articleIDsToRender, users }
+  // return { ...result, articles, articleIDsToRender, users }
+  return { ...result, events }
 }
 
 export { useEvents }

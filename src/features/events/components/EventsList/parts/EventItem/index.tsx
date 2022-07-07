@@ -1,7 +1,7 @@
 import { format } from 'date-fns'
 import type { FC } from 'react'
 
-import type { UserType } from '~/features/auth/contexts/userContext'
+// import type { UserType } from '~/features/auth/contexts/userContext'
 import { useUserContext } from '~/features/auth/contexts/userContext'
 import { useAttendance } from '~/features/events/hooks/useAttendance'
 import type { ArticleType } from '~/features/events/types'
@@ -20,16 +20,18 @@ import { ViewType } from '../../types'
 
 type Props = {
   view: ViewType
-  eventData: ArticleType
-  owner: UserType
+  event: ArticleType
+  // owner: UserType
 }
 
-export const EventItem: FC<Props> = ({ view, eventData, owner }) => {
+export const EventItem: FC<Props> = ({ view, event }) => {
   const { user } = useUserContext()
   const isUserAttending =
-    user && eventData.attendees.includes(user.id) ? true : false
+    user && event.attendees.some((attendee) => attendee.id === user.id)
+      ? true
+      : false
 
-  const { attendEvent, leaveEvent } = useAttendance(eventData.id)
+  const { attendEvent, leaveEvent } = useAttendance(event.id)
 
   const handleAttendance = () => {
     if (isUserAttending) {
@@ -40,17 +42,15 @@ export const EventItem: FC<Props> = ({ view, eventData, owner }) => {
   }
 
   const Time = () => (
-    <time>{format(new Date(eventData.startsAt), 'LLLL d, y – p')}</time>
+    <time>{format(new Date(event.startsAt), 'LLLL d, y – p')}</time>
   )
-  const H3 = () => <h3>{eventData.title}</h3>
+  const H3 = () => <h3>{event.title}</h3>
 
   const AuthorData = () => (
-    <Author>{`${owner.firstName} ${owner.lastName}`}</Author>
+    <Author>{`${event.owner.firstName} ${event.owner.lastName}`}</Author>
   )
 
-  const DescriptionData = () => (
-    <Description>{eventData.description}</Description>
-  )
+  const DescriptionData = () => <Description>{event.description}</Description>
 
   const ButtonData = () => (
     <StyledButton
@@ -74,7 +74,7 @@ export const EventItem: FC<Props> = ({ view, eventData, owner }) => {
           <StyledActions>
             <span>
               <StyledAttendeeIcon />{' '}
-              {`${eventData.attendees.length} of ${eventData.capacity}`}
+              {`${event.attendees.length} of ${event.capacity}`}
             </span>
             <ButtonData />
           </StyledActions>
@@ -86,7 +86,7 @@ export const EventItem: FC<Props> = ({ view, eventData, owner }) => {
           <AuthorData />
           <Container>
             <Time />
-            <span>{`${eventData.attendees.length} of ${eventData.capacity}`}</span>
+            <span>{`${event.attendees.length} of ${event.capacity}`}</span>
           </Container>
           <ButtonData />
         </>
