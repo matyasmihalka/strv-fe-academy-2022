@@ -18,7 +18,7 @@ import {
 
 import { ViewType } from '../../types'
 
-type Props = {
+export type Props = {
   view: ViewType
   event: ArticleType
   // owner: UserType
