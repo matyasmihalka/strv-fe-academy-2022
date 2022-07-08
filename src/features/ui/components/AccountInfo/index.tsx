@@ -17,7 +17,7 @@ import {
   Wrapper,
 } from './styled'
 
-type Props = {
+export type Props = {
   user: UserType
 }
 

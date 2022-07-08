@@ -11,7 +11,7 @@ export const H1 = styled.h1`
 
 export const H2 = styled(H1).attrs({ as: 'h2' })``
 
-export const StyledCreateButton = styled(CreateButton)`
+export const PositionedCreateButton = styled(CreateButton)`
   position: fixed;
   bottom: 1.6rem;
   right: 1.6rem;

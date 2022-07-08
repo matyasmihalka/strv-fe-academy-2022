@@ -6,7 +6,7 @@ import { CircleButton } from '~/features/ui/components/CircleButton'
 
 import { PlusIcon } from './parts/PlusIcon'
 
-type Props = {
+export type Props = {
   className?: ''
 }
 

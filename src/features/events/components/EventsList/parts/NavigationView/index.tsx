@@ -8,7 +8,7 @@ import { List } from './styled'
 
 import { ViewType } from '../../types'
 
-type Props = {
+export type Props = {
   onChange: (viewType: ViewType) => void
   activeView: ViewType
 }

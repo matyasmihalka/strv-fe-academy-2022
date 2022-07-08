@@ -6,7 +6,7 @@ import { List, MobileToggleLabel } from './styled'
 
 import { FilterType } from '../../types'
 
-type Props = {
+export type Props = {
   onChange: (filterType: FilterType) => void
   activeFilter: FilterType
 }
