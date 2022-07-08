@@ -16,7 +16,7 @@ export const SignIn: FC<WrapperType> = ({ position = null }) => (
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <a>
         <Span>Don&apos;t have account? </Span>
-        <B>SIGN UP</B>
+        <B>SIGN IN</B>
       </a>
     </Link>
   </SignInQuestionWrapper>
