@@ -1,3 +1,5 @@
+export {}
+
 describe('[scenario] auth', () => {
   let valid: ICredentials['valid']
   let invalid: ICredentials['invalid']
