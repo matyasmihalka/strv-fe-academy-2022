@@ -8,6 +8,7 @@ export const Container = styled.section`
   width: 90%;
   margin-top: -8.5rem;
   text-align: center;
+  z-index: 100;
 
   ${mq.medium} {
     width: 60%;
