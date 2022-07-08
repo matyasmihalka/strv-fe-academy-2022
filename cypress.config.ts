@@ -4,7 +4,8 @@ import http from 'http'
 import next from 'next'
 
 const BASE_URL = 'http://localhost:3000'
-const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL
+const NEXT_PUBLIC_API_URL = 'https://testproject-api-v2.strv.com/'
+// const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export default defineConfig({
   e2e: {
