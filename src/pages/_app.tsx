@@ -14,7 +14,7 @@ const queryClient = new QueryClient()
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ErrorBoundary type="next_root">
+    <ErrorBoundary type="root">
       <GlobalStyle />
       <HeadDefault />
       <QueryClientProvider client={queryClient}>
