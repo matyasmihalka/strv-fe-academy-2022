@@ -37,3 +37,9 @@ export const Nav = styled.nav`
     margin-bottom: 4rem;
   }
 `
+
+export const SpinnerContainer = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+`

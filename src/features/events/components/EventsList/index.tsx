@@ -1,9 +1,11 @@
 import type { FC } from 'react'
 
+import { Spinner } from '~/features/ui/components/Spinner'
+
 import { EventItemContainer } from './parts/EventItemContainer'
 import { NavigationFilter } from './parts/NavigationFilter'
 import { NavigationView } from './parts/NavigationView'
-import { List, Nav } from './styled'
+import { List, Nav, SpinnerContainer } from './styled'
 import type { FilterType } from './types'
 import type { ViewType } from './types'
 
@@ -44,18 +46,14 @@ export const EventsList: FC = () => {
         <NavigationView onChange={setViewHandler} activeView={view} />
       </Nav>
       {isLoading ? (
-        <div>Loading...</div>
+        <SpinnerContainer>
+          <Spinner />
+        </SpinnerContainer>
       ) : (
         <List view={view}>
           {events.map((event) => (
             <li key={event.id}>
-              <EventItemContainer
-                view={view}
-                event={event}
-                // owner={users[articles[id].owner]}
-                // loggedInUser={loggedInUser}
-                // onAttendanceChange={attendanceHandler(id)}
-              />
+              <EventItemContainer view={view} event={event} />
             </li>
           ))}
         </List>
