@@ -10,10 +10,17 @@ import { AttendeeIcon } from './parts/AttendeeIcon'
 
 export const Description = styled.p`
   ${typography.paragraph.normal}
-  padding: 2.5rem 0 4rem 0;
+  /* padding: 2.5rem 0 4rem 0; */
+  margin: 2.5rem 0 4rem 0;
   width: 90%;
   box-sizing: content-box;
   height: 5rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
 `
 
 export const Author = styled.p`
@@ -24,6 +31,7 @@ export const StyledActions = styled.p`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  min-height: 3rem;
 `
 export const StyledAttendeeIcon = styled(AttendeeIcon)`
   margin-right: 0.5rem;
@@ -89,6 +97,9 @@ export const Article = styled.article<{ view: ViewType }>`
         overflow: hidden;
         margin-top: -0.3rem;
         margin-bottom: 0.8rem;
+
+        /* white-space: normal; */
+        white-space: wrap;
       }
 
       ${Author} {
@@ -116,6 +127,7 @@ export const Article = styled.article<{ view: ViewType }>`
           margin-top: 0;
           margin-bottom: 0;
           white-space: nowrap;
+          display: block;
         }
 
         ${Container} {
