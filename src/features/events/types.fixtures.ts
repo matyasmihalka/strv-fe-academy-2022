@@ -15,11 +15,13 @@ export const createEvent = (data?: {
   isPastEvent?: boolean
 }) => {
   const id = faker.datatype.uuid()
+  const title = faker.lorem.words(3)
+  const capitalTitle = title.charAt(0).toUpperCase() + title.slice(1)
   return {
     id: id,
     _id: id,
     __v: 0,
-    title: faker.lorem.words(3),
+    title: capitalTitle,
     description: faker.lorem.paragraph(),
     createdAt: faker.date.past().toISOString(),
     updatedAt: faker.date.past().toISOString(),
