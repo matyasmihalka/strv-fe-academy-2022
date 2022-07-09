@@ -1,6 +1,7 @@
-import { format } from 'date-fns'
+import { format, isBefore } from 'date-fns'
 import type { FC } from 'react'
 
+import { useUserContext } from '~/features/auth/contexts/userContext'
 import { ViewType } from '~/features/events/components/EventsList/types'
 import type { ArticleType } from '~/features/events/types'
 
@@ -27,6 +28,10 @@ export const EventItemComponent: FC<Props> = ({
   isLoggedInUserAttending,
   handleAttendance,
 }) => {
+  const isPast = isBefore(new Date(event.startsAt), new Date())
+
+  const { user } = useUserContext()
+
   const Time = () => (
     <time>{format(new Date(event.startsAt), 'LLLL d, y – p')}</time>
   )
@@ -38,16 +43,22 @@ export const EventItemComponent: FC<Props> = ({
 
   const DescriptionData = () => <Description>{event.description}</Description>
 
-  const ButtonData = () => (
-    <StyledButton
-      type="button"
-      size="small"
-      accent={isLoggedInUserAttending ? 'destructive' : 'primary'}
-      onClick={handleAttendance}
-    >
-      {isLoggedInUserAttending ? 'LEAVE' : 'JOIN'}
-    </StyledButton>
-  )
+  const ButtonData = () => {
+    if (isPast || !user) {
+      return null
+    }
+
+    return (
+      <StyledButton
+        type="button"
+        size="small"
+        accent={isLoggedInUserAttending ? 'destructive' : 'primary'}
+        onClick={handleAttendance}
+      >
+        {isLoggedInUserAttending ? 'LEAVE' : 'JOIN'}
+      </StyledButton>
+    )
+  }
 
   return (
     <Article view={view}>
