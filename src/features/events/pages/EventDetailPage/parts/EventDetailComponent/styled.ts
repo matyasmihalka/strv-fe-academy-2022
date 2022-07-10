@@ -26,6 +26,7 @@ export const StyledH2 = styled.h2`
   ${StyleReset}
   ${typography.heading.h3}
   color: ${colors.text.base};
+  margin-bottom: 2rem;
 `
 
 export const AttendeesContainer = styled.div`
@@ -38,6 +39,7 @@ export const StyledAttendees = styled.p`
   color: ${colors.text.dimmed};
   background: ${colors.background.inactive};
   border-radius: 100px;
-  padding: 0.5rem 1.6rem;
+  padding: 0.7rem 1.6rem;
   ${typography.paragraph.small}
+  margin: 0.2rem 0;
 `
