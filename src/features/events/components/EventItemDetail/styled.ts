@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 import { Button } from '~/features/ui/components/Button'
 import { colors } from '~/features/ui/theme/colors'
+import { mq } from '~/features/ui/theme/mq'
 import { typography } from '~/features/ui/theme/typography'
 
 import { AttendeeIcon } from '../AttendeeIcon'
@@ -13,11 +14,15 @@ export const StyledTime = styled.time`
 `
 
 export const StyledH2 = styled.h2`
-  ${typography.heading.h1}
+  ${typography.heading.h2}
   color: ${colors.text.base};
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+
+  ${mq.medium} {
+    ${typography.heading.h1}
+  }
 `
 
 export const StyledAuthor = styled.p`

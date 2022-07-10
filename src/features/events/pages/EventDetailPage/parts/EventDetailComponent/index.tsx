@@ -5,7 +5,7 @@ import { EventItemDetail } from '~/features/events/components/EventItemDetail'
 import type { ArticleType } from '~/features/events/types'
 import { ContainerEventPages } from '~/features/ui/components/ContainerEventPages'
 
-import { PageLayout, StyledH1 } from './styled'
+import { PageLayout, StyledH1, StyledP } from './styled'
 
 import { PositionedCreateButton } from '../../../DashboardPage/styled'
 import { AttendeesCard } from '../AttendeesCard'
@@ -25,7 +25,9 @@ export const EventDetailComponent: FC<Props> = ({
 }) => {
   return (
     <ContainerEventPages>
-      <StyledH1>Detail Event: #{event.id}</StyledH1>
+      <StyledH1>
+        Detail Event: <StyledP>#{event.id}</StyledP>{' '}
+      </StyledH1>
 
       <PageLayout>
         <EventItemDetail
