@@ -4,7 +4,7 @@ import { privateApi } from '~/features/api'
 
 import type { ArticleType } from '../types'
 
-const useAttendance = (id: string) => {
+const useAttendance = (id: string, isLoggedInUserAttending: boolean) => {
   const queryClient = useQueryClient()
 
   const updateAttendance = (updatedEvent: ArticleType) => {
@@ -50,7 +50,15 @@ const useAttendance = (id: string) => {
     }
   )
 
-  return { attendEvent, leaveEvent }
+  const handleAttendance = () => {
+    if (isLoggedInUserAttending) {
+      leaveEvent.mutate()
+    } else {
+      attendEvent.mutate()
+    }
+  }
+
+  return { handleAttendance }
 }
 
 export { useAttendance }

@@ -19,15 +19,8 @@ export const EventItemContainer: FC<Props> = ({ view, event }) => {
 
   const isLoggedInUserAttending = isUserAttending(user, event)
 
-  const { attendEvent, leaveEvent } = useAttendance(event.id)
+  const { handleAttendance } = useAttendance(event.id, isLoggedInUserAttending)
 
-  const handleAttendance = () => {
-    if (isLoggedInUserAttending) {
-      leaveEvent.mutate()
-    } else {
-      attendEvent.mutate()
-    }
-  }
   return (
     <EventItemComponent
       view={view}

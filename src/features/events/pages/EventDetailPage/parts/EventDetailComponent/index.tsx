@@ -23,7 +23,6 @@ export const EventDetailComponent: FC<Props> = ({
   event,
   isLoggedInUserAttending,
 }) => {
-  console.log(isLoggedInUserAttending)
   return (
     <ContainerEventPages>
       <StyledH1>Detail Event: #{event.id}</StyledH1>
