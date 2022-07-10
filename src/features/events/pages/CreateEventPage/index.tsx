@@ -72,7 +72,7 @@ const Page: NextPage = () => {
   }
   return (
     <LayoutInternal
-      headerComponent={
+      leftHeaderComponent={
         <Link href={Routes.DASHBOARD}>
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <CloseLink>

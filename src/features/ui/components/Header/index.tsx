@@ -10,7 +10,8 @@ import { AccountInfo } from '../AccountInfo'
 
 export type ContainerProps = {
   isExternal?: boolean
-  actionComponent?: ReactNode
+  leftActionComponent?: ReactNode
+  centerActionComponent?: ReactNode
 }
 
 export type ComponentProps = {
@@ -19,28 +20,32 @@ export type ComponentProps = {
 
 export const HeaderComponent: FC<ComponentProps & ContainerProps> = ({
   isExternal,
-  actionComponent,
+  leftActionComponent,
   user,
+  centerActionComponent,
 }) => {
   return (
     <StyledHeader isAbsolute={isExternal}>
       <StyledLogo />
-      {actionComponent ?? (user ? <AccountInfo user={user} /> : <SignIn />)}
+      {centerActionComponent}
+      {leftActionComponent ?? (user ? <AccountInfo user={user} /> : <SignIn />)}
     </StyledHeader>
   )
 }
 
 export const Header: FC<ContainerProps> = ({
   isExternal = false,
-  actionComponent = null,
+  leftActionComponent = null,
+  centerActionComponent = null,
 }) => {
   const { user } = useUserContext()
 
   return (
     <HeaderComponent
       isExternal={isExternal}
-      actionComponent={actionComponent}
+      leftActionComponent={leftActionComponent}
       user={user}
+      centerActionComponent={centerActionComponent}
     />
   )
 }

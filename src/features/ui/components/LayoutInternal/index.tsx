@@ -7,12 +7,20 @@ import { Main } from './styled'
 
 type Props = {
   children: NonNullable<ReactNode>
-  headerComponent?: ReactNode
+  leftHeaderComponent?: ReactNode
+  centerHeaderComponent?: ReactNode
 }
 
-export const LayoutInternal: FC<Props> = ({ children, headerComponent }) => (
+export const LayoutInternal: FC<Props> = ({
+  children,
+  leftHeaderComponent,
+  centerHeaderComponent,
+}) => (
   <Main>
-    <Header actionComponent={headerComponent} />
+    <Header
+      leftActionComponent={leftHeaderComponent}
+      centerActionComponent={centerHeaderComponent}
+    />
     {children}
   </Main>
 )
