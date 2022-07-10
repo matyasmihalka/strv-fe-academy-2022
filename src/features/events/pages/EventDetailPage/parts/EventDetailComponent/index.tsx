@@ -7,6 +7,7 @@ import { ContainerEventPages } from '~/features/ui/components/ContainerEventPage
 
 import { PageLayout, StyledH1 } from './styled'
 
+import { PositionedCreateButton } from '../../../DashboardPage/styled'
 import { AttendeesCard } from '../AttendeesCard'
 
 export type Props = {
@@ -34,6 +35,7 @@ export const EventDetailComponent: FC<Props> = ({
         />
         <AttendeesCard event={event} loggedInUser={loggedInUser} />
       </PageLayout>
+      <PositionedCreateButton />
     </ContainerEventPages>
   )
 }
