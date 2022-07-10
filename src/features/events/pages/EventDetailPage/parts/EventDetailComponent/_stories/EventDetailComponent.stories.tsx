@@ -25,4 +25,6 @@ const Template: Story<Props> = (args) => {
 }
 
 export const Default = Template.bind({})
-Default.args = { event: createEvent() }
+Default.args = {
+  event: createEvent(),
+}
