@@ -29,11 +29,12 @@ export const StyledDescription = styled.p`
   margin: 2.5rem 0 3.2rem 0;
 `
 
-export const StyledActions = styled.p`
+export const StyledActions = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   min-height: 3rem;
+  margin-top: auto;
 `
 export const StyledButton = styled(Button)`
   padding: 0.8rem 0rem;

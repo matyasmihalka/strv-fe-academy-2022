@@ -10,10 +10,12 @@ export default {
   component: AttendeesCard,
 } as Meta
 
+const event = createEvent()
+
 const Template: Story<Props> = (args) => <AttendeesCard {...args} />
 
 export const Default = Template.bind({})
 Default.args = {
-  event: createEvent(),
-  isLoggedInUserAttending: true,
+  event: event,
+  loggedInUser: event.attendees[1],
 }

@@ -59,6 +59,7 @@ export const EventDetailPage: NextPage = () => {
           event={event}
           isLoggedInUserAttending={isLoggedInUserAttending}
           handleAttendance={handleAttendance}
+          loggedInUser={user}
         />
       ) : (
         <Spinner />
