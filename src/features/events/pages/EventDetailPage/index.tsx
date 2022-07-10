@@ -13,7 +13,7 @@ export const EventDetailPage: NextPage = () => {
   console.log(eventID)
   return (
     <LayoutInternal>
-      <EventDetailComponent event={createEvent()} />
+      <EventDetailComponent event={createEvent()} isLoggedInUserAttending />
     </LayoutInternal>
   )
 }

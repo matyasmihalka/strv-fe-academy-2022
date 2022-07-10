@@ -18,6 +18,7 @@ const Template: Story = () => (
   <EventCard>
     <StyledH2>Attendees</StyledH2>
     <AttendeesContainer>
+      <StyledAttendees isAttending>You</StyledAttendees>
       {event.attendees?.map((attendee) => (
         <StyledAttendees key={attendee.id}>
           {attendee.firstName} {attendee.lastName}

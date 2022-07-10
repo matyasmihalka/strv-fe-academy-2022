@@ -16,9 +16,14 @@ import {
 
 export type Props = {
   event: ArticleType
+  isLoggedInUserAttending: boolean
 }
 
-export const EventDetailComponent: FC<Props> = ({ event }) => {
+export const EventDetailComponent: FC<Props> = ({
+  event,
+  isLoggedInUserAttending,
+}) => {
+  console.log(isLoggedInUserAttending)
   return (
     <ContainerEventPages>
       <StyledH1>Detail Event: #{event.id}</StyledH1>
@@ -28,6 +33,9 @@ export const EventDetailComponent: FC<Props> = ({ event }) => {
         <EventCard>
           <StyledH2>Attendees</StyledH2>
           <AttendeesContainer>
+            {isLoggedInUserAttending && (
+              <StyledAttendees isAttending>You</StyledAttendees>
+            )}
             {event.attendees?.map((attendee) => (
               <StyledAttendees key={attendee.id}>
                 {attendee.firstName} {attendee.lastName}
