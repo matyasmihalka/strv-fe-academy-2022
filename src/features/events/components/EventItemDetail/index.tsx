@@ -17,7 +17,7 @@ import {
 
 export type Props = {
   event: ArticleType
-  isLoggedInUserAttending?: boolean
+  isLoggedInUserAttending: boolean
   handleAttendance: () => void
 }
 
@@ -26,6 +26,7 @@ export const EventItemDetail: FC<Props> = ({
   isLoggedInUserAttending,
   handleAttendance,
 }) => {
+  //   console.log(handleAttendance)
   return (
     <EventCard>
       <StyledTime>

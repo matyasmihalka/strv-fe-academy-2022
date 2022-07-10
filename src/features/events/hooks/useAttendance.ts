@@ -4,18 +4,25 @@ import { privateApi } from '~/features/api'
 
 import type { ArticleType } from '../types'
 
-const useAttendance = (id: string, isLoggedInUserAttending: boolean) => {
+const useAttendance = (id: string) => {
   const queryClient = useQueryClient()
 
   const updateAttendance = (updatedEvent: ArticleType) => {
-    queryClient.setQueriesData<ArticleType[]>(['events'], (previous) => {
-      if (previous) {
-        return previous.map((event) =>
-          event.id === updatedEvent.id ? updatedEvent : event
-        )
+    queryClient.setQueriesData<ArticleType[] | ArticleType>(
+      ['events'],
+      (previous) => {
+        if (previous) {
+          if (Array.isArray(previous)) {
+            return previous.map((event) =>
+              event.id === updatedEvent.id ? updatedEvent : event
+            )
+          } else {
+            return updatedEvent
+          }
+        }
+        return []
       }
-      return []
-    })
+    )
   }
 
   const attendEvent = useMutation<ArticleType, Error>(
@@ -50,15 +57,7 @@ const useAttendance = (id: string, isLoggedInUserAttending: boolean) => {
     }
   )
 
-  const handleAttendance = () => {
-    if (isLoggedInUserAttending) {
-      leaveEvent.mutate()
-    } else {
-      attendEvent.mutate()
-    }
-  }
-
-  return { handleAttendance }
+  return { attendEvent, leaveEvent }
 }
 
 export { useAttendance }

@@ -64,6 +64,7 @@ export const Article = styled.article<{ view: ViewType }>`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
   }
 
   ${mq.medium} {

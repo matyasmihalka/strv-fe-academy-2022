@@ -1,7 +1,6 @@
 import type { Story, Meta } from '@storybook/react/types-6-0'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { useState } from 'react'
 
-import { UserContextProvider } from '~/features/auth/contexts/userContext'
 import { createEvent } from '~/features/events/types.fixtures'
 
 import { EventDetailComponent } from '..'
@@ -12,15 +11,17 @@ export default {
   component: EventDetailComponent,
 } as Meta
 
-const queryClient = new QueryClient()
-
 const Template: Story<Props> = (args) => {
+  const [isAttending, setIsAttending] = useState(false)
+  const handleAttendance = () => {
+    isAttending ? setIsAttending(false) : setIsAttending(true)
+  }
   return (
-    <QueryClientProvider client={queryClient}>
-      <UserContextProvider>
-        <EventDetailComponent {...args} />
-      </UserContextProvider>
-    </QueryClientProvider>
+    <EventDetailComponent
+      {...args}
+      handleAttendance={handleAttendance}
+      isLoggedInUserAttending={isAttending}
+    />
   )
 }
 
