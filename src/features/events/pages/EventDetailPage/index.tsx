@@ -11,7 +11,7 @@ import { Spinner } from '~/features/ui/components/Spinner'
 
 import { BackArrowIcon } from './parts/BackArrowIcon'
 import { EventDetailComponent } from './parts/EventDetailComponent'
-import { StyledLink } from './styled'
+import { PositionedSpinner, StyledLink } from './styled'
 
 import { useAttendance } from '../../hooks/useAttendance'
 import { isUserAttending } from '../../lib/isUserAttending'
@@ -26,7 +26,6 @@ export const EventDetailPage: NextPage = () => {
   const { user } = useUserContext()
 
   const id = Array.isArray(eventID) ? '' : eventID
-  console.log(id)
 
   const result = useQuery<ArticleType, Error>(
     ['events', id],
@@ -43,7 +42,6 @@ export const EventDetailPage: NextPage = () => {
   )
 
   const event = result.data
-  console.log(event)
   const isLoggedInUserAttending = event ? isUserAttending(user, event) : false
 
   const { attendEvent, leaveEvent } = useAttendance(id)
@@ -74,7 +72,9 @@ export const EventDetailPage: NextPage = () => {
           loggedInUser={user}
         />
       ) : (
-        <Spinner />
+        <PositionedSpinner>
+          <Spinner />
+        </PositionedSpinner>
       )}
     </LayoutInternal>
   )
