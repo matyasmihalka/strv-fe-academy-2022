@@ -7,8 +7,8 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 import { withPrivateRoute } from '~/features/auth/hocs/withPrivateRoute'
-import { useCreateEvent } from '~/features/auth/hooks/useCreateEvent'
 import { Routes } from '~/features/core/constants/routes'
+import { useCreateEvent } from '~/features/events/hooks/useCreateEvent'
 import { Input } from '~/features/ui/components/Input'
 import { LayoutInternal } from '~/features/ui/components/LayoutInternal'
 

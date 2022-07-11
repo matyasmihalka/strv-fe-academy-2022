@@ -13,14 +13,16 @@ import { AttendeesCard } from '../../../EventDetailPage/parts/AttendeesCard'
 
 export type Props = {
   event: ArticleType
-  loggedInUser: UserType
+  loggedInUser: UserType | null
   handleSubmit: (data: EventFormTypes) => void
+  isLoading: boolean
 }
 
 export const EditEventComponent: FC<Props> = ({
   event,
   loggedInUser,
   handleSubmit,
+  isLoading,
 }) => {
   return (
     <ContainerEventPages>
@@ -29,7 +31,7 @@ export const EditEventComponent: FC<Props> = ({
         <EditEventItemForm event={event} onSubmitHandler={handleSubmit} />
         <AttendeesCard event={event} loggedInUser={loggedInUser} />
       </EventDetailsLayout>
-      <PositionedEditFormButton formID={event.id} />
+      <PositionedEditFormButton formID={event.id} isDisabled={isLoading} />
     </ContainerEventPages>
   )
 }

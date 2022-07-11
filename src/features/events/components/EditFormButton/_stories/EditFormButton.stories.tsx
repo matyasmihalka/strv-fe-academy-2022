@@ -14,3 +14,8 @@ const Template: Story<Props> = (args) => {
 
 export const Default = Template.bind({})
 Default.args = {}
+
+export const Disabled = Template.bind({})
+Disabled.args = {
+  isDisabled: true,
+}
