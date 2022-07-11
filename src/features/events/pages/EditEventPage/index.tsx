@@ -25,7 +25,6 @@ export const EditEventPage: NextPage = () => {
   const { mutate, isLoading } = useEditEvent(id)
 
   const handleSubmit = (data: EventFormTypes) => {
-    console.log(data)
     const [hours, minutes] = data.time.split(':').map(Number)
     const startsAt = setDate(new Date(data.date), {
       hours: hours,

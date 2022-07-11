@@ -2,20 +2,20 @@ import styled from 'styled-components'
 
 import { StyleReset } from '~/features/ui/components/StyleReset'
 import { colors } from '~/features/ui/theme/colors'
-import { mq } from '~/features/ui/theme/mq'
 import { typography } from '~/features/ui/theme/typography'
 
-export const StyledH1 = styled.h1`
+export const StyledButton = styled.button`
   ${StyleReset}
   ${typography.label.small}
-  font-weight: bold;
-  color: ${colors.text.tabs};
-`
+  color: ${colors.accent.destructive};
+  cursor: pointer;
 
-export const StyledP = styled.p`
-  display: block;
+  &:disabled {
+    color: ${colors.text.inactive};
+    /* --background-color: ${colors.background.inactive}; */
+  }
 
-  ${mq.medium} {
-    display: inline;
+  svg {
+    margin-right: 1rem;
   }
 `

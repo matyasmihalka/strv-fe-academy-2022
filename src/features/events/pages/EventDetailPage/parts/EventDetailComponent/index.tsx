@@ -1,12 +1,13 @@
 import type { FC } from 'react'
 
 import type { UserType } from '~/features/auth/contexts/userContext'
+import { ContainerDetailEventPages } from '~/features/events/components/ContainerDetailEventPages'
 import { PositionedCreateButton } from '~/features/events/components/CreateButton/styled'
 import { EventDetailsLayout } from '~/features/events/components/EventDetailsLayout'
-import { EventIdTitle } from '~/features/events/components/EventIdTitle'
 import { EventItemDetail } from '~/features/events/components/EventItemDetail'
 import type { ArticleType } from '~/features/events/types'
-import { ContainerEventPages } from '~/features/ui/components/ContainerEventPages'
+
+import { PositionedEventID } from './styled'
 
 import { AttendeesCard } from '../AttendeesCard'
 
@@ -24,8 +25,8 @@ export const EventDetailComponent: FC<Props> = ({
   isLoggedInUserOwner,
 }) => {
   return (
-    <ContainerEventPages>
-      <EventIdTitle eventId={event.id} />
+    <ContainerDetailEventPages>
+      <PositionedEventID eventId={event.id} />
       <EventDetailsLayout>
         <EventItemDetail
           event={event}
@@ -36,6 +37,6 @@ export const EventDetailComponent: FC<Props> = ({
         <AttendeesCard event={event} loggedInUser={loggedInUser} />
       </EventDetailsLayout>
       {loggedInUser && <PositionedCreateButton />}
-    </ContainerEventPages>
+    </ContainerDetailEventPages>
   )
 }
