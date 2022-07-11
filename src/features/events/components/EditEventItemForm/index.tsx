@@ -19,7 +19,10 @@ const minDate = new Date().toISOString().split('T')[0]
 const formatDateForInput = (UTCdate: string) => {
   const date = new Date(UTCdate)
   const year = date.getFullYear()
-  const month = date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth()
+  const month =
+    date.getUTCMonth() < 10
+      ? `0${date.getUTCMonth() + 1}`
+      : date.getUTCMonth() + 1
   const day =
     date.getUTCDate() < 10 ? `0${date.getUTCDate()}` : date.getUTCDate()
 

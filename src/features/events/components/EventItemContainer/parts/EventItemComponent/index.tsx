@@ -22,14 +22,16 @@ export type Props = {
   view: ViewType
   event: ArticleType
   isLoggedInUserAttending: boolean
-  handleAttendance: () => void
+  handleButtonAction: () => void
+  isLoggedInUserOwner: boolean
 }
 
 export const EventItemComponent: FC<Props> = ({
   view,
   event,
   isLoggedInUserAttending,
-  handleAttendance,
+  handleButtonAction,
+  isLoggedInUserOwner,
 }) => {
   const isPast = isBefore(new Date(event.startsAt), new Date())
 
@@ -53,14 +55,32 @@ export const EventItemComponent: FC<Props> = ({
       return null
     }
 
+    type Props = {
+      buttonText: 'EDIT' | 'JOIN' | 'LEAVE'
+      accent: 'primary' | 'destructive' | 'edit'
+    }
+
+    const getButtonProps = (): Props => {
+      if (isLoggedInUserOwner) {
+        return { buttonText: 'EDIT', accent: 'edit' }
+      }
+      if (isLoggedInUserAttending) {
+        return { buttonText: 'LEAVE', accent: 'destructive' }
+      }
+
+      return { buttonText: 'JOIN', accent: 'primary' }
+    }
+
+    const { buttonText, accent } = getButtonProps()
+
     return (
       <StyledButton
         type="button"
         size="small"
-        accent={isLoggedInUserAttending ? 'destructive' : 'primary'}
-        onClick={handleAttendance}
+        accent={accent}
+        onClick={handleButtonAction}
       >
-        {isLoggedInUserAttending ? 'LEAVE' : 'JOIN'}
+        {buttonText}
       </StyledButton>
     )
   }

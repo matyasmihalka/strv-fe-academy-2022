@@ -6,7 +6,7 @@ import { StyleReset } from '../StyleReset'
 
 type ButtonProps = {
   size?: 'small' | 'medium'
-  accent?: 'normal' | 'primary' | 'destructive'
+  accent?: 'normal' | 'primary' | 'destructive' | 'edit'
 }
 
 export const Button = styled.button<ButtonProps>`
@@ -49,6 +49,14 @@ export const Button = styled.button<ButtonProps>`
     css`
       --background-color: ${colors.accent.destructive};
       --background-color-hover: ${colors.accent.destructiveHover};
+    `}
+
+  ${(props) =>
+    props.accent === 'edit' &&
+    css`
+      --background-color: ${colors.background.inactive};
+      --text-color: ${colors.text.inactive};
+      --background-color-hover: ${colors.background.inactiveHover};
     `}
 
     ${(props) =>

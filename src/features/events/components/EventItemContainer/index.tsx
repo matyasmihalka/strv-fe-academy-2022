@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import type { FC } from 'react'
 
 import { useUserContext } from '~/features/auth/contexts/userContext'
@@ -21,11 +22,19 @@ export const EventItemContainer: FC<Props> = ({ view, event }) => {
 
   const { attendEvent, leaveEvent } = useAttendance(event.id)
 
-  const handleAttendance = () => {
-    if (isLoggedInUserAttending) {
-      leaveEvent.mutate()
+  const isLoggedInUserOwner = event.owner?.id === user?.id
+
+  const router = useRouter()
+
+  const handleButtonAction = () => {
+    if (isLoggedInUserOwner) {
+      void router.push(`/events/edit/${event.id}`)
     } else {
-      attendEvent.mutate()
+      if (isLoggedInUserAttending) {
+        leaveEvent.mutate()
+      } else {
+        attendEvent.mutate()
+      }
     }
   }
 
@@ -34,7 +43,8 @@ export const EventItemContainer: FC<Props> = ({ view, event }) => {
       view={view}
       event={event}
       isLoggedInUserAttending={isLoggedInUserAttending}
-      handleAttendance={handleAttendance}
+      handleButtonAction={handleButtonAction}
+      isLoggedInUserOwner={isLoggedInUserOwner}
     />
   )
 }

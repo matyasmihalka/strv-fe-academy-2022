@@ -52,7 +52,6 @@ export const LoginPage: NextPage = () => {
    * Login handler.
    */
   const login = (data: LoginInputs) => {
-    console.log(data)
     // Only submit in case of no errors.
     if (!errors.email && !errors.password) {
       // setIsSubmitting(true)
