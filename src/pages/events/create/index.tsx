@@ -1,1 +1,4 @@
-export { CreateEventPage as default } from '~/features/events/pages/CreateEventPage'
+export {
+  CreateEventPage as default,
+  getServerSideProps,
+} from '~/features/events/pages/CreateEventPage'

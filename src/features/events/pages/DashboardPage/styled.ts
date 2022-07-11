@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { AccessibleHidden } from '~/features/ui/components/AccessibleHidden'
 import { mq } from '~/features/ui/theme/mq'
 
-import { CreateButton } from './parts/CreateButton'
+import { CreateButton } from '../../components/CreateButton'
 
 export const H1 = styled.h1`
   ${AccessibleHidden}

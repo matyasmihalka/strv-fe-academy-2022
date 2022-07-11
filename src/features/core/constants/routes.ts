@@ -4,4 +4,5 @@ export enum Routes {
   CREATE_EVENT = '/events/create',
   ERROR404 = '/404',
   ERRORGENERAL = '/error',
+  EVENTS = '/events',
 }

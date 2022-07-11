@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { format } from 'date-fns'
 import { set as setDate } from 'date-fns'
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -43,7 +43,11 @@ const EventFormSchema = yup.object({
 
 type EventFormTypes = yup.InferType<typeof EventFormSchema>
 
-const Page: NextPage = () => {
+type Props = {
+  prevUrl?: string | undefined
+}
+
+export const Page: NextPage<Props> = ({ prevUrl }) => {
   const {
     register,
     handleSubmit,
@@ -70,10 +74,11 @@ const Page: NextPage = () => {
       capacity: data.capacity,
     })
   }
+
   return (
     <LayoutInternal
-      headerComponent={
-        <Link href={Routes.DASHBOARD}>
+      leftHeaderComponent={
+        <Link href={prevUrl ? prevUrl : Routes.DASHBOARD}>
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <CloseLink>
             <CloseIcon aria-hidden="true" />
@@ -136,3 +141,13 @@ const Page: NextPage = () => {
 }
 
 export const CreateEventPage = withPrivateRoute(Page)
+
+// this will be called by Next.js server side
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return {
+    props: {
+      prevUrl: context.req.headers.referer,
+    }, // will be passed to the page component as props
+  }
+}

@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
+import { EventItemContainer } from '~/features/events/components/EventItemContainer'
 import { Spinner } from '~/features/ui/components/Spinner'
 
-import { EventItemContainer } from './parts/EventItemContainer'
 import { NavigationFilter } from './parts/NavigationFilter'
 import { NavigationView } from './parts/NavigationView'
 import { List, Nav, SpinnerContainer } from './styled'

@@ -6,7 +6,8 @@ import type { ArticleType } from '~/features/events/types'
 
 import { EventItemComponent } from './parts/EventItemComponent'
 
-import type { ViewType } from '../../types'
+import { isUserAttending } from '../../lib/isUserAttending'
+import type { ViewType } from '../EventsList/types'
 
 export type Props = {
   view: ViewType
@@ -15,25 +16,24 @@ export type Props = {
 
 export const EventItemContainer: FC<Props> = ({ view, event }) => {
   const { user } = useUserContext()
-  const isUserAttending =
-    user && event.attendees.some((attendee) => attendee.id === user.id)
-      ? true
-      : false
+
+  const isLoggedInUserAttending = isUserAttending(user, event)
 
   const { attendEvent, leaveEvent } = useAttendance(event.id)
 
   const handleAttendance = () => {
-    if (isUserAttending) {
+    if (isLoggedInUserAttending) {
       leaveEvent.mutate()
     } else {
       attendEvent.mutate()
     }
   }
+
   return (
     <EventItemComponent
       view={view}
       event={event}
-      isLoggedInUserAttending={isUserAttending}
+      isLoggedInUserAttending={isLoggedInUserAttending}
       handleAttendance={handleAttendance}
     />
   )

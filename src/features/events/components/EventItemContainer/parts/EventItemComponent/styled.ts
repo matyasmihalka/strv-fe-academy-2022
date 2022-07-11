@@ -6,7 +6,7 @@ import { colors } from '~/features/ui/theme/colors'
 import { mq } from '~/features/ui/theme/mq'
 import { typography } from '~/features/ui/theme/typography'
 
-import { AttendeeIcon } from './parts/AttendeeIcon'
+import { AttendeeIcon } from '../../../AttendeeIcon'
 
 export const Description = styled.p`
   ${typography.paragraph.normal}
@@ -64,6 +64,7 @@ export const Article = styled.article<{ view: ViewType }>`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
   }
 
   ${mq.medium} {

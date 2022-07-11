@@ -30,5 +30,6 @@ export const CustomComp = Template.bind({})
 CustomComp.args = {
   user: createUser(),
   isExternal: false,
-  actionComponent: <div>Close</div>,
+  leftActionComponent: <div>Close</div>,
+  centerActionComponent: <div>Go back</div>,
 }

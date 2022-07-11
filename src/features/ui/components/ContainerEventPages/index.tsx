@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { mq, ScreenSize } from '~/features/ui/theme/mq'
 
-export const Container = styled.div`
+export const ContainerEventPages = styled.div`
   margin: 4rem auto 0 auto;
   padding: 0 0.8rem 10rem 0.8rem;
   max-width: ${ScreenSize.large / 10}rem;

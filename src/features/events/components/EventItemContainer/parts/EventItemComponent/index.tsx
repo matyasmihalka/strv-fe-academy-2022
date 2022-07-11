@@ -1,8 +1,11 @@
-import { format, isBefore } from 'date-fns'
+import { isBefore } from 'date-fns'
+import Link from 'next/link'
 import type { FC } from 'react'
 
 import { useUserContext } from '~/features/auth/contexts/userContext'
+import { Routes } from '~/features/core/constants/routes'
 import { ViewType } from '~/features/events/components/EventsList/types'
+import { formattedTime } from '~/features/events/lib/formattedTime'
 import type { ArticleType } from '~/features/events/types'
 
 import {
@@ -32,10 +35,12 @@ export const EventItemComponent: FC<Props> = ({
 
   const { user } = useUserContext()
 
-  const Time = () => (
-    <time>{format(new Date(event.startsAt), 'LLLL d, y – p')}</time>
+  const Time = () => <time>{formattedTime(event.startsAt)}</time>
+  const H3 = () => (
+    <h3>
+      <Link href={`${Routes.EVENTS}/${event.id}`}>{event.title}</Link>
+    </h3>
   )
-  const H3 = () => <h3>{event.title}</h3>
 
   const AuthorData = () => (
     <Author>{`${event.owner.firstName} ${event.owner.lastName}`}</Author>
@@ -65,6 +70,7 @@ export const EventItemComponent: FC<Props> = ({
       {view === ViewType.GRID ? (
         <>
           <Time />
+
           <H3 />
           <AuthorData />
           <DescriptionData />

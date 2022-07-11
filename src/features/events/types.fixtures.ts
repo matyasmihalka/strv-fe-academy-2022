@@ -15,22 +15,24 @@ export const createEvent = (data?: {
   isPastEvent?: boolean
 }) => {
   const id = faker.datatype.uuid()
+  const title = faker.lorem.words(3)
+  const capitalTitle = title.charAt(0).toUpperCase() + title.slice(1)
   return {
     id: id,
     _id: id,
     __v: 0,
-    title: faker.lorem.words(3),
-    description: faker.lorem.paragraph(),
+    title: capitalTitle,
+    description: faker.lorem.paragraph(5),
     createdAt: faker.date.past().toISOString(),
     updatedAt: faker.date.past().toISOString(),
     startsAt: data?.isPastEvent
       ? faker.date.past().toISOString()
       : faker.date.future().toISOString(),
-    capacity: faker.datatype.number({ min: 0, max: 10 }),
+    capacity: faker.datatype.number({ min: 0, max: 50 }),
     owner: data?.user ?? createUser(),
     attendees:
       data?.attendees ??
-      Array(10)
+      Array(20)
         .fill(0)
         .map(() => createUser()),
   }

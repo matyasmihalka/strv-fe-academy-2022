@@ -8,14 +8,21 @@ const useAttendance = (id: string) => {
   const queryClient = useQueryClient()
 
   const updateAttendance = (updatedEvent: ArticleType) => {
-    queryClient.setQueriesData<ArticleType[]>(['events'], (previous) => {
-      if (previous) {
-        return previous.map((event) =>
-          event.id === updatedEvent.id ? updatedEvent : event
-        )
+    queryClient.setQueriesData<ArticleType[] | ArticleType>(
+      ['events'],
+      (previous) => {
+        if (previous) {
+          if (Array.isArray(previous)) {
+            return previous.map((event) =>
+              event.id === updatedEvent.id ? updatedEvent : event
+            )
+          } else {
+            return updatedEvent
+          }
+        }
+        return []
       }
-      return []
-    })
+    )
   }
 
   const attendEvent = useMutation<ArticleType, Error>(
