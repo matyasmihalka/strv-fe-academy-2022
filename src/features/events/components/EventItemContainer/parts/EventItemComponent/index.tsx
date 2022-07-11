@@ -15,14 +15,15 @@ import {
   Description,
   StyledActions,
   StyledAttendeeIcon,
-  StyledButton,
+  // StyledButton,
 } from './styled'
+
+import { EventActionButton } from '../../../EventActionButton'
 
 export type Props = {
   view: ViewType
   event: ArticleType
   isLoggedInUserAttending: boolean
-  handleButtonAction: () => void
   isLoggedInUserOwner: boolean
 }
 
@@ -30,7 +31,6 @@ export const EventItemComponent: FC<Props> = ({
   view,
   event,
   isLoggedInUserAttending,
-  handleButtonAction,
   isLoggedInUserOwner,
 }) => {
   const isPast = isBefore(new Date(event.startsAt), new Date())
@@ -50,41 +50,6 @@ export const EventItemComponent: FC<Props> = ({
 
   const DescriptionData = () => <Description>{event.description}</Description>
 
-  const ButtonData = () => {
-    if (isPast || !user) {
-      return null
-    }
-
-    type Props = {
-      buttonText: 'EDIT' | 'JOIN' | 'LEAVE'
-      accent: 'primary' | 'destructive' | 'edit'
-    }
-
-    const getButtonProps = (): Props => {
-      if (isLoggedInUserOwner) {
-        return { buttonText: 'EDIT', accent: 'edit' }
-      }
-      if (isLoggedInUserAttending) {
-        return { buttonText: 'LEAVE', accent: 'destructive' }
-      }
-
-      return { buttonText: 'JOIN', accent: 'primary' }
-    }
-
-    const { buttonText, accent } = getButtonProps()
-
-    return (
-      <StyledButton
-        type="button"
-        size="small"
-        accent={accent}
-        onClick={handleButtonAction}
-      >
-        {buttonText}
-      </StyledButton>
-    )
-  }
-
   return (
     <Article view={view}>
       {view === ViewType.GRID ? (
@@ -99,7 +64,13 @@ export const EventItemComponent: FC<Props> = ({
               <StyledAttendeeIcon />{' '}
               {`${event.attendees.length} of ${event.capacity}`}
             </span>
-            <ButtonData />
+            {!isPast && user && (
+              <EventActionButton
+                isLoggedInUserOwner={isLoggedInUserOwner}
+                isLoggedInUserAttending={isLoggedInUserAttending}
+                eventID={event.id}
+              />
+            )}
           </StyledActions>
         </>
       ) : (
@@ -111,7 +82,13 @@ export const EventItemComponent: FC<Props> = ({
             <Time />
             <span>{`${event.attendees.length} of ${event.capacity}`}</span>
           </Container>
-          <ButtonData />
+          {!isPast && user && (
+            <EventActionButton
+              isLoggedInUserOwner={isLoggedInUserOwner}
+              isLoggedInUserAttending={isLoggedInUserAttending}
+              eventID={event.id}
+            />
+          )}
         </>
       )}
     </Article>

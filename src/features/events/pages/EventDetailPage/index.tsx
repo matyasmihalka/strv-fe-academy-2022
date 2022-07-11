@@ -11,7 +11,6 @@ import { BackArrowIcon } from './parts/BackArrowIcon'
 import { EventDetailComponent } from './parts/EventDetailComponent'
 import { PositionedSpinner, StyledLink } from './styled'
 
-import { useAttendance } from '../../hooks/useAttendance'
 import { useGetSingleEvent } from '../../hooks/useGetSingleEvent'
 import { isUserAttending } from '../../lib/isUserAttending'
 
@@ -28,16 +27,7 @@ export const EventDetailPage: NextPage = () => {
   const event = result.data
 
   const isLoggedInUserAttending = event ? isUserAttending(user, event) : false
-
-  const { attendEvent, leaveEvent } = useAttendance(id)
-
-  const handleAttendance = () => {
-    if (isLoggedInUserAttending) {
-      leaveEvent.mutate()
-    } else {
-      attendEvent.mutate()
-    }
-  }
+  const isLoggedInUserOwner = user?.id === event?.owner?.id
 
   return (
     <LayoutInternal
@@ -53,8 +43,8 @@ export const EventDetailPage: NextPage = () => {
         <EventDetailComponent
           event={event}
           isLoggedInUserAttending={isLoggedInUserAttending}
-          handleAttendance={handleAttendance}
           loggedInUser={user}
+          isLoggedInUserOwner={isLoggedInUserOwner}
         />
       ) : (
         <PositionedSpinner>

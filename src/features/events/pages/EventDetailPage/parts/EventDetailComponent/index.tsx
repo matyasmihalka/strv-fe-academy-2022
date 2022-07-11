@@ -13,15 +13,15 @@ import { AttendeesCard } from '../AttendeesCard'
 export type Props = {
   event: ArticleType
   isLoggedInUserAttending: boolean
-  handleAttendance: () => void
+  isLoggedInUserOwner: boolean
   loggedInUser: UserType | null
 }
 
 export const EventDetailComponent: FC<Props> = ({
   event,
   isLoggedInUserAttending,
-  handleAttendance,
   loggedInUser,
+  isLoggedInUserOwner,
 }) => {
   return (
     <ContainerEventPages>
@@ -29,9 +29,9 @@ export const EventDetailComponent: FC<Props> = ({
       <EventDetailsLayout>
         <EventItemDetail
           event={event}
-          handleAttendance={handleAttendance}
           isLoggedInUserAttending={isLoggedInUserAttending}
           loggedInUser={loggedInUser}
+          isLoggedInUserOwner={isLoggedInUserOwner}
         />
         <AttendeesCard event={event} loggedInUser={loggedInUser} />
       </EventDetailsLayout>

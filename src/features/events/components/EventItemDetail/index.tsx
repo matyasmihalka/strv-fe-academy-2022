@@ -10,25 +10,26 @@ import {
   StyledActions,
   StyledAttendeeIcon,
   StyledAuthor,
-  StyledButton,
   StyledDescription,
   StyledH2,
   StyledSpan,
   StyledTime,
 } from './styled'
 
+import { EventActionButton } from '../EventActionButton'
+
 export type Props = {
   event: ArticleType
   isLoggedInUserAttending: boolean
-  handleAttendance: () => void
   loggedInUser: UserType | null
+  isLoggedInUserOwner: boolean
 }
 
 export const EventItemDetail: FC<Props> = ({
   event,
   isLoggedInUserAttending,
-  handleAttendance,
   loggedInUser,
+  isLoggedInUserOwner,
 }) => {
   //   console.log(handleAttendance)
   return (
@@ -46,14 +47,11 @@ export const EventItemDetail: FC<Props> = ({
         </StyledSpan>
 
         {isAfter(new Date(event.startsAt), new Date()) && loggedInUser && (
-          <StyledButton
-            type="button"
-            size="small"
-            accent={isLoggedInUserAttending ? 'destructive' : 'primary'}
-            onClick={handleAttendance}
-          >
-            {isLoggedInUserAttending ? 'LEAVE' : 'JOIN'}
-          </StyledButton>
+          <EventActionButton
+            isLoggedInUserOwner={isLoggedInUserOwner}
+            isLoggedInUserAttending={isLoggedInUserAttending}
+            eventID={event.id}
+          />
         )}
       </StyledActions>
     </EventCard>
