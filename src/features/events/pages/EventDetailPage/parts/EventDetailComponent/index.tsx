@@ -34,6 +34,7 @@ export const EventDetailComponent: FC<Props> = ({
           event={event}
           handleAttendance={handleAttendance}
           isLoggedInUserAttending={isLoggedInUserAttending}
+          loggedInUser={loggedInUser}
         />
         <AttendeesCard event={event} loggedInUser={loggedInUser} />
       </PageLayout>
