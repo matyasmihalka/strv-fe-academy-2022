@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 
-import { CreateButton } from '~/features/events/components/CreateButton'
 import { mq } from '~/features/ui/theme/mq'
+
+import { CreateButton } from '../CreateButton'
 
 export const PositionedCreateButton = styled(CreateButton)`
   position: fixed;

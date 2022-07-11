@@ -1,13 +1,13 @@
 import type { FC } from 'react'
 
 import type { UserType } from '~/features/auth/contexts/userContext'
+import { PositionedCreateButton } from '~/features/events/components/CreateButton/styled'
 import { EventDetailsLayout } from '~/features/events/components/EventDetailsLayout'
 import { EventIdTitle } from '~/features/events/components/EventIdTitle'
 import { EventItemDetail } from '~/features/events/components/EventItemDetail'
 import type { ArticleType } from '~/features/events/types'
 import { ContainerEventPages } from '~/features/ui/components/ContainerEventPages'
 
-import { PositionedCreateButton } from '../../../DashboardPage/styled'
 import { AttendeesCard } from '../AttendeesCard'
 
 export type Props = {

@@ -20,8 +20,9 @@ import {
   InputFormContainer,
   P,
   StyledButton,
-  StyledForm,
 } from './styled'
+
+import { StyledEventForm } from '../../components/StyledForm'
 
 const minDate = new Date().toISOString().split('T')[0]
 const minDateFormatted = format(new Date(minDate), 'dd/MM/yyyy')
@@ -92,7 +93,7 @@ export const Page: NextPage<Props> = ({ prevUrl }) => {
           <H1>Create new event</H1>
           <P>Enter details below</P>
           {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-          <StyledForm onSubmit={handleSubmit(onSubmit)} noValidate>
+          <StyledEventForm onSubmit={handleSubmit(onSubmit)} noValidate>
             <Input
               {...register('title')}
               label="Title"
@@ -133,7 +134,7 @@ export const Page: NextPage<Props> = ({ prevUrl }) => {
             <StyledButton type="submit" accent="primary" disabled={isLoading}>
               Create new Event
             </StyledButton>
-          </StyledForm>
+          </StyledEventForm>
         </InputFormContainer>
       </CenterContainer>
     </LayoutInternal>
@@ -147,7 +148,7 @@ export const CreateEventPage = withPrivateRoute(Page)
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
-      prevUrl: context.req.headers.referer,
+      prevUrl: context.req.headers.referer ?? null,
     }, // will be passed to the page component as props
   }
 }

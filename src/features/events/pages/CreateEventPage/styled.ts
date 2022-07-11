@@ -71,10 +71,3 @@ export const StyledButton = styled(Button)`
     padding: 0.8em 4rem;
   }
 `
-
-export const StyledForm = styled.form`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`

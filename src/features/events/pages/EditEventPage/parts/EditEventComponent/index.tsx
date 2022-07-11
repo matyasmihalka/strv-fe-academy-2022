@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 
 import type { UserType } from '~/features/auth/contexts/userContext'
+import { EditEventItemForm } from '~/features/events/components/EditEventItemForm'
 import { EventDetailsLayout } from '~/features/events/components/EventDetailsLayout'
 import { EventIdTitle } from '~/features/events/components/EventIdTitle'
 import type { ArticleType } from '~/features/events/types'
@@ -18,9 +19,13 @@ export const EditEventComponent: FC<Props> = ({ event, loggedInUser }) => {
     <ContainerEventPages>
       <EventIdTitle eventId={event.id} />
       <EventDetailsLayout>
-        <div>Card 1</div>
+        {/* <div>Card 1</div> */}
+        <EditEventItemForm event={event} />
         <AttendeesCard event={event} loggedInUser={loggedInUser} />
       </EventDetailsLayout>
+      <button form="myform" type="submit">
+        Should submit form
+      </button>
     </ContainerEventPages>
   )
 }
