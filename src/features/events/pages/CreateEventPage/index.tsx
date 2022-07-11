@@ -29,7 +29,7 @@ const minDateFormatted = format(new Date(minDate), 'dd/MM/yyyy')
 
 export const EventFormSchema = yup.object({
   title: yup.string().min(3).max(50).required(),
-  description: yup.string().min(10).max(200).required(),
+  description: yup.string().min(10).max(1000).required(),
   date: yup
     .date()
     .typeError('date is a required field')
@@ -62,7 +62,6 @@ export const Page: NextPage<Props> = ({ prevUrl }) => {
   const { mutate, isLoading } = useCreateEvent()
 
   const onSubmit = (data: EventFormTypes) => {
-    console.log(data)
     const [hours, minutes] = data.time.split(':').map(Number)
     const startsAt = setDate(new Date(data.date), {
       hours: hours,

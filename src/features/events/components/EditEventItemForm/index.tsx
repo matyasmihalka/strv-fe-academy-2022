@@ -1,17 +1,18 @@
-// import { yupResolver } from '@hookform/resolvers/yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import type { FC } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Input } from '~/features/ui/components/Input'
 
 import type { EventFormTypes } from '../../pages/CreateEventPage'
-// import { EventFormSchema } from '../../pages/CreateEventPage'
+import { EventFormSchema } from '../../pages/CreateEventPage'
 import type { ArticleType } from '../../types'
 import { EventCard } from '../EventCard'
 import { StyledEventForm } from '../StyledForm'
 
 export type Props = {
   event: ArticleType
+  onSubmitHandler: (data: EventFormTypes) => void
 }
 const minDate = new Date().toISOString().split('T')[0]
 
@@ -34,17 +35,13 @@ const formatTimeForInput = (UTCdate: string) => {
   return `${hours}:${minutes}`
 }
 
-export const EditEventItemForm: FC<Props> = ({ event }) => {
-  const onSubmitHandler = () => {
-    console.log('Form submitted huraa')
-  }
-
+export const EditEventItemForm: FC<Props> = ({ event, onSubmitHandler }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<EventFormTypes>({
-    // resolver: yupResolver(EventFormSchema),
+    resolver: yupResolver(EventFormSchema),
   })
 
   return (

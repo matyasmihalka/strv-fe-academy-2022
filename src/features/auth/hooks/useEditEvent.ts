@@ -3,23 +3,20 @@ import { useMutation } from 'react-query'
 
 import { privateApi } from '~/features/api'
 
-export type EventInput = {
-  title: string
-  description: string
-  startsAt: string
-  capacity: number
-}
+import type { EventInput } from './useCreateEvent'
 
-const useCreateEvent = () => {
+export const useEditEvent = (id: string) => {
   const router = useRouter()
 
   const result = useMutation<{ success: boolean }, Error, EventInput>(
-    'createEvent',
+    'editEvent',
     async (event) => {
-      const response = await privateApi.post('/events', { json: event })
+      const response = await privateApi.patch(`/events/${id}`, {
+        json: event,
+      })
 
       if (!response.ok) {
-        throw Error('Creating event failed')
+        throw Error('Editing event failed')
       }
 
       return { success: response.ok }
@@ -33,5 +30,3 @@ const useCreateEvent = () => {
 
   return result
 }
-
-export { useCreateEvent }

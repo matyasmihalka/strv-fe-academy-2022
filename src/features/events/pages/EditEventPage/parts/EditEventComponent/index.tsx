@@ -8,26 +8,28 @@ import { EventIdTitle } from '~/features/events/components/EventIdTitle'
 import type { ArticleType } from '~/features/events/types'
 import { ContainerEventPages } from '~/features/ui/components/ContainerEventPages'
 
+import type { EventFormTypes } from '../../../CreateEventPage'
 import { AttendeesCard } from '../../../EventDetailPage/parts/AttendeesCard'
 
 export type Props = {
   event: ArticleType
   loggedInUser: UserType
+  handleSubmit: (data: EventFormTypes) => void
 }
 
-export const EditEventComponent: FC<Props> = ({ event, loggedInUser }) => {
+export const EditEventComponent: FC<Props> = ({
+  event,
+  loggedInUser,
+  handleSubmit,
+}) => {
   return (
     <ContainerEventPages>
       <EventIdTitle eventId={event.id} />
       <EventDetailsLayout>
-        {/* <div>Card 1</div> */}
-        <EditEventItemForm event={event} />
+        <EditEventItemForm event={event} onSubmitHandler={handleSubmit} />
         <AttendeesCard event={event} loggedInUser={loggedInUser} />
       </EventDetailsLayout>
       <PositionedEditFormButton formID={event.id} />
-      {/* <button form="myform" type="submit">
-        Should submit form
-      </button> */}
     </ContainerEventPages>
   )
 }
