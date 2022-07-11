@@ -27,7 +27,7 @@ import { StyledEventForm } from '../../components/StyledForm'
 const minDate = new Date().toISOString().split('T')[0]
 const minDateFormatted = format(new Date(minDate), 'dd/MM/yyyy')
 
-const EventFormSchema = yup.object({
+export const EventFormSchema = yup.object({
   title: yup.string().min(3).max(50).required(),
   description: yup.string().min(10).max(200).required(),
   date: yup
@@ -42,7 +42,7 @@ const EventFormSchema = yup.object({
   capacity: yup.number().integer().positive().lessThan(1000).required(),
 })
 
-type EventFormTypes = yup.InferType<typeof EventFormSchema>
+export type EventFormTypes = yup.InferType<typeof EventFormSchema>
 
 type Props = {
   prevUrl?: string | undefined
