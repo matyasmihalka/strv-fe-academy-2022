@@ -25,6 +25,15 @@ const formatDateForInput = (UTCdate: string) => {
   return `${year}-${month}-${day}`
 }
 
+const formatTimeForInput = (UTCdate: string) => {
+  const date = new Date(UTCdate)
+  const hours =
+    date.getUTCHours() < 10 ? `0${date.getUTCHours()}` : date.getUTCHours()
+  const minutes =
+    date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
+  return `${hours}:${minutes}`
+}
+
 export const EditEventItemForm: FC<Props> = ({ event }) => {
   const onSubmitHandler = () => {
     console.log('Form submitted huraa')
@@ -60,7 +69,7 @@ export const EditEventItemForm: FC<Props> = ({ event }) => {
           label="Time"
           type="time"
           name="time"
-          value="11:25"
+          defaultValue={formatTimeForInput(event.startsAt)}
           error={errors?.time?.message}
         />
         <Input
@@ -72,14 +81,15 @@ export const EditEventItemForm: FC<Props> = ({ event }) => {
           defaultValue={event.title}
         />
 
-        {/* <Input
+        <Input
           {...register('description')}
           label="Description"
           type="text"
           name="description"
           error={errors?.description?.message}
+          defaultValue={event.description}
         />
-       
+
         <Input
           {...register('capacity')}
           label="Capacity"
@@ -87,7 +97,8 @@ export const EditEventItemForm: FC<Props> = ({ event }) => {
           name="capacity"
           min={1}
           error={errors?.capacity?.message}
-        /> */}
+          defaultValue={event.capacity}
+        />
       </StyledEventForm>
     </EventCard>
   )
