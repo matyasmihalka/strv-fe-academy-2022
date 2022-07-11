@@ -50,7 +50,7 @@ export const EditEventItemForm: FC<Props> = ({ event }) => {
   return (
     <EventCard>
       <StyledEventForm
-        id="myform"
+        id={event.id}
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onSubmit={handleSubmit(onSubmitHandler)}
         noValidate
