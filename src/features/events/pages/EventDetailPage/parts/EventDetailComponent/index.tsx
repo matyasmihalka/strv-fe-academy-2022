@@ -38,7 +38,7 @@ export const EventDetailComponent: FC<Props> = ({
         />
         <AttendeesCard event={event} loggedInUser={loggedInUser} />
       </PageLayout>
-      <PositionedCreateButton />
+      {loggedInUser && <PositionedCreateButton />}
     </ContainerEventPages>
   )
 }
