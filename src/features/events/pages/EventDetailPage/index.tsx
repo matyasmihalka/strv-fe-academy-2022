@@ -25,25 +25,25 @@ export const EventDetailPage: NextPage = () => {
 
   const { user } = useUserContext()
 
-  let id = ''
+  const id = Array.isArray(eventID) ? '' : eventID
+  console.log(id)
 
-  if (Array.isArray(eventID)) {
-    id = ''
-  } else {
-    id = eventID
-  }
+  const result = useQuery<ArticleType, Error>(
+    ['events', id],
+    async () => {
+      const response = await privateApi.get(`/events/${id}`)
 
-  const result = useQuery<ArticleType, Error>(['events', id], async () => {
-    const response = await privateApi.get(`/events/${id}`)
+      if (!response.ok) {
+        throw new Error(`Failed to load events`)
+      }
 
-    if (!response.ok) {
-      throw new Error(`Failed to load events`)
-    }
-
-    return (await response.json()) as ArticleType
-  })
+      return (await response.json()) as ArticleType
+    },
+    { enabled: !!id }
+  )
 
   const event = result.data
+  console.log(event)
   const isLoggedInUserAttending = event ? isUserAttending(user, event) : false
 
   const { attendEvent, leaveEvent } = useAttendance(id)
