@@ -32,9 +32,10 @@ export const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   margin-bottom: 3rem;
+  align-items: flex-end;
 
   ${mq.medium} {
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
   }
 `
 

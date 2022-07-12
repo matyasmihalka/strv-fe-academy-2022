@@ -11,3 +11,7 @@ export const HiddenH2 = styled(HiddenH1).attrs({ as: 'h2' })``
 export const PositionedSection = styled.section`
   margin-top: 3.5rem;
 `
+
+export const StyledProfileInfoSection = styled.section`
+  margin-top: calc(1.8rem + 60px);
+`
