@@ -13,7 +13,6 @@ export type WrapperType = {
 
 export const SignIn: FC<WrapperType> = ({ position = null }) => {
   const { pathname } = useRouter()
-  console.log(pathname)
   return (
     <SignInQuestionWrapper position={position}>
       {pathname === '/login' ? (
