@@ -57,8 +57,6 @@ export const Page: NextPage<Props> = ({ prevUrl }) => {
     resolver: yupResolver(EventFormSchema),
   })
 
-  // console.log(isSubmitting)
-
   const { mutate, isLoading } = useCreateEvent()
 
   const onSubmit = (data: EventFormTypes) => {
@@ -73,6 +71,7 @@ export const Page: NextPage<Props> = ({ prevUrl }) => {
       description: data.description,
       capacity: data.capacity,
     })
+    console.log('after mutation')
   }
 
   return (

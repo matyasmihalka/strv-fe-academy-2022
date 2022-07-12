@@ -1,7 +1,11 @@
+// import { useRouter } from 'next/router'
 import { useRouter } from 'next/router'
 import { useMutation } from 'react-query'
 
 import { privateApi } from '~/features/api'
+import { Routes } from '~/features/core/constants/routes'
+
+import type { ArticleType } from '../types'
 
 export type EventInput = {
   title: string
@@ -13,7 +17,7 @@ export type EventInput = {
 const useCreateEvent = () => {
   const router = useRouter()
 
-  const result = useMutation<{ success: boolean }, Error, EventInput>(
+  const result = useMutation<ArticleType, Error, EventInput>(
     'createEvent',
     async (event) => {
       const response = await privateApi.post('/events', { json: event })
@@ -22,11 +26,14 @@ const useCreateEvent = () => {
         throw Error('Creating event failed')
       }
 
-      return { success: response.ok }
+      return (await response.json()) as ArticleType
     },
     {
-      onSuccess: async () => {
-        await router.push('/')
+      onSuccess: async (event: ArticleType) => {
+        console.log(event)
+        await privateApi.post(`/events/${event.id}/attendees/me`)
+
+        await router.push(Routes.DASHBOARD)
       },
     }
   )
