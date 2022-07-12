@@ -1,1 +1,1 @@
-export { RegisterPage as default } from '~/features/register/pages/RegisterPage'
+export { PublicRegisterPage as default } from '~/features/register/pages/RegisterPage'

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 import { useUserContext } from '~/features/auth/contexts/userContext'
+import { withAuthRoute } from '~/features/auth/hocs/withAuthRoute'
 import { useLogin } from '~/features/auth/hooks/useLogin'
 import { ContainerExternal } from '~/features/ui/components/ContainerExternal'
 import { SignIn } from '~/features/ui/components/Header/parts/SignIn'
@@ -95,3 +96,5 @@ export const LoginPage: NextPage = () => {
     </LayoutExternal>
   )
 }
+
+export const PublicLoginPage = withAuthRoute(LoginPage)
