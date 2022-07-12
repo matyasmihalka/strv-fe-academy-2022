@@ -6,19 +6,14 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 import { useUserContext } from '~/features/auth/contexts/userContext'
+import { withAuthRoute } from '~/features/auth/hocs/withAuthRoute'
 import { useLogin } from '~/features/auth/hooks/useLogin'
+import { ContainerExternal } from '~/features/ui/components/ContainerExternal'
 import { SignIn } from '~/features/ui/components/Header/parts/SignIn'
 import { Input } from '~/features/ui/components/Input'
 import { LayoutExternal } from '~/features/ui/components/LayoutExternal'
 
-import {
-  Container,
-  H1,
-  P,
-  StyledError,
-  StyledForm,
-  SubmitButton,
-} from './styled'
+import { H1, P, StyledError, StyledForm, SubmitButton } from './styled'
 
 const LogInSchema = yup
   .object({
@@ -68,7 +63,7 @@ export const LoginPage: NextPage = () => {
 
   return (
     <LayoutExternal>
-      <Container>
+      <ContainerExternal>
         <H1>Sign in to Eventio!</H1>
         {submitError ? (
           <StyledError>{submitError}</StyledError>
@@ -97,7 +92,9 @@ export const LoginPage: NextPage = () => {
             {isLoading ? 'Submitting' : 'Sign In'}
           </SubmitButton>
         </StyledForm>
-      </Container>
+      </ContainerExternal>
     </LayoutExternal>
   )
 }
+
+export const PublicLoginPage = withAuthRoute(LoginPage)
