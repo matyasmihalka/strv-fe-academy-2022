@@ -143,6 +143,7 @@ export const Page: NextPage<Props> = ({ prevUrl }) => {
 export const CreateEventPage = withPrivateRoute(Page)
 
 // this will be called by Next.js server side
+// passing the previous Next url to see where to navigate with teh close button
 // eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {

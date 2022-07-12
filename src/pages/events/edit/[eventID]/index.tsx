@@ -1,1 +1,1 @@
-export { EditEventPage as default } from '~/features/events/pages/EditEventPage'
+export { EditEventPagePrivate as default } from '~/features/events/pages/EditEventPage'
