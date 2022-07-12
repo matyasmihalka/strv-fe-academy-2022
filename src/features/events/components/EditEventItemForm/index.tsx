@@ -31,8 +31,7 @@ const formatDateForInput = (UTCdate: string) => {
 
 const formatTimeForInput = (UTCdate: string) => {
   const date = new Date(UTCdate)
-  const hours =
-    date.getUTCHours() < 10 ? `0${date.getUTCHours()}` : date.getUTCHours()
+  const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()
   const minutes =
     date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
   return `${hours}:${minutes}`
