@@ -1,1 +1,1 @@
-export { ProfilePage as default } from '~/features/auth/pages/ProfilePage'
+export { PrivateProfilePage as default } from '~/features/auth/pages/ProfilePage'
