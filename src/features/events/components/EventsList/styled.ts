@@ -32,7 +32,7 @@ export const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   margin-bottom: 3rem;
-  align-items: flex-end;
+  align-items: center;
 
   ${mq.medium} {
     margin-bottom: 3rem;
