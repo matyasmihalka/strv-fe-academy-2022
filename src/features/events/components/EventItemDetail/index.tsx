@@ -1,4 +1,4 @@
-import { isAfter } from 'date-fns'
+import { isBefore } from 'date-fns'
 import type { FC } from 'react'
 
 import type { UserType } from '~/features/auth/contexts/userContext'
@@ -46,13 +46,13 @@ export const EventItemDetail: FC<Props> = ({
           {`${event.attendees.length} of ${event.capacity}`}
         </StyledSpan>
 
-        {isAfter(new Date(event.startsAt), new Date()) && loggedInUser && (
-          <EventActionButton
-            isLoggedInUserOwner={isLoggedInUserOwner}
-            isLoggedInUserAttending={isLoggedInUserAttending}
-            eventID={event.id}
-          />
-        )}
+        <EventActionButton
+          isLoggedInUserOwner={isLoggedInUserOwner}
+          isLoggedInUserAttending={isLoggedInUserAttending}
+          eventID={event.id}
+          user={loggedInUser}
+          isPast={isBefore(new Date(event.startsAt), new Date())}
+        />
       </StyledActions>
     </EventCard>
   )

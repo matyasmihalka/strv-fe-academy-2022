@@ -64,13 +64,14 @@ export const EventItemComponent: FC<Props> = ({
               <StyledAttendeeIcon />{' '}
               {`${event.attendees.length} of ${event.capacity}`}
             </span>
-            {!isPast && user && (
-              <EventActionButton
-                isLoggedInUserOwner={isLoggedInUserOwner}
-                isLoggedInUserAttending={isLoggedInUserAttending}
-                eventID={event.id}
-              />
-            )}
+
+            <EventActionButton
+              isLoggedInUserOwner={isLoggedInUserOwner}
+              isLoggedInUserAttending={isLoggedInUserAttending}
+              eventID={event.id}
+              user={user}
+              isPast={isPast}
+            />
           </StyledActions>
         </>
       ) : (
@@ -82,13 +83,14 @@ export const EventItemComponent: FC<Props> = ({
             <Time />
             <span>{`${event.attendees.length} of ${event.capacity}`}</span>
           </Container>
-          {!isPast && user && (
-            <EventActionButton
-              isLoggedInUserOwner={isLoggedInUserOwner}
-              isLoggedInUserAttending={isLoggedInUserAttending}
-              eventID={event.id}
-            />
-          )}
+
+          <EventActionButton
+            isLoggedInUserOwner={isLoggedInUserOwner}
+            isLoggedInUserAttending={isLoggedInUserAttending}
+            eventID={event.id}
+            user={user}
+            isPast={isPast}
+          />
         </>
       )}
     </Article>

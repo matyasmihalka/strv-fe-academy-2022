@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router'
 import type { FC } from 'react'
 
+import type { UserType } from '~/features/auth/contexts/userContext'
+
 import { StyledButton } from './styled'
 
 import { useAttendance } from '../../hooks/useAttendance'
@@ -9,6 +11,8 @@ type Props = {
   isLoggedInUserOwner: boolean
   isLoggedInUserAttending: boolean
   eventID: string
+  isPast: boolean
+  user: UserType | null
 }
 
 type ButtonProps = {
@@ -34,6 +38,8 @@ export const EventActionButton: FC<Props> = ({
   isLoggedInUserOwner,
   isLoggedInUserAttending,
   eventID,
+  isPast,
+  user,
 }) => {
   const router = useRouter()
   const { attendEvent, leaveEvent } = useAttendance(eventID)
@@ -55,14 +61,18 @@ export const EventActionButton: FC<Props> = ({
     }
   }
 
-  return (
-    <StyledButton
-      type="button"
-      size="small"
-      accent={accent}
-      onClick={handleButtonAction}
-    >
-      {buttonText}
-    </StyledButton>
-  )
+  if ((!isPast && user) || (isPast && isLoggedInUserOwner)) {
+    return (
+      <StyledButton
+        type="button"
+        size="small"
+        accent={accent}
+        onClick={handleButtonAction}
+      >
+        {buttonText}
+      </StyledButton>
+    )
+  }
+
+  return null
 }

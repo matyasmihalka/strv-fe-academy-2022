@@ -1,3 +1,4 @@
+import { isBefore } from 'date-fns'
 import type { FC } from 'react'
 
 import type { UserType } from '~/features/auth/contexts/userContext'
@@ -38,7 +39,10 @@ export const EditEventComponent: FC<Props> = ({
         <EditEventItemForm event={event} onSubmitHandler={handleSubmit} />
         <AttendeesCard event={event} loggedInUser={loggedInUser} />
       </EventDetailsLayout>
-      <PositionedEditFormButton formID={event.id} isDisabled={isLoading} />
+      <PositionedEditFormButton
+        formID={event.id}
+        isDisabled={isLoading || isBefore(new Date(event.startsAt), new Date())}
+      />
     </ContainerDetailEventPages>
   )
 }
