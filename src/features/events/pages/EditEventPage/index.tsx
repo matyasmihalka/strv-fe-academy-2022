@@ -33,7 +33,6 @@ export const EditEventPage: NextPage = () => {
   // has access then redirect it right away -> no reason to complicate things here
   useEffect(() => {
     const redirectIfNotOwner = async () => {
-      console.log('In redirect')
       if (event) {
         if (!(user?.id === event?.owner?.id)) {
           await router.replace('/')

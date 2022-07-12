@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import { useState } from 'react'
 
 import { ContainerExternal } from '~/features/ui/components/ContainerExternal'
 import { LayoutExternal } from '~/features/ui/components/LayoutExternal'
@@ -7,7 +8,7 @@ import { RegisterForm } from './parts/RegisterForm'
 import { H1, P, StyledError } from './styled'
 
 export const RegisterPage: NextPage = () => {
-  const submitError = ''
+  const [submitError, setSubmitError] = useState<string | null>(null)
   return (
     <LayoutExternal>
       <ContainerExternal>
@@ -17,7 +18,7 @@ export const RegisterPage: NextPage = () => {
         ) : (
           <P>Enter your details below</P>
         )}
-        <RegisterForm />
+        <RegisterForm setSubmitError={setSubmitError} />
       </ContainerExternal>
     </LayoutExternal>
   )

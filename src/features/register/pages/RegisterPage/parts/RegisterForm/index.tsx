@@ -1,16 +1,19 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import type { FC } from 'react'
+import { useRouter } from 'next/router'
+import type { Dispatch, FC, SetStateAction } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
+import { useRegister } from '~/features/auth/hooks/useRegister'
+import { Routes } from '~/features/core/constants/routes'
 import { Input } from '~/features/ui/components/Input'
 
 import { StyledForm, SubmitButton } from './styled'
 
 const RegisterSchema = yup
   .object({
-    firstName: yup.string().min(3),
-    lastName: yup.string().min(3),
+    firstName: yup.string().min(3).required(),
+    lastName: yup.string().min(3).required(),
     email: yup.string().email().required(),
     password: yup.string().min(8).required(),
     repeatPassword: yup
@@ -22,7 +25,11 @@ const RegisterSchema = yup
 
 type RegisterInputs = yup.InferType<typeof RegisterSchema>
 
-export const RegisterForm: FC = () => {
+type RegisterFormType = {
+  setSubmitError: Dispatch<SetStateAction<string | null>>
+}
+
+export const RegisterForm: FC<RegisterFormType> = ({ setSubmitError }) => {
   const {
     register,
     handleSubmit,
@@ -31,11 +38,31 @@ export const RegisterForm: FC = () => {
     resolver: yupResolver(RegisterSchema),
   })
 
-  const handleRegister = (data: RegisterInputs) => {
-    console.log(data)
-  }
+  const { mutate, isLoading } = useRegister()
+  const router = useRouter()
 
-  //   const { mutate, isLoading } = useLogin()
+  const handleRegister = (data: RegisterInputs) => {
+    // Only submit in case of no errors.
+    if (
+      !errors.email &&
+      !errors.password &&
+      !errors.firstName &&
+      !errors.lastName &&
+      !errors.repeatPassword
+    ) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { repeatPassword, ...registerData } = data
+
+      mutate(registerData, {
+        onSuccess: async () => {
+          await router.push(Routes.LOGIN)
+        },
+        onError: (error) => {
+          setSubmitError(error.message)
+        },
+      })
+    }
+  }
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -75,10 +102,10 @@ export const RegisterForm: FC = () => {
         error={errors?.repeatPassword?.message}
         name="repeatPassword"
       />
-      <SubmitButton>Sign up</SubmitButton>
-      {/* <SubmitButton disabled={isLoading}>
-        {isLoading ? 'Submitting' : 'Sign In'}
-      </SubmitButton> */}
+
+      <SubmitButton disabled={isLoading}>
+        {isLoading ? 'Submitting' : 'Sign up'}
+      </SubmitButton>
     </StyledForm>
   )
 }
