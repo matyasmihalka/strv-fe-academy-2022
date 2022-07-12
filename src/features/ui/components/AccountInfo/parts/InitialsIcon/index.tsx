@@ -4,11 +4,12 @@ import { Initials, Wrapper } from './styled'
 
 type Props = {
   initials: string
+  className?: string
 }
 
-export const InitialsIcon: FC<Props> = ({ initials }) => {
+export const InitialsIcon: FC<Props> = ({ initials, className }) => {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <Initials>{initials}</Initials>
     </Wrapper>
   )

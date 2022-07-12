@@ -5,4 +5,5 @@ export enum Routes {
   ERROR404 = '/404',
   ERRORGENERAL = '/error',
   EVENTS = '/events',
+  PROFILE = '/me',
 }

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import type { FC } from 'react'
 import { useEffect } from 'react'
 import { useRef } from 'react'
@@ -5,6 +6,7 @@ import { useState } from 'react'
 
 import type { UserType } from '~/features/auth/contexts/userContext'
 import { useUserContext } from '~/features/auth/contexts/userContext'
+import { Routes } from '~/features/core/constants/routes'
 
 import { InitialsIcon } from './parts/InitialsIcon'
 import {
@@ -26,6 +28,7 @@ export const AccountInfo: FC<Props> = ({ user }) => {
   const { firstName, lastName } = user
   const initials = `${firstName[0]}${lastName[0]}`
   const { handleLogout } = useUserContext()
+  const router = useRouter()
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -53,6 +56,10 @@ export const AccountInfo: FC<Props> = ({ user }) => {
     setIsDropdownShown((prevState) => !prevState)
   }
 
+  const handleProfileNavigation = async () => {
+    await router.push(Routes.PROFILE)
+  }
+
   return (
     <Wrapper ref={ref}>
       <Button type="button" onClick={handleClick}>
@@ -63,7 +70,8 @@ export const AccountInfo: FC<Props> = ({ user }) => {
       {isDropdownShown && (
         <Dropdown onBlur={() => setIsDropdownShown(false)}>
           <DropdownArrow />
-          <ActionButton type="button" onClick={() => alert('ADD PROFILE LINK')}>
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <ActionButton type="button" onClick={handleProfileNavigation}>
             Profile
           </ActionButton>
           <ActionButton type="button" onClick={handleLogout}>
