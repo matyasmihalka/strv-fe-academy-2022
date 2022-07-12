@@ -15,21 +15,23 @@ import {
   Description,
   StyledActions,
   StyledAttendeeIcon,
-  StyledButton,
+  // StyledButton,
 } from './styled'
+
+import { EventActionButton } from '../../../EventActionButton'
 
 export type Props = {
   view: ViewType
   event: ArticleType
   isLoggedInUserAttending: boolean
-  handleAttendance: () => void
+  isLoggedInUserOwner: boolean
 }
 
 export const EventItemComponent: FC<Props> = ({
   view,
   event,
   isLoggedInUserAttending,
-  handleAttendance,
+  isLoggedInUserOwner,
 }) => {
   const isPast = isBefore(new Date(event.startsAt), new Date())
 
@@ -48,23 +50,6 @@ export const EventItemComponent: FC<Props> = ({
 
   const DescriptionData = () => <Description>{event.description}</Description>
 
-  const ButtonData = () => {
-    if (isPast || !user) {
-      return null
-    }
-
-    return (
-      <StyledButton
-        type="button"
-        size="small"
-        accent={isLoggedInUserAttending ? 'destructive' : 'primary'}
-        onClick={handleAttendance}
-      >
-        {isLoggedInUserAttending ? 'LEAVE' : 'JOIN'}
-      </StyledButton>
-    )
-  }
-
   return (
     <Article view={view}>
       {view === ViewType.GRID ? (
@@ -79,7 +64,14 @@ export const EventItemComponent: FC<Props> = ({
               <StyledAttendeeIcon />{' '}
               {`${event.attendees.length} of ${event.capacity}`}
             </span>
-            <ButtonData />
+
+            <EventActionButton
+              isLoggedInUserOwner={isLoggedInUserOwner}
+              isLoggedInUserAttending={isLoggedInUserAttending}
+              eventID={event.id}
+              user={user}
+              isPast={isPast}
+            />
           </StyledActions>
         </>
       ) : (
@@ -91,7 +83,14 @@ export const EventItemComponent: FC<Props> = ({
             <Time />
             <span>{`${event.attendees.length} of ${event.capacity}`}</span>
           </Container>
-          <ButtonData />
+
+          <EventActionButton
+            isLoggedInUserOwner={isLoggedInUserOwner}
+            isLoggedInUserAttending={isLoggedInUserAttending}
+            eventID={event.id}
+            user={user}
+            isPast={isPast}
+          />
         </>
       )}
     </Article>

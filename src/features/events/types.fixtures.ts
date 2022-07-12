@@ -13,6 +13,7 @@ export const createEvent = (data?: {
   user?: UserType
   attendees?: UserType[]
   isPastEvent?: boolean
+  attendeesCount?: number
 }) => {
   const id = faker.datatype.uuid()
   const title = faker.lorem.words(3)
@@ -32,7 +33,7 @@ export const createEvent = (data?: {
     owner: data?.user ?? createUser(),
     attendees:
       data?.attendees ??
-      Array(20)
+      Array(data?.attendeesCount ? data.attendeesCount : 20)
         .fill(0)
         .map(() => createUser()),
   }

@@ -7,8 +7,8 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 import { withPrivateRoute } from '~/features/auth/hocs/withPrivateRoute'
-import { useCreateEvent } from '~/features/auth/hooks/useCreateEvent'
 import { Routes } from '~/features/core/constants/routes'
+import { useCreateEvent } from '~/features/events/hooks/useCreateEvent'
 import { Input } from '~/features/ui/components/Input'
 import { LayoutInternal } from '~/features/ui/components/LayoutInternal'
 
@@ -20,15 +20,16 @@ import {
   InputFormContainer,
   P,
   StyledButton,
-  StyledForm,
 } from './styled'
+
+import { StyledEventForm } from '../../components/StyledForm'
 
 const minDate = new Date().toISOString().split('T')[0]
 const minDateFormatted = format(new Date(minDate), 'dd/MM/yyyy')
 
-const EventFormSchema = yup.object({
+export const EventFormSchema = yup.object({
   title: yup.string().min(3).max(50).required(),
-  description: yup.string().min(10).max(200).required(),
+  description: yup.string().min(10).max(1000).required(),
   date: yup
     .date()
     .typeError('date is a required field')
@@ -41,7 +42,7 @@ const EventFormSchema = yup.object({
   capacity: yup.number().integer().positive().lessThan(1000).required(),
 })
 
-type EventFormTypes = yup.InferType<typeof EventFormSchema>
+export type EventFormTypes = yup.InferType<typeof EventFormSchema>
 
 type Props = {
   prevUrl?: string | undefined
@@ -56,12 +57,9 @@ export const Page: NextPage<Props> = ({ prevUrl }) => {
     resolver: yupResolver(EventFormSchema),
   })
 
-  // console.log(isSubmitting)
-
   const { mutate, isLoading } = useCreateEvent()
 
   const onSubmit = (data: EventFormTypes) => {
-    console.log(data)
     const [hours, minutes] = data.time.split(':').map(Number)
     const startsAt = setDate(new Date(data.date), {
       hours: hours,
@@ -73,6 +71,7 @@ export const Page: NextPage<Props> = ({ prevUrl }) => {
       description: data.description,
       capacity: data.capacity,
     })
+    console.log('after mutation')
   }
 
   return (
@@ -92,7 +91,7 @@ export const Page: NextPage<Props> = ({ prevUrl }) => {
           <H1>Create new event</H1>
           <P>Enter details below</P>
           {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-          <StyledForm onSubmit={handleSubmit(onSubmit)} noValidate>
+          <StyledEventForm onSubmit={handleSubmit(onSubmit)} noValidate>
             <Input
               {...register('title')}
               label="Title"
@@ -133,7 +132,7 @@ export const Page: NextPage<Props> = ({ prevUrl }) => {
             <StyledButton type="submit" accent="primary" disabled={isLoading}>
               Create new Event
             </StyledButton>
-          </StyledForm>
+          </StyledEventForm>
         </InputFormContainer>
       </CenterContainer>
     </LayoutInternal>
@@ -143,11 +142,12 @@ export const Page: NextPage<Props> = ({ prevUrl }) => {
 export const CreateEventPage = withPrivateRoute(Page)
 
 // this will be called by Next.js server side
+// passing the previous Next url to see where to navigate with teh close button
 // eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
-      prevUrl: context.req.headers.referer,
+      prevUrl: context.req.headers.referer ?? null,
     }, // will be passed to the page component as props
   }
 }

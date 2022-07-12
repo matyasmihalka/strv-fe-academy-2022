@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components'
 
 import { ViewType } from '~/features/events/components/EventsList/types'
-import { Button } from '~/features/ui/components/Button'
 import { colors } from '~/features/ui/theme/colors'
 import { mq } from '~/features/ui/theme/mq'
 import { typography } from '~/features/ui/theme/typography'
@@ -39,11 +38,6 @@ export const StyledAttendeeIcon = styled(AttendeeIcon)`
 `
 
 export const Container = styled.div``
-
-export const StyledButton = styled(Button)`
-  padding: 0.3em 0em 0.2em;
-  width: 10rem;
-`
 
 export const Article = styled.article<{ view: ViewType }>`
   background-color: ${colors.background.light};
@@ -147,10 +141,6 @@ export const Article = styled.article<{ view: ViewType }>`
             white-space: nowrap;
             text-overflow: ellipsis;
           }
-        }
-
-        ${StyledButton} {
-          justify-self: end;
         }
       }
     `}

@@ -5,7 +5,9 @@ import { EventsList } from '~/features/events/components/EventsList'
 import { ContainerEventPages } from '~/features/ui/components/ContainerEventPages'
 import { LayoutInternal } from '~/features/ui/components/LayoutInternal'
 
-import { H1, H2, PositionedCreateButton } from './styled'
+import { H1, H2 } from './styled'
+
+import { PositionedCreateButton } from '../../components/CreateButton/styled'
 
 export const DashboardPage: NextPage = () => {
   const { user } = useUserContext()

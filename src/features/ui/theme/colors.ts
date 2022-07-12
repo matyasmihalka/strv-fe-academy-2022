@@ -17,6 +17,7 @@ export const colors = {
     dimmed: palette.grey[900],
     dark: palette.grey[100],
     inactive: palette.grey[850],
+    inactiveHover: palette.grey[650],
   },
   accent: {
     primary: palette.green,

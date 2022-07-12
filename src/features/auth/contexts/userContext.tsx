@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/nextjs'
+import { useRouter } from 'next/router'
 import type { FC, ReactNode } from 'react'
 import { useEffect } from 'react'
 import { useContext } from 'react'
@@ -6,6 +7,8 @@ import { useMemo } from 'react'
 import { useCallback } from 'react'
 import { useState } from 'react'
 import { createContext } from 'react'
+
+import { Routes } from '~/features/core/constants/routes'
 
 import {
   getPersistedUser,
@@ -40,6 +43,7 @@ export const UserContextProvider: FC<{ children: ReactNode }> = ({
   const [user, setUser] = useState<UserType | null>(null)
 
   useEffect(() => setUser(getPersistedUser()), [])
+  const router = useRouter()
 
   const handleLogout = useCallback(() => {
     Sentry.captureMessage('handling logout')
@@ -48,7 +52,8 @@ export const UserContextProvider: FC<{ children: ReactNode }> = ({
     removePersistedUser()
     removeAccessToken()
     removeAccessToken()
-  }, [])
+    void router.push(Routes.LOGIN)
+  }, [router])
 
   const value = useMemo(
     () => ({
