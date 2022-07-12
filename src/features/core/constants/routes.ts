@@ -6,4 +6,5 @@ export enum Routes {
   ERRORGENERAL = '/error',
   EVENTS = '/events',
   PROFILE = '/me',
+  REGISTER = '/register',
 }
