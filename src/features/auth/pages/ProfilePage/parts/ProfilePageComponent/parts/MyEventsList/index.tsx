@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
 import type { UserType } from '~/features/auth/contexts/userContext'
-import { EventItemContainer } from '~/features/events/components/EventItemContainer'
+import { EventItemComponent } from '~/features/events/components/EventItemComponent'
 import { NavigationView } from '~/features/events/components/EventsList/parts/NavigationView'
 import {
   List,
@@ -48,7 +48,7 @@ export const MyEventsList: FC<Props> = ({ user }) => {
         <List view={view}>
           {myEvents.map((event) => (
             <li key={event.id}>
-              <EventItemContainer view={view} event={event} />
+              <EventItemComponent view={view} event={event} />
             </li>
           ))}
         </List>
