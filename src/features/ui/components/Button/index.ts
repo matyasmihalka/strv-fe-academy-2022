@@ -36,7 +36,8 @@ const sizes = {
 
   small: css`
     ${typography.label.medium}
-    padding: 0.3em 2em 0.2em;
+    padding: 0.3em 0 0.2em;
+    min-width: 10rem;
   `,
 }
 
@@ -53,6 +54,7 @@ export const Button = styled.button<ButtonProps>`
   border-radius: 4px;
   transition: background-color 0.3s;
   background-color: var(--background-color);
+  text-align: center;
 
   &:disabled {
     --text-color: ${colors.text.inactive};
