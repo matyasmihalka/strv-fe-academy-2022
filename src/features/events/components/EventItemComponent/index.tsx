@@ -4,9 +4,11 @@ import type { FC } from 'react'
 
 import { useUserContext } from '~/features/auth/contexts/userContext'
 import { Routes } from '~/features/core/constants/routes'
+import { EventActionButton } from '~/features/events/components/EventActionButton'
 import { ViewType } from '~/features/events/components/EventsList/types'
 import { formattedTime } from '~/features/events/lib/formattedTime'
 import type { ArticleType } from '~/features/events/types'
+import { Button } from '~/features/ui/components/Button'
 
 import {
   Article,
@@ -18,26 +20,18 @@ import {
   // StyledButton,
 } from './styled'
 
-import { EventActionButton } from '../../../EventActionButton'
-
 export type Props = {
   view: ViewType
   event: ArticleType
-  isLoggedInUserAttending: boolean
-  isLoggedInUserOwner: boolean
 }
 
-export const EventItemComponent: FC<Props> = ({
-  view,
-  event,
-  isLoggedInUserAttending,
-  isLoggedInUserOwner,
-}) => {
+export const EventItemComponent: FC<Props> = ({ view, event }) => {
   const isPast = isBefore(new Date(event.startsAt), new Date())
-
   const { user } = useUserContext()
+  const isOwner = event.owner.id === user?.id
 
   const Time = () => <time>{formattedTime(event.startsAt)}</time>
+
   const H3 = () => (
     <h3>
       <Link href={`${Routes.EVENTS}/${event.id}`}>{event.title}</Link>
@@ -49,6 +43,20 @@ export const EventItemComponent: FC<Props> = ({
   )
 
   const DescriptionData = () => <Description>{event.description}</Description>
+
+  // Note: the above pattern of creating components for simple syntax
+  // sugar is faulty, as React will identify these as new components always
+  // and therefore create new DOM operations on each render!
+
+  const action = isOwner ? (
+    <Link href={`/events/edit/${event.id}`}>
+      <Button size="small" accent="silent" as="a">
+        Edit
+      </Button>
+    </Link>
+  ) : !isPast ? (
+    <EventActionButton event={event} />
+  ) : null
 
   return (
     <Article view={view}>
@@ -65,13 +73,7 @@ export const EventItemComponent: FC<Props> = ({
               {`${event.attendees.length} of ${event.capacity}`}
             </span>
 
-            <EventActionButton
-              isLoggedInUserOwner={isLoggedInUserOwner}
-              isLoggedInUserAttending={isLoggedInUserAttending}
-              eventID={event.id}
-              user={user}
-              isPast={isPast}
-            />
+            {action}
           </StyledActions>
         </>
       ) : (
@@ -84,13 +86,7 @@ export const EventItemComponent: FC<Props> = ({
             <span>{`${event.attendees.length} of ${event.capacity}`}</span>
           </Container>
 
-          <EventActionButton
-            isLoggedInUserOwner={isLoggedInUserOwner}
-            isLoggedInUserAttending={isLoggedInUserAttending}
-            eventID={event.id}
-            user={user}
-            isPast={isPast}
-          />
+          {action}
         </>
       )}
     </Article>

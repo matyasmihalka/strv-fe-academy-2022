@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { EventItemContainer } from '~/features/events/components/EventItemContainer'
+import { EventItemComponent } from '~/features/events/components/EventItemComponent'
 import { Spinner } from '~/features/ui/components/Spinner'
 
 import { NavigationFilter } from './parts/NavigationFilter'
@@ -53,7 +53,7 @@ export const EventsList: FC = () => {
         <List view={view}>
           {events.map((event) => (
             <li key={event.id}>
-              <EventItemContainer view={view} event={event} />
+              <EventItemComponent view={view} event={event} />
             </li>
           ))}
         </List>

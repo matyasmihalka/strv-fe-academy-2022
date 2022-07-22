@@ -6,7 +6,39 @@ import { StyleReset } from '../StyleReset'
 
 type ButtonProps = {
   size?: 'small' | 'medium'
-  accent?: 'normal' | 'primary' | 'destructive' | 'edit'
+  accent?: 'normal' | 'primary' | 'destructive' | 'silent'
+}
+
+const accents = {
+  // Default value.
+  normal: null,
+
+  primary: css`
+    --background-color: ${colors.accent.primary};
+    --background-color-hover: ${colors.accent.primaryHover};
+  `,
+
+  destructive: css`
+    --background-color: ${colors.accent.destructive};
+    --background-color-hover: ${colors.accent.destructiveHover};
+  `,
+
+  silent: css`
+    --background-color: ${colors.background.inactive};
+    --text-color: ${colors.text.inactive};
+    --background-color-hover: ${colors.background.inactiveHover};
+  `,
+}
+
+const sizes = {
+  // Default value.
+  medium: null,
+
+  small: css`
+    ${typography.label.medium}
+    padding: 0.3em 0 0.2em;
+    min-width: 10rem;
+  `,
 }
 
 export const Button = styled.button<ButtonProps>`
@@ -22,6 +54,7 @@ export const Button = styled.button<ButtonProps>`
   border-radius: 4px;
   transition: background-color 0.3s;
   background-color: var(--background-color);
+  text-align: center;
 
   &:disabled {
     --text-color: ${colors.text.inactive};
@@ -37,32 +70,6 @@ export const Button = styled.button<ButtonProps>`
     }
   }
 
-  ${(props) =>
-    props.accent === 'primary' &&
-    css`
-      --background-color: ${colors.accent.primary};
-      --background-color-hover: ${colors.accent.primaryHover};
-    `}
-
-  ${(props) =>
-    props.accent === 'destructive' &&
-    css`
-      --background-color: ${colors.accent.destructive};
-      --background-color-hover: ${colors.accent.destructiveHover};
-    `}
-
-  ${(props) =>
-    props.accent === 'edit' &&
-    css`
-      --background-color: ${colors.background.inactive};
-      --text-color: ${colors.text.inactive};
-      --background-color-hover: ${colors.background.inactiveHover};
-    `}
-
-    ${(props) =>
-    props.size === 'small' &&
-    css`
-      ${typography.label.medium}
-      padding: 0.3em 2em 0.2em;
-    `}
+  ${({ accent = 'normal' }) => accents[accent] ?? null}
+  ${({ size = 'medium' }) => sizes[size] ?? null}
 `

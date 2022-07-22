@@ -1,78 +1,29 @@
-import { useRouter } from 'next/router'
 import type { FC } from 'react'
 
-import type { UserType } from '~/features/auth/contexts/userContext'
-
-import { StyledButton } from './styled'
+import { useUserContext } from '~/features/auth/contexts/userContext'
+import type { ArticleType } from '~/features/events/types'
+import { Button } from '~/features/ui/components/Button'
 
 import { useAttendance } from '../../hooks/useAttendance'
+import { isUserAttending } from '../../lib/isUserAttending'
 
 type Props = {
-  isLoggedInUserOwner: boolean
-  isLoggedInUserAttending: boolean
-  eventID: string
-  isPast: boolean
-  user: UserType | null
+  event: ArticleType
 }
 
-type ButtonProps = {
-  buttonText: 'EDIT' | 'JOIN' | 'LEAVE'
-  accent: 'primary' | 'destructive' | 'edit'
-}
+export const EventActionButton: FC<Props> = ({ event }) => {
+  const { user } = useUserContext()
+  const { attendEvent, leaveEvent } = useAttendance(event.id)
+  const isAttending = isUserAttending(user, event)
 
-const getButtonInfo = (
-  isLoggedInUserOwner: boolean,
-  isLoggedInUserAttending: boolean
-): ButtonProps => {
-  if (isLoggedInUserOwner) {
-    return { buttonText: 'EDIT', accent: 'edit' }
-  }
-  if (isLoggedInUserAttending) {
-    return { buttonText: 'LEAVE', accent: 'destructive' }
-  }
-
-  return { buttonText: 'JOIN', accent: 'primary' }
-}
-
-export const EventActionButton: FC<Props> = ({
-  isLoggedInUserOwner,
-  isLoggedInUserAttending,
-  eventID,
-  isPast,
-  user,
-}) => {
-  const router = useRouter()
-  const { attendEvent, leaveEvent } = useAttendance(eventID)
-
-  const { buttonText, accent } = getButtonInfo(
-    isLoggedInUserOwner,
-    isLoggedInUserAttending
+  return (
+    <Button
+      type="button"
+      size="small"
+      accent={isAttending ? 'destructive' : 'primary'}
+      onClick={() => (isAttending ? leaveEvent.mutate() : attendEvent.mutate())}
+    >
+      {isAttending ? 'Leave' : 'Join'}
+    </Button>
   )
-
-  const handleButtonAction = () => {
-    if (isLoggedInUserOwner) {
-      void router.push(`/events/edit/${eventID}`)
-    } else {
-      if (isLoggedInUserAttending) {
-        leaveEvent.mutate()
-      } else {
-        attendEvent.mutate()
-      }
-    }
-  }
-
-  if ((!isPast && user) || (isPast && isLoggedInUserOwner)) {
-    return (
-      <StyledButton
-        type="button"
-        size="small"
-        accent={accent}
-        onClick={handleButtonAction}
-      >
-        {buttonText}
-      </StyledButton>
-    )
-  }
-
-  return null
 }
