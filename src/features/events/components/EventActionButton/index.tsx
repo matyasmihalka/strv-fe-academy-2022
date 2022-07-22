@@ -17,7 +17,7 @@ type Props = {
 
 type ButtonProps = {
   buttonText: 'EDIT' | 'JOIN' | 'LEAVE'
-  accent: 'primary' | 'destructive' | 'edit'
+  accent: 'primary' | 'destructive' | 'silent'
 }
 
 const getButtonInfo = (
@@ -25,7 +25,7 @@ const getButtonInfo = (
   isLoggedInUserAttending: boolean
 ): ButtonProps => {
   if (isLoggedInUserOwner) {
-    return { buttonText: 'EDIT', accent: 'edit' }
+    return { buttonText: 'EDIT', accent: 'silent' }
   }
   if (isLoggedInUserAttending) {
     return { buttonText: 'LEAVE', accent: 'destructive' }
