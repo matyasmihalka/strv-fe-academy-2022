@@ -2,8 +2,7 @@ import { useRouter } from 'next/router'
 import type { FC } from 'react'
 
 import type { UserType } from '~/features/auth/contexts/userContext'
-
-import { StyledButton } from './styled'
+import { Button } from '~/features/ui/components/Button'
 
 import { useAttendance } from '../../hooks/useAttendance'
 
@@ -63,14 +62,14 @@ export const EventActionButton: FC<Props> = ({
 
   if ((!isPast && user) || (isPast && isLoggedInUserOwner)) {
     return (
-      <StyledButton
+      <Button
         type="button"
         size="small"
         accent={accent}
         onClick={handleButtonAction}
       >
         {buttonText}
-      </StyledButton>
+      </Button>
     )
   }
 
