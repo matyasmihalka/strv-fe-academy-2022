@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import type { FC } from 'react'
+import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Input } from '~/features/ui/components/Input'
@@ -43,7 +44,7 @@ export const EditEventItemForm: FC<Props> = ({ event, onSubmitHandler }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<EventFormTypes>({
-    resolver: yupResolver(EventFormSchema),
+    resolver: useMemo(() => yupResolver(EventFormSchema), []),
   })
 
   return (

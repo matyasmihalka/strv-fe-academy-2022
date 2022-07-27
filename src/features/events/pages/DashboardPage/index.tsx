@@ -3,9 +3,8 @@ import type { NextPage } from 'next'
 import { useUserContext } from '~/features/auth/contexts/userContext'
 import { EventsList } from '~/features/events/components/EventsList'
 import { ContainerEventPages } from '~/features/ui/components/ContainerEventPages'
+import { HiddenH1, HiddenH2 } from '~/features/ui/components/HiddenHeadings'
 import { LayoutInternal } from '~/features/ui/components/LayoutInternal'
-
-import { H1, H2 } from './styled'
 
 import { PositionedCreateButton } from '../../components/CreateButton/styled'
 
@@ -15,9 +14,9 @@ export const DashboardPage: NextPage = () => {
   return (
     <LayoutInternal>
       <ContainerEventPages>
-        <H1>Dashboard</H1>
+        <HiddenH1>Dashboard</HiddenH1>
         <section>
-          <H2>Events List</H2>
+          <HiddenH2>Events List</HiddenH2>
           <EventsList />
           {user && <PositionedCreateButton />}
         </section>

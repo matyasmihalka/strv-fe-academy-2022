@@ -1,20 +1,20 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { Routes } from '~/features/core/constants/routes'
 
-import type { UserType } from '../contexts/userContext'
+import { useUserContext } from '../contexts/userContext'
 import { getPersistedUser } from '../storage'
 
-export const withAuthRoute = (WrappedComponent: NextPage): NextPage => {
+export const withPublicRoute = (WrappedComponent: NextPage): NextPage => {
+  // HOC aims to wrap routes which should be not visible for authenticated users
   const HOCComponent: NextPage = ({ ...props }) => {
     const router = useRouter()
 
-    const [user, setUser] = useState<UserType | null>(null)
+    const { user } = useUserContext()
 
     useEffect(() => {
-      setUser(getPersistedUser())
       const checkUser = async () => {
         // we have to check the localStorage directly to ensure on page reload the user is directly checked
         if (getPersistedUser()) await router.replace(Routes.DASHBOARD)
