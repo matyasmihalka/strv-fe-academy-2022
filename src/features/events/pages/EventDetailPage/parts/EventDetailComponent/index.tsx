@@ -13,14 +13,13 @@ import { AttendeesCard } from '../AttendeesCard'
 
 export type Props = {
   event: ArticleType
-  isLoggedInUserAttending: boolean
   isLoggedInUserOwner: boolean
   loggedInUser: UserType | null
 }
 
 export const EventDetailComponent: FC<Props> = ({
   event,
-  isLoggedInUserAttending,
+
   loggedInUser,
   isLoggedInUserOwner,
 }) => {
@@ -30,8 +29,6 @@ export const EventDetailComponent: FC<Props> = ({
       <EventDetailsLayout>
         <EventItemDetail
           event={event}
-          isLoggedInUserAttending={isLoggedInUserAttending}
-          loggedInUser={loggedInUser}
           isLoggedInUserOwner={isLoggedInUserOwner}
         />
         <AttendeesCard event={event} loggedInUser={loggedInUser} />

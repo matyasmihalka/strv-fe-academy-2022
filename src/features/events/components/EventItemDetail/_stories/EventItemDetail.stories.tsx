@@ -1,7 +1,7 @@
 import type { Story, Meta } from '@storybook/react/types-6-0'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
-import { createEvent, createUser } from '~/features/events/types.fixtures'
+import { createEvent } from '~/features/events/types.fixtures'
 
 import type { Props } from '..'
 import { EventItemDetail } from '..'
@@ -23,5 +23,4 @@ const Template: Story<Props> = (args) => {
 export const Default = Template.bind({})
 Default.args = {
   event: createEvent(),
-  loggedInUser: createUser(),
 }

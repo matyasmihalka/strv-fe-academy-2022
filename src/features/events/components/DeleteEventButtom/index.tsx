@@ -12,11 +12,8 @@ export type Props = {
 export const DeleteEventButton: FC<Props> = ({ eventID }) => {
   const { mutate, isLoading } = useEditEvent(eventID)
 
-  const handleSubmit = () => {
-    mutate()
-  }
   return (
-    <StyledButton type="button" onClick={handleSubmit} disabled={isLoading}>
+    <StyledButton type="button" onClick={() => mutate()} disabled={isLoading}>
       <BinIcon /> DELETE EVENT
     </StyledButton>
   )

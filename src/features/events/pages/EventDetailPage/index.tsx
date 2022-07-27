@@ -12,9 +12,6 @@ import { EventDetailComponent } from './parts/EventDetailComponent'
 import { PositionedSpinner, StyledLink } from './styled'
 
 import { useGetSingleEvent } from '../../hooks/useGetSingleEvent'
-import { isUserAttending } from '../../lib/isUserAttending'
-
-// import { createEvent } from '../../types.fixtures'
 
 export const EventDetailPage: NextPage = () => {
   const router = useRouter()
@@ -26,7 +23,6 @@ export const EventDetailPage: NextPage = () => {
   const result = useGetSingleEvent(id)
   const event = result.data
 
-  const isLoggedInUserAttending = event ? isUserAttending(user, event) : false
   const isLoggedInUserOwner = user?.id === event?.owner?.id
 
   return (
@@ -42,7 +38,6 @@ export const EventDetailPage: NextPage = () => {
       {event ? (
         <EventDetailComponent
           event={event}
-          isLoggedInUserAttending={isLoggedInUserAttending}
           loggedInUser={user}
           isLoggedInUserOwner={isLoggedInUserOwner}
         />

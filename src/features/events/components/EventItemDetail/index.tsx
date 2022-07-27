@@ -1,10 +1,11 @@
 import { isBefore } from 'date-fns'
+import Link from 'next/link'
 import type { FC } from 'react'
 
-import type { UserType } from '~/features/auth/contexts/userContext'
 import { EventCard } from '~/features/events/components/EventCard'
 import { formattedTime } from '~/features/events/lib/formattedTime'
 import type { ArticleType } from '~/features/events/types'
+import { Button } from '~/features/ui/components/Button'
 
 import {
   StyledActions,
@@ -20,17 +21,11 @@ import { EventActionButton } from '../EventActionButton'
 
 export type Props = {
   event: ArticleType
-  isLoggedInUserAttending: boolean
-  loggedInUser: UserType | null
   isLoggedInUserOwner: boolean
 }
 
-export const EventItemDetail: FC<Props> = ({
-  event,
-  isLoggedInUserAttending,
-  loggedInUser,
-  isLoggedInUserOwner,
-}) => {
+export const EventItemDetail: FC<Props> = ({ event, isLoggedInUserOwner }) => {
+  const isPast = isBefore(new Date(event.startsAt), new Date())
   //   console.log(handleAttendance)
   return (
     <EventCard>
@@ -46,13 +41,15 @@ export const EventItemDetail: FC<Props> = ({
           {`${event.attendees.length} of ${event.capacity}`}
         </StyledSpan>
 
-        <EventActionButton
-          isLoggedInUserOwner={isLoggedInUserOwner}
-          isLoggedInUserAttending={isLoggedInUserAttending}
-          eventID={event.id}
-          user={loggedInUser}
-          isPast={isBefore(new Date(event.startsAt), new Date())}
-        />
+        {isLoggedInUserOwner ? (
+          <Link href={`/events/edit/${event.id}`}>
+            <Button size="small" accent="silent" as="a">
+              Edit
+            </Button>
+          </Link>
+        ) : !isPast ? (
+          <EventActionButton event={event} />
+        ) : null}
       </StyledActions>
     </EventCard>
   )

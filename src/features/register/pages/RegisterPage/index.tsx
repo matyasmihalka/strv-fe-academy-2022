@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { useState } from 'react'
 
-import { withAuthRoute } from '~/features/auth/hocs/withAuthRoute'
+import { withPublicRoute } from '~/features/auth/hocs/withPublicRoute'
 import { ContainerExternal } from '~/features/ui/components/ContainerExternal'
 import { LayoutExternal } from '~/features/ui/components/LayoutExternal'
 
@@ -25,4 +25,4 @@ export const RegisterPage: NextPage = () => {
   )
 }
 
-export const PublicRegisterPage = withAuthRoute(RegisterPage)
+export const PublicRegisterPage = withPublicRoute(RegisterPage)

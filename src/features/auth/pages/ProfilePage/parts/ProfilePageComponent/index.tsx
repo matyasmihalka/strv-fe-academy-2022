@@ -2,15 +2,11 @@ import type { FC } from 'react'
 
 import type { UserType } from '~/features/auth/contexts/userContext'
 import { ContainerEventPages } from '~/features/ui/components/ContainerEventPages'
+import { HiddenH1, HiddenH2 } from '~/features/ui/components/HiddenHeadings'
 
 import { MyEventsList } from './parts/MyEventsList'
 import { ProfileInfo } from './parts/ProfileInfo'
-import {
-  HiddenH1,
-  HiddenH2,
-  PositionedSection,
-  StyledProfileInfoSection,
-} from './styled'
+import { PositionedSection, StyledProfileInfoSection } from './styled'
 
 export type Props = {
   user: UserType

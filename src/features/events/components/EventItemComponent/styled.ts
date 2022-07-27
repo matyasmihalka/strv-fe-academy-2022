@@ -5,7 +5,7 @@ import { colors } from '~/features/ui/theme/colors'
 import { mq } from '~/features/ui/theme/mq'
 import { typography } from '~/features/ui/theme/typography'
 
-import { AttendeeIcon } from '../../../AttendeeIcon'
+import { AttendeeIcon } from '../AttendeeIcon'
 
 export const Description = styled.p`
   ${typography.paragraph.normal}
